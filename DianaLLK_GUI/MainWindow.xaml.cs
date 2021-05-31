@@ -144,7 +144,7 @@ namespace DianaLLK_GUI {
         //}
 
         private void Window_Minimum(object sender, RoutedEventArgs e) {
-            WindowState = WindowState.Maximized;
+            WindowState = WindowState.Minimized;
         }
         private void Window_Maximum(object sender, RoutedEventArgs e) {
             if (WindowState == WindowState.Maximized) {
