@@ -31,4 +31,41 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type View:SButton}">
+        <Setter Property="BorderBrush" Value="Gold" />
+        <Setter Property="Margin" Value="15,5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type View:SButton}">
+                    <Viewbox>
+                        <Rectangle Width="200" Height="100" Fill="{TemplateBinding Background}" RadiusX="15" RadiusY="15"
+                                       Stroke="{TemplateBinding BorderBrush}" StrokeThickness="3" Stretch="Fill">
+                        </Rectangle>
+                    </Viewbox>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.65" />
+                            <Setter Property="BorderBrush" Value="{StaticResource TextTheme}" />
+                        </Trigger>
+                        <Trigger Property="Skill" Value="AvaPower">
+                            <Setter Property="Background" Value="{StaticResource AVA_SKILL}" />
+                        </Trigger>
+                        <Trigger Property="Skill" Value="BellaPower">
+                            <Setter Property="Background" Value="{StaticResource BELLA_SKILL}" />
+                        </Trigger>
+                        <Trigger Property="Skill" Value="CarolPower">
+                            <Setter Property="Background" Value="{StaticResource CAROL_SKILL}" />
+                        </Trigger>
+                        <Trigger Property="Skill" Value="DianaPower">
+                            <Setter Property="Background" Value="{StaticResource DIANA_SKILL}" />
+                        </Trigger>
+                        <Trigger Property="Skill" Value="EileenPower">
+                            <Setter Property="Background" Value="{StaticResource EILEEN_SKILL}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

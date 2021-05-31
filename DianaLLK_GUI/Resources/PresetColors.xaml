@@ -1,5 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <SolidColorBrush x:Key="DianaTheme" Color="#ffb2cc"/>
-    <SolidColorBrush x:Key="AccentTheme" Color="#b89985"/>
+    <SolidColorBrush x:Key="DianaTheme" Color="#dc8da3"/>
+    <SolidColorBrush x:Key="AvaTheme" Color="#8fc0e0"/>
+    <SolidColorBrush x:Key="BellaTheme" Color="#e98c84"/>
+    <SolidColorBrush x:Key="CarolTheme" Color="#c5b1ec"/>
+    <SolidColorBrush x:Key="EileenTheme" Color="#7885a7"/>
+    <SolidColorBrush x:Key="AccentTheme" Color="#FF59ABE5"/>
+    <SolidColorBrush x:Key="TextTheme" Color="White"/>
 </ResourceDictionary>

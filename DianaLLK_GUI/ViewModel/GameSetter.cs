@@ -4,11 +4,10 @@ using System.ComponentModel;
 
 namespace DianaLLK_GUI.ViewModel {
     public class GameSetter : INotifyPropertyChanged {
-        private static readonly Array _tokenTypeList;
+        private static readonly Array _gameThemeList;
         private static readonly int _minSize;
         private static readonly int _maxSize;
         private static readonly int _minTokenAmount;
-        private static readonly int _maxTokenAmount;
         private int _rowSize;
         private int _columnSize;
         private int _tokenAmount;
@@ -59,26 +58,31 @@ namespace DianaLLK_GUI.ViewModel {
         }
         public int MaxTokenAmount {
             get {
-                return _maxTokenAmount;
+                return LLKHelper.NumTokenTypes;
             }
         }
         public LLKTokenType CurrentAvatar {
             get {
-                return (LLKTokenType)(_tokenTypeList.GetValue(new Random().Next(1, _tokenTypeList.Length)));
+                return GetRandomTokenType();
             }
         }
 
         static GameSetter() {
-            _tokenTypeList = Enum.GetValues(typeof(LLKTokenType));
+            _gameThemeList = Enum.GetValues(typeof(GameTheme));
             _minSize = 6;
             _maxSize = 18;
             _minTokenAmount = 4;
-            _maxTokenAmount = _tokenTypeList.Length - 1; // 去掉None
         }
         public GameSetter() {
 
         }
 
+        public static LLKTokenType GetRandomTokenType() {
+            return LLKHelper.GetRandomTokenType();
+        }
+        public static GameTheme GetRandomGameTheme() {
+            return (GameTheme)(_gameThemeList.GetValue(new Random().Next(1, _gameThemeList.Length)));
+        }
         public void OnCurrentAvatarChanged() {
             OnPropertyChanged(nameof(CurrentAvatar));
         }

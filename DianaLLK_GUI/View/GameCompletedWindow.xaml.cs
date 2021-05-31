@@ -13,7 +13,13 @@ namespace DianaLLK_GUI.View {
         private string _gameSize;
         private int _skillActivedTimes;
         private int _totalScores;
+        private LLKTokenType _tokenType;
 
+        public LLKTokenType TokenType {
+            get {
+                return _tokenType;
+            }
+        }
         public int TokenAmount {
             get {
                 return _tokenAmount;
@@ -46,6 +52,7 @@ namespace DianaLLK_GUI.View {
             _skillActivedTimes = skillActivedTimes;
             _totalScores = totalScore;
             _gameSize = $"{e.RowSize} x {e.ColumnSize}";
+            _tokenType = ViewModel.GameSetter.GetRandomTokenType();
             InitializeComponent();
         }
 

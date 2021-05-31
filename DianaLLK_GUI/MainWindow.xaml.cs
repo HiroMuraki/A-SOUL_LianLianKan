@@ -1,6 +1,7 @@
 ﻿using DianaLLK_GUI.ViewModel;
 using LianLianKan;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +21,16 @@ namespace DianaLLK_GUI {
         // private Point _hitPos;
         // private Line _directionLine;
 
+        public static readonly DependencyProperty GameThemeProperty =
+            DependencyProperty.Register(nameof(GameTheme), typeof(GameTheme), typeof(MainWindow), new PropertyMetadata(GameTheme.None));
+        public GameTheme GameTheme {
+            get {
+                return (GameTheme)GetValue(GameThemeProperty);
+            }
+            set {
+                SetValue(GameThemeProperty, value);
+            }
+        }
         public LLKGame Game {
             get {
                 return _game;
@@ -30,7 +41,6 @@ namespace DianaLLK_GUI {
                 return _gameSetter;
             }
         }
-
         public MainWindow() {
             // 初始化计时器
             _gameTimer = new DispatcherTimer() {
@@ -57,6 +67,7 @@ namespace DianaLLK_GUI {
             InitializeComponent();
             GridRoot.MaxHeight = SystemParameters.WorkArea.Height;
             GridRoot.MaxWidth = SystemParameters.WorkArea.Width;
+            GameTheme = GameSetter.GetRandomGameTheme();
             ExpandGameSetterPanel();
             // GamePlayAreaCanvas.Children.Add(_directionLine);
         }
@@ -67,12 +78,15 @@ namespace DianaLLK_GUI {
             _game.SelectToken(token);
             //});
         }
+        private void ActiveSkill_Click(object sender, SClickEventArgs e) {
+            _game.ActiveSkill(e.SKill);
+        }
         private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
             _gameTimer.Stop();
             // 模糊背景
             BlurEffect effect = new BlurEffect();
             DoubleAnimation effectAnimation = new DoubleAnimation() {
-                To = 25,
+                To = 15,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
                 Duration = TimeSpan.FromMilliseconds(150)
@@ -93,23 +107,24 @@ namespace DianaLLK_GUI {
             _gameUsingTime += 50;
         }
 
-        private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
-            if (GameSetterPanel.Height != 0) {
-                FoldGameSetterPanel();
-            }
-            else {
-                ExpandGameSetterPanel();
-            }
-        }
         private void StartGame_Click(object sender, RoutedEventArgs e) {
             try {
                 StartGame();
+                GetGameTheme();
                 FoldGameSetterPanel();
                 _gameUsingTime = 0;
                 _gameTimer.Start();
             }
             catch (Exception exp) {
                 MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
+            if (GameSetterPanel.Height != 0) {
+                FoldGameSetterPanel();
+            }
+            else {
+                ExpandGameSetterPanel();
             }
         }
 
@@ -164,7 +179,7 @@ namespace DianaLLK_GUI {
         private void ExpandGameSetterPanel() {
             _gameSetter.OnCurrentAvatarChanged();
             DoubleAnimation heightAnimation = new DoubleAnimation() {
-                To = (ActualHeight == 0 ? Height : ActualHeight) - 40,
+                To = (ActualHeight == 0 ? Height : ActualHeight) - 50,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
                 Duration = TimeSpan.FromMilliseconds(200)
@@ -197,6 +212,72 @@ namespace DianaLLK_GUI {
             GameSetterPanel.BeginAnimation(HeightProperty, heightAnimation);
             GameSetterPanel.BeginAnimation(OpacityProperty, opacityAnimation);
         }
+        /// <summary>
+        /// 设置游戏主题色
+        /// </summary>
+        private void GetGameTheme() {
+            Dictionary<GameTheme, int> numTokens = new Dictionary<GameTheme, int>() {
+                [GameTheme.None] = 0,
+                [GameTheme.Ava] = 0,
+                [GameTheme.Bella] = 0,
+                [GameTheme.Carol] = 0,
+                [GameTheme.Diana] = 0,
+                [GameTheme.Eileen] = 0
+            };
+            foreach (var item in _game.LLKTokenArray) {
+                switch (item.TokenType) {
+                    case LLKTokenType.None:
+                        break;
+                    case LLKTokenType.AS:
+                        break;
+                    case LLKTokenType.A1:
+                    case LLKTokenType.A2:
+                    case LLKTokenType.A3:
+                    case LLKTokenType.A4:
+                    case LLKTokenType.A5:
+                        numTokens[GameTheme.Ava]++;
+                        break;
+                    case LLKTokenType.B1:
+                    case LLKTokenType.B2:
+                    case LLKTokenType.B3:
+                    case LLKTokenType.B4:
+                    case LLKTokenType.B5:
+                        numTokens[GameTheme.Bella]++;
+                        break;
+                    case LLKTokenType.C1:
+                    case LLKTokenType.C2:
+                    case LLKTokenType.C3:
+                    case LLKTokenType.C4:
+                    case LLKTokenType.C5:
+                        numTokens[GameTheme.Carol]++;
+                        break;
+                    case LLKTokenType.D1:
+                    case LLKTokenType.D2:
+                    case LLKTokenType.D3:
+                    case LLKTokenType.D4:
+                    case LLKTokenType.D5:
+                        numTokens[GameTheme.Diana]++;
+                        break;
+                    case LLKTokenType.E1:
+                    case LLKTokenType.E2:
+                    case LLKTokenType.E3:
+                    case LLKTokenType.E4:
+                    case LLKTokenType.E5:
+                        numTokens[GameTheme.Eileen]++;
+                        break;
+                }
+            }
+
+            var targetTheme = GameTheme.None;
+            foreach (var item in numTokens) {
+                if (numTokens[targetTheme] < item.Value) {
+                    targetTheme = item.Key;
+                }
+            }
+
+            GameTheme = targetTheme;
+        }
+
         ///// <summary>
         ///// 计算两点距离
         ///// </summary>

@@ -11,32 +11,42 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Images\1.png" />
-    <None Remove="Resources\Images\10.png" />
-    <None Remove="Resources\Images\11.png" />
-    <None Remove="Resources\Images\12.png" />
-    <None Remove="Resources\Images\13.png" />
-    <None Remove="Resources\Images\14.png" />
-    <None Remove="Resources\Images\15.png" />
-    <None Remove="Resources\Images\16.png" />
-    <None Remove="Resources\Images\17.png" />
-    <None Remove="Resources\Images\18.png" />
-    <None Remove="Resources\Images\19.png" />
-    <None Remove="Resources\Images\2.png" />
-    <None Remove="Resources\Images\20.png" />
-    <None Remove="Resources\Images\21.png" />
-    <None Remove="Resources\Images\22.png" />
-    <None Remove="Resources\Images\23.png" />
-    <None Remove="Resources\Images\24.png" />
-    <None Remove="Resources\Images\25.png" />
-    <None Remove="Resources\Images\26.png" />
-    <None Remove="Resources\Images\3.png" />
-    <None Remove="Resources\Images\4.png" />
-    <None Remove="Resources\Images\5.png" />
-    <None Remove="Resources\Images\6.png" />
-    <None Remove="Resources\Images\7.png" />
-    <None Remove="Resources\Images\8.png" />
-    <None Remove="Resources\Images\9.png" />
+    <None Remove="Resources\Images\A1.png" />
+    <None Remove="Resources\Images\A2.png" />
+    <None Remove="Resources\Images\A3.png" />
+    <None Remove="Resources\Images\A4.png" />
+    <None Remove="Resources\Images\A5.png" />
+    <None Remove="Resources\Images\AS.png" />
+    <None Remove="Resources\Images\AVA_SKILL.png" />
+    <None Remove="Resources\Images\B1.png" />
+    <None Remove="Resources\Images\B2.png" />
+    <None Remove="Resources\Images\B3.png" />
+    <None Remove="Resources\Images\B4.png" />
+    <None Remove="Resources\Images\B5.png" />
+    <None Remove="Resources\Images\BACKGROUND.png" />
+    <None Remove="Resources\Images\BELLA_SKILL.png" />
+    <None Remove="Resources\Images\C1.png" />
+    <None Remove="Resources\Images\C2.png" />
+    <None Remove="Resources\Images\C3.png" />
+    <None Remove="Resources\Images\C4.png" />
+    <None Remove="Resources\Images\C5.png" />
+    <None Remove="Resources\Images\CAROL_SKILL.png" />
+    <None Remove="Resources\Images\D1.png" />
+    <None Remove="Resources\Images\D2.png" />
+    <None Remove="Resources\Images\D3.png" />
+    <None Remove="Resources\Images\D4.png" />
+    <None Remove="Resources\Images\D5.png" />
+    <None Remove="Resources\Images\DIANA_SKILL.png" />
+    <None Remove="Resources\Images\E1.png" />
+    <None Remove="Resources\Images\E2.png" />
+    <None Remove="Resources\Images\E3.png" />
+    <None Remove="Resources\Images\E4.png" />
+    <None Remove="Resources\Images\E5.png" />
+    <None Remove="Resources\Images\EILEEN_SKILL.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\BACKGROUND.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,32 +54,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Images\1.png" />
-    <Resource Include="Resources\Images\10.png" />
-    <Resource Include="Resources\Images\11.png" />
-    <Resource Include="Resources\Images\12.png" />
-    <Resource Include="Resources\Images\13.png" />
-    <Resource Include="Resources\Images\14.png" />
-    <Resource Include="Resources\Images\15.png" />
-    <Resource Include="Resources\Images\16.png" />
-    <Resource Include="Resources\Images\17.png" />
-    <Resource Include="Resources\Images\18.png" />
-    <Resource Include="Resources\Images\19.png" />
-    <Resource Include="Resources\Images\2.png" />
-    <Resource Include="Resources\Images\20.png" />
-    <Resource Include="Resources\Images\21.png" />
-    <Resource Include="Resources\Images\22.png" />
-    <Resource Include="Resources\Images\23.png" />
-    <Resource Include="Resources\Images\24.png" />
-    <Resource Include="Resources\Images\25.png" />
-    <Resource Include="Resources\Images\26.png" />
-    <Resource Include="Resources\Images\3.png" />
-    <Resource Include="Resources\Images\4.png" />
-    <Resource Include="Resources\Images\5.png" />
-    <Resource Include="Resources\Images\6.png" />
-    <Resource Include="Resources\Images\7.png" />
-    <Resource Include="Resources\Images\8.png" />
-    <Resource Include="Resources\Images\9.png" />
+    <Resource Include="Resources\Images\A1.png" />
+    <Resource Include="Resources\Images\A2.png" />
+    <Resource Include="Resources\Images\A3.png" />
+    <Resource Include="Resources\Images\A4.png" />
+    <Resource Include="Resources\Images\A5.png" />
+    <Resource Include="Resources\Images\AS.png" />
+    <Resource Include="Resources\Images\AVA_SKILL.png" />
+    <Resource Include="Resources\Images\B1.png" />
+    <Resource Include="Resources\Images\B2.png" />
+    <Resource Include="Resources\Images\B3.png" />
+    <Resource Include="Resources\Images\B4.png" />
+    <Resource Include="Resources\Images\B5.png" />
+    <Resource Include="Resources\Images\BELLA_SKILL.png" />
+    <Resource Include="Resources\Images\C1.png" />
+    <Resource Include="Resources\Images\C2.png" />
+    <Resource Include="Resources\Images\C3.png" />
+    <Resource Include="Resources\Images\C4.png" />
+    <Resource Include="Resources\Images\C5.png" />
+    <Resource Include="Resources\Images\CAROL_SKILL.png" />
+    <Resource Include="Resources\Images\D1.png" />
+    <Resource Include="Resources\Images\D2.png" />
+    <Resource Include="Resources\Images\D3.png" />
+    <Resource Include="Resources\Images\D4.png" />
+    <Resource Include="Resources\Images\D5.png" />
+    <Resource Include="Resources\Images\DIANA_SKILL.png" />
+    <Resource Include="Resources\Images\E1.png" />
+    <Resource Include="Resources\Images\E2.png" />
+    <Resource Include="Resources\Images\E3.png" />
+    <Resource Include="Resources\Images\E4.png" />
+    <Resource Include="Resources\Images\E5.png" />
+    <Resource Include="Resources\Images\EILEEN_SKILL.png" />
   </ItemGroup>
 
 </Project>

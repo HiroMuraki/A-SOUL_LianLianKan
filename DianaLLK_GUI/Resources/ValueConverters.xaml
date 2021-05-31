@@ -3,4 +3,5 @@
                     xmlns:ValueConverter="clr-namespace:DianaLLK_GUI.ViewModel.ValueConverter">
     <ValueConverter:LLKTokenTypeToImage x:Key="LLKTokenTypeToImage"/>
     <ValueConverter:LLKTokenTypeToColorFrame x:Key="LLKTokenTypeToColorFrame"/>
+    <ValueConverter:GameThemeToColor x:Key="GameThemeToColor"/>
 </ResourceDictionary>
