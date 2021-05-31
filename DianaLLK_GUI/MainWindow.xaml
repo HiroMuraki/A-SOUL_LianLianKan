@@ -1,0 +1,144 @@
+﻿<Window x:Class="DianaLLK_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DianaLLK_GUI"
+        xmlns:ViewModel="clr-namespace:DianaLLK_GUI.ViewModel"
+        xmlns:View="clr-namespace:DianaLLK_GUI.View"
+        mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
+    <WindowChrome.WindowChrome>
+        <WindowChrome UseAeroCaptionButtons="False" CaptionHeight="0" ResizeBorderThickness="2"/>
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <Style x:Key="TitleButtonStyle" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource AccentTheme}" />
+                                <Setter Property="Background" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="StartButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{StaticResource AccentTheme}" />
+            <Setter Property="Background" Value="{StaticResource DianaTheme}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="20">
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="{StaticResource AccentTheme}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="GridRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{StaticResource AccentTheme}" 
+                MouseDown="Window_Move">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="=" Click="ExpandGameSetter_Click"
+                        ToolTip="设置" Style="{StaticResource TitleButtonStyle}"/>
+                <Button Grid.Column="2" Content="&#x2501;" Click="Window_Minimum" Style="{StaticResource TitleButtonStyle}"/>
+                <Button Grid.Column="3" Content="&#x2610;" Click="Window_Maximum" Style="{StaticResource TitleButtonStyle}"/>
+                <Button Grid.Column="4" Content="&#x2573;" Click="Window_Close" Style="{StaticResource TitleButtonStyle}"/>
+            </Grid>
+        </Grid>
+        <Grid x:Name="GameArea" Grid.Row="1" Background="{StaticResource DianaTheme}">
+            <Viewbox Grid.Row="1" Grid.Column="1">
+                <Grid Margin="15">
+                    <ItemsControl ItemsSource="{Binding Game.LLKTokenArray}" BorderBrush="White" BorderThickness="1">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <View:LLKTokenRound TokenType="{Binding TokenType}" Tag="{Binding}"
+                                                    FontSize="20" Click="LLKToken_Click" 
+                                                    IsSelected="{Binding IsSelected,Mode=OneWay}">
+                                </View:LLKTokenRound>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}">
+
+                                </UniformGrid>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                    <Canvas Grid.RowSpan="2" Grid.ColumnSpan="2" x:Name="GamePlayAreaCanvas"/>
+                </Grid>
+            </Viewbox>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="GameSetterPanel" Height="0" Background="{StaticResource AccentTheme}" VerticalAlignment="Top">
+            <Grid Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Ellipse Width="200" Height="200" StrokeThickness="5" Stretch="Uniform"
+                         Stroke="Gold" Fill="{Binding GameSetter.CurrentAvatar,Converter={StaticResource LLKTokenTypeToImage}}">
+                </Ellipse>
+                <Grid Grid.Row="1" Margin="0,30,0,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Width="30" Foreground="White" FontSize="14" Content="{Binding GameSetter.RowSize}"/>
+                    <Slider Grid.Row="0" Grid.Column="1" ToolTip="行数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.RowSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+                    <Label Grid.Row="1" Grid.Column="0" Width="30" Foreground="White" FontSize="14" Content="{Binding GameSetter.ColumnSize}"/>
+                    <Slider Grid.Row="1" Grid.Column="1" ToolTip="列数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.ColumnSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+                    <Label Grid.Row="2" Grid.Column="0" Width="30" Foreground="White" FontSize="14" Content="{Binding GameSetter.TokenAmount}"/>
+                    <Slider Grid.Row="2" Grid.Column="1" ToolTip="最多不同草莓数" Minimum="{Binding GameSetter.MinTokenAmount}" Maximum="{Binding GameSetter.MaxTokenAmount}" Value="{Binding GameSetter.TokenAmount}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+                </Grid>
+                <Button Grid.Row="2" Content="S T A R T" Width="200" Height="40" Style="{StaticResource StartButtonStyle}" Click="StartGame_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

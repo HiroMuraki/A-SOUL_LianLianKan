@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DianaLLK_GUI", "DianaLLK_GUI\DianaLLK_GUI.csproj", "{FEFF02FE-4663-4A9A-82CB-B29D5E1A3234}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LianLianKan", "LianLianKan\LianLianKan.csproj", "{10B8E4AC-7CA7-4508-8C87-B5BDEC734ED7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEFF02FE-4663-4A9A-82CB-B29D5E1A3234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEFF02FE-4663-4A9A-82CB-B29D5E1A3234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEFF02FE-4663-4A9A-82CB-B29D5E1A3234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEFF02FE-4663-4A9A-82CB-B29D5E1A3234}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B8E4AC-7CA7-4508-8C87-B5BDEC734ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B8E4AC-7CA7-4508-8C87-B5BDEC734ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B8E4AC-7CA7-4508-8C87-B5BDEC734ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B8E4AC-7CA7-4508-8C87-B5BDEC734ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF4B5DEA-B5C1-46C8-8601-6A738F730F99}
+	EndGlobalSection
+EndGlobal
