@@ -16,8 +16,7 @@ namespace DianaLLK_GUI {
     public partial class MainWindow : Window {
         private readonly LLKGame _game;
         private readonly GameSetter _gameSetter;
-        private long _gameUsingTime;
-        private DispatcherTimer _gameTimer;
+        private DateTime _startTime;
         // private Point _hitPos;
         // private Line _directionLine;
 
@@ -43,10 +42,10 @@ namespace DianaLLK_GUI {
         }
         public MainWindow() {
             // 初始化计时器
-            _gameTimer = new DispatcherTimer() {
-                Interval = TimeSpan.FromMilliseconds(50)
-            };
-            _gameTimer.Tick += GameTimer_Tick;
+            //_gameTimer = new DispatcherTimer() {
+            //    Interval = TimeSpan.FromMilliseconds(50)
+            //};
+            //_gameTimer.Tick += GameTimer_Tick;
             //// 初始化方向线
             //_directionLine = new Line {
             //    StrokeThickness = 5,
@@ -75,8 +74,18 @@ namespace DianaLLK_GUI {
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
             await _game.ActiveSkillAsync(e.SKill);
         }
+        private void StartGame_Click(object sender, RoutedEventArgs e) {
+            try {
+                StartGame();
+                GetGameTheme();
+                FoldGameSetterPanel();
+                _startTime = DateTime.Now;
+            }
+            catch (Exception exp) {
+                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
         private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
-            _gameTimer.Stop();
             // 模糊背景
             //BlurEffect effect = new BlurEffect();
             //DoubleAnimation effectAnimation = new DoubleAnimation() {
@@ -88,30 +97,14 @@ namespace DianaLLK_GUI {
             //GameArea.Effect = effect;
             //effect.BeginAnimation(BlurEffect.RadiusProperty, effectAnimation);
             // 弹出统计窗口
-            var gameUsingTime = _gameUsingTime / 1000.0;
-            var totalScores = e.TotalScores;
+            var gameUsingTime = (DateTime.Now - _startTime).TotalMilliseconds / 1000.0;
+            var totalScores = (int)(e.TotalScores / Math.Log(gameUsingTime));
             View.GameCompletedWindow gcw = new View.GameCompletedWindow(e, gameUsingTime, 0, totalScores);
             gcw.Owner = this;
             gcw.ShowDialog();
             // 取消模糊背景
             //GameArea.Effect = null;
             ExpandGameSetterPanel();
-        }
-        private void GameTimer_Tick(object sender, EventArgs e) {
-            _gameUsingTime += 50;
-        }
-
-        private void StartGame_Click(object sender, RoutedEventArgs e) {
-            try {
-                StartGame();
-                GetGameTheme();
-                FoldGameSetterPanel();
-                _gameUsingTime = 0;
-                _gameTimer.Start();
-            }
-            catch (Exception exp) {
-                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
         }
         private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
             if (GameSetterPanel.Height != 0) {

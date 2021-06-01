@@ -11,14 +11,14 @@
     </WindowChrome.WindowChrome>
     <Window.Resources>
         <Style x:Key="InfTitleLabelStyle" TargetType="Label">
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{StaticResource TextTheme}" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
-        <Style x:Key="InfLabelStyle" TargetType="Label">
-            <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style x:Key="InfTextStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{StaticResource TextTheme}" />
             <Setter Property="FontSize" Value="18" />
             <Setter Property="FontWeight" Value="Bold"/>
@@ -52,15 +52,15 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="完成用时(秒)：" Style="{StaticResource InfTitleLabelStyle}"/>
-                <Label Grid.Row="0" Grid.Column="1" Content="{Binding GameUsingTime}" Style="{StaticResource InfLabelStyle}"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding GameUsingTime,StringFormat={}{0:F2}}" Style="{StaticResource InfTextStyle}"/>
                 <Label Grid.Row="1" Grid.Column="0" Content="草莓类型(种)：" Style="{StaticResource InfTitleLabelStyle}"/>
-                <Label Grid.Row="1" Grid.Column="1" Content="{Binding TokenAmount}" Style="{StaticResource InfLabelStyle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TokenAmount}" Style="{StaticResource InfTextStyle}"/>
                 <Label Grid.Row="2" Grid.Column="0" Content="尺寸(行x列)：" Style="{StaticResource InfTitleLabelStyle}"/>
-                <Label Grid.Row="2" Grid.Column="1" Content="{Binding GameSize}" Style="{StaticResource InfLabelStyle}"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding GameSize}" Style="{StaticResource InfTextStyle}"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="技能使用(次)：" Style="{StaticResource InfTitleLabelStyle}"/>
-                <Label Grid.Row="3" Grid.Column="1" Content="{Binding SkillActivedTimes}" Style="{StaticResource InfLabelStyle}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SkillActivedTimes}" Style="{StaticResource InfTextStyle}"/>
                 <Label Grid.Row="4" Grid.Column="0" Content="总分：" Style="{StaticResource InfTitleLabelStyle}"/>
-                <Label Grid.Row="4" Grid.Column="1" Content="{Binding TotalScores}" Style="{StaticResource InfLabelStyle}"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding TotalScores}" Style="{StaticResource InfTextStyle}"/>
             </Grid>
         </Grid>
         <Button Grid.Row="2" Content="确定" Height="50" Click="Window_Close">
