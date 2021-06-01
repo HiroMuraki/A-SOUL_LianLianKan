@@ -213,7 +213,7 @@ namespace LianLianKan {
         private int GetTotalScores() {
             int result = 0;
             result = _rowSize * _columnSize * _currentTokenTypes.Count;
-            double skillPointMultiper = Math.Log2(_skillPoint);
+            double skillPointMultiper = Math.Ceiling(Math.Log2(_skillPoint));
             if (skillPointMultiper > 1) {
                 result = (int)(result * skillPointMultiper);
             }

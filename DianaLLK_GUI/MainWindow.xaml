@@ -65,44 +65,46 @@
     <Grid x:Name="GridRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="1"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" MouseDown="Window_Move">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="50"/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="=" Click="ExpandGameSetter_Click" ToolTip="设置" Style="{StaticResource TitleButtonStyle}"/>
-                <Label Grid.Column="1" Content="{Binding Game.SkillPoint}" FontSize="18" Foreground="{StaticResource TextTheme}" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="=" Click="ExpandGameSetter_Click" ToolTip="设置" Style="{StaticResource TitleButtonStyle}"/>
+            <Label Grid.Column="1" Content="{Binding Game.SkillPoint}" FontSize="18" Foreground="{StaticResource TextTheme}" 
                        VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                <Grid Grid.Column="2" HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <View:SButton Grid.Column="0" Skill="AvaPower" ToolTip="AVAVA! [3]" SClick="ActiveSkill_Click"/>
-                    <View:SButton Grid.Column="1" Skill="BellaPower" ToolTip="击穿月球! [2]" SClick="ActiveSkill_Click"/>
-                    <View:SButton Grid.Column="2" Skill="CarolPower" ToolTip="R I S E [1]" SClick="ActiveSkill_Click"/>
-                    <View:SButton Grid.Column="3" Skill="DianaPower" ToolTip="多态小草莓 [1]" SClick="ActiveSkill_Click"/>
-                    <View:SButton Grid.Column="4" Skill="EileenPower" ToolTip="团队粘合 [2]" SClick="ActiveSkill_Click"/>
-                </Grid>
-                <Button Grid.Column="3" Content="&#x2501;" Click="Window_Minimum" Style="{StaticResource TitleButtonStyle}"/>
-                <Button Grid.Column="4" Content="&#x2610;" Click="Window_Maximum" Style="{StaticResource TitleButtonStyle}"/>
-                <Button Grid.Column="5" Content="&#x2573;" Click="Window_Close" Style="{StaticResource TitleButtonStyle}"/>
+            <Grid Grid.Column="2" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <View:SButton Grid.Column="0" Skill="AvaPower" ToolTip="AVAVA! [3]" SClick="ActiveSkill_Click"/>
+                <View:SButton Grid.Column="1" Skill="BellaPower" ToolTip="击穿月球! [2]" SClick="ActiveSkill_Click"/>
+                <View:SButton Grid.Column="2" Skill="CarolPower" ToolTip="R I S E [1]" SClick="ActiveSkill_Click"/>
+                <View:SButton Grid.Column="3" Skill="DianaPower" ToolTip="多态小草莓 [1]" SClick="ActiveSkill_Click"/>
+                <View:SButton Grid.Column="4" Skill="EileenPower" ToolTip="团队粘合 [2]" SClick="ActiveSkill_Click"/>
             </Grid>
+            <Button Grid.Column="3" Content="&#x2501;" Click="Window_Minimum" Style="{StaticResource TitleButtonStyle}"/>
+            <Button Grid.Column="4" Content="&#x2610;" Click="Window_Maximum" Style="{StaticResource TitleButtonStyle}"/>
+            <Button Grid.Column="5" Content="&#x2573;" Click="Window_Close" Style="{StaticResource TitleButtonStyle}"/>
         </Grid>
-        <Grid x:Name="GameArea" Grid.Row="1" Background="{StaticResource BACKGROUND}">
+        <Border Grid.Row="1" Background="{StaticResource TextTheme}"/>
+        <Grid Grid.Row="2" x:Name="GameArea">
+            <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Viewbox Grid.Row="1" Grid.Column="1">
                 <Grid Margin="15">
-                    <ItemsControl ItemsSource="{Binding Game.LLKTokenArray}" BorderBrush="{StaticResource TextTheme}" BorderThickness="1">
+                    <Border BorderBrush="{StaticResource TextTheme}" BorderThickness="1" CornerRadius="10"/>
+                    <ItemsControl ItemsSource="{Binding Game.LLKTokenArray}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <View:LLKTokenRound TokenType="{Binding TokenType}" Tag="{Binding}"
@@ -122,7 +124,7 @@
                 </Grid>
             </Viewbox>
         </Grid>
-        <Grid Grid.Row="1" x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top"
+        <Grid Grid.Row="2" x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top"
               Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}">
             <Grid Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
