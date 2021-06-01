@@ -1,8 +1,8 @@
 ﻿// using MergeDiana.GameLib;
+using LianLianKan;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using LianLianKan;
 
 namespace DianaLLK_GUI.View {
     public class SButton : Button {

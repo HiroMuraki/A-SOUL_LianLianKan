@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DianaLLK_GUI.ViewModel;
+using System;
 using System.Windows;
-using DianaLLK_GUI.ViewModel;
 
 namespace DianaLLK_GUI {
     /// <summary>

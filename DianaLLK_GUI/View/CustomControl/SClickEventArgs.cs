@@ -1,6 +1,6 @@
 ﻿// using MergeDiana.GameLib;
-using System;
 using LianLianKan;
+using System;
 
 namespace DianaLLK_GUI {
     public class SClickEventArgs : EventArgs {

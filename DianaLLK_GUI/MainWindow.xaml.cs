@@ -6,8 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Effects;
-using System.Windows.Threading;
 
 namespace DianaLLK_GUI {
     /// <summary>
