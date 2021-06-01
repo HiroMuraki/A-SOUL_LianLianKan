@@ -95,7 +95,7 @@ namespace DianaLLK_GUI {
             gcw.ShowDialog();
             // 取消模糊背景
             //GameArea.Effect = null;
-            //ExpandGameSetterPanel();
+            ExpandGameSetterPanel();
         }
         private void GameTimer_Tick(object sender, EventArgs e) {
             _gameUsingTime += 50;

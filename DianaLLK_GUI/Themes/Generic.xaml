@@ -17,7 +17,7 @@
                     <Viewbox>
                         <Grid>
                             <Border x:Name="Highlighter" Margin="5" Opacity="0.65" Background="{TemplateBinding Background}" CornerRadius="15"/>
-                            <Ellipse x:Name="FakeShadow" Width="100" Height="100" Margin="2,2,0,0" Fill="Black" Opacity="0.50"/>
+                            <Ellipse x:Name="FakeShadow" Width="100" Height="100" Margin="2,3,0,0" Fill="Black" Opacity="0.60"/>
                             <Ellipse x:Name="Content" Margin="15" Width="100" Height="100" StrokeThickness="3" Stretch="Uniform"
                                      Stroke="{TemplateBinding TokenType,Converter={StaticResource LLKTokenTypeToColorFrame}}" 
                                      Fill="{TemplateBinding TokenType,Converter={StaticResource LLKTokenTypeToImage}}" />

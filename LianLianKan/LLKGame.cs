@@ -98,11 +98,46 @@ namespace LianLianKan {
         public async Task SelectTokenAsync(LLKToken token) {
             await Task.Run(() => {
                 lock (_processLocker) {
-                    SelectToken(token);
+                    SelectTokenCore(token);
                 }
             });
+            if (IsGameCompleted()) {
+                int scores = GetTotalScores();
+                GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+            }
         }
         public void SelectToken(LLKToken token) {
+            SelectTokenCore(token);
+            if (IsGameCompleted()) {
+                int scores = GetTotalScores();
+                GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+            }
+        }
+        public async Task ActiveSkillAsync(LLKSkill skill) {
+            await Task.Run(() => {
+                lock (_skillLocker) {
+                    ActiveSkill(skill);
+                }
+            });
+            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
+        }
+        public void ActiveSkill(LLKSkill skill) {
+            ActiveSkillCore(skill);
+            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
+        }
+        public override string ToString() {
+            StringBuilder sb = new StringBuilder();
+            for (int row = 0; row < _rowSize; row++) {
+                for (int col = 0; col < _columnSize; col++) {
+                    sb.Append($"{_gameLayout[row, col]} ");
+                }
+                sb.Append('\n');
+            }
+            return sb.ToString();
+        }
+        #endregion
+
+        private void SelectTokenCore(LLKToken token) {
             if (token.TokenType == LLKTokenType.None) {
                 if (_heldToken != null) {
                     _heldToken.IsSelected = false;
@@ -153,23 +188,12 @@ namespace LianLianKan {
                         MatchTokensHelper(_heldToken, token);
                     }
                 }
-                if (IsGameCompleted()) {
-                    int scores = GetTotalScores();
-                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
-                }
                 _heldToken.IsSelected = false;
-                _heldToken = null;
                 token.IsSelected = false;
+                _heldToken = null;
             }
         }
-        public async Task ActiveSkillAsync(LLKSkill skill) {
-            await Task.Run(() => {
-                lock (_skillLocker) {
-                    ActiveSkill(skill);
-                }
-            });
-        }
-        public void ActiveSkill(LLKSkill skill) {
+        private void ActiveSkillCore(LLKSkill skill) {
             if (_skillPoint <= 0) {
                 SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
@@ -196,20 +220,7 @@ namespace LianLianKan {
                     break;
             }
             OnPropertyChanged(nameof(SkillPoint));
-            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
         }
-        public override string ToString() {
-            StringBuilder sb = new StringBuilder();
-            for (int row = 0; row < _rowSize; row++) {
-                for (int col = 0; col < _columnSize; col++) {
-                    sb.Append($"{_gameLayout[row, col]} ");
-                }
-                sb.Append('\n');
-            }
-            return sb.ToString();
-        }
-        #endregion
-
         private void MatchTokensHelper(LLKToken a, LLKToken b) {
             Coordinate aPos = a.Coordinate;
             Coordinate bPos = b.Coordinate;
