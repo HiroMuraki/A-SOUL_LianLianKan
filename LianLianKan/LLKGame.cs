@@ -16,6 +16,7 @@ namespace LianLianKan {
         private int _columnSize;
         private int _skillPoint;
         private object _processLocker;
+        private object _skillLocker;
         private bool _bellaPowerOn;
         private bool _eileenPowerOn;
 
@@ -64,6 +65,7 @@ namespace LianLianKan {
             _gameLayout = new LLKToken[0, 0];
             _heldToken = null;
             _processLocker = new object();
+            _skillLocker = new object();
         }
         public LLKGame(string testLayoutString) {
             _gameLayout = new LLKToken[_rowSize, _columnSize];
@@ -93,7 +95,7 @@ namespace LianLianKan {
             OnPropertyChanged(nameof(LLKTokenArray));
             OnPropertyChanged(nameof(SkillPoint));
         }
-        public async void SelectTokenAsync(LLKToken token) {
+        public async Task SelectTokenAsync(LLKToken token) {
             await Task.Run(() => {
                 lock (_processLocker) {
                     SelectToken(token);
@@ -159,6 +161,13 @@ namespace LianLianKan {
                 _heldToken = null;
                 token.IsSelected = false;
             }
+        }
+        public async Task ActiveSkillAsync(LLKSkill skill) {
+            await Task.Run(() => {
+                lock (_skillLocker) {
+                    ActiveSkill(skill);
+                }
+            });
         }
         public void ActiveSkill(LLKSkill skill) {
             if (_skillPoint <= 0) {

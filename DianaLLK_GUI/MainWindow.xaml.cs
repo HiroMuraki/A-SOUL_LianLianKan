@@ -68,12 +68,12 @@ namespace DianaLLK_GUI {
             // GamePlayAreaCanvas.Children.Add(_directionLine);
         }
 
-        private void LLKToken_Click(object sender, RoutedEventArgs e) {
+        private async void LLKToken_Click(object sender, RoutedEventArgs e) {
             LLKToken token = (LLKToken)(sender as FrameworkElement).Tag;
-            _game.SelectTokenAsync(token);
+            await _game.SelectTokenAsync(token);
         }
-        private void ActiveSkill_Click(object sender, SClickEventArgs e) {
-            _game.ActiveSkill(e.SKill);
+        private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
+            await _game.ActiveSkillAsync(e.SKill);
         }
         private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
             _gameTimer.Stop();
