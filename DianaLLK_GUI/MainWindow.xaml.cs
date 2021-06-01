@@ -56,11 +56,7 @@ namespace DianaLLK_GUI {
             //    Visibility = Visibility.Hidden
             //};
             // 初始化游戏设置器
-            _gameSetter = new GameSetter() {
-                RowSize = 6,
-                ColumnSize = 10,
-                TokenAmount = 15
-            };
+            _gameSetter = GameSetter.GetInstance();
             // 初始化游戏
             _game = new LLKGame();
             _game.GameCompleted += Game_GameCompleted;

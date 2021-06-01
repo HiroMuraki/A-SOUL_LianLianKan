@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace DianaLLK_GUI.ViewModel {
     public class GameSetter : INotifyPropertyChanged {
+        private static GameSetter _singletonObject;
         private static readonly Array _gameThemeList;
         private static readonly int _minSize;
         private static readonly int _maxSize;
@@ -19,6 +20,9 @@ namespace DianaLLK_GUI.ViewModel {
                 return _rowSize;
             }
             set {
+                if (value < _minSize || value > _maxSize) {
+                    return;
+                }
                 _rowSize = value;
                 OnPropertyChanged(nameof(RowSize));
             }
@@ -29,6 +33,9 @@ namespace DianaLLK_GUI.ViewModel {
             }
             set {
                 _columnSize = value;
+                if (value < _minSize || value > _maxSize) {
+                    return;
+                }
                 OnPropertyChanged(nameof(ColumnSize));
             }
         }
@@ -37,6 +44,9 @@ namespace DianaLLK_GUI.ViewModel {
                 return _tokenAmount;
             }
             set {
+                if (value < _minTokenAmount) {
+                    return;
+                }
                 _tokenAmount = value;
                 OnPropertyChanged(nameof(TokenAmount));
             }
@@ -69,12 +79,19 @@ namespace DianaLLK_GUI.ViewModel {
 
         static GameSetter() {
             _gameThemeList = Enum.GetValues(typeof(GameTheme));
+            _singletonObject = new GameSetter();
             _minSize = 6;
             _maxSize = 18;
-            _minTokenAmount = 4;
+            _minTokenAmount = 6;
         }
-        public GameSetter() {
+        private GameSetter() {
 
+        }
+        public static GameSetter GetInstance() {
+            if (_singletonObject == null) {
+                _singletonObject = new GameSetter();
+            }
+            return _singletonObject;
         }
 
         public static LLKTokenType GetRandomTokenType() {
