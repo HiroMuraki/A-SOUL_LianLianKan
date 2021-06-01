@@ -61,24 +61,35 @@
                         <!-- TickBar shows the ticks for Slider -->
                         <TickBar Grid.Row="0" Visibility="Collapsed" x:Name="TopTick"
                                     SnapsToDevicePixels="True" Placement="Top" Fill="{TemplateBinding Foreground}"/>
-                        <Border Grid.Row="1" Margin="0" x:Name="Border" CornerRadius="5" 
+                        <TickBar Visibility="Collapsed" Grid.Row="2" x:Name="BottomTick"
+                                 SnapsToDevicePixels="True" Placement="Bottom" Fill="{TemplateBinding Foreground}"/>
+
+                        <Grid Grid.Row="1" Margin="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" BorderBrush="{StaticResource TextTheme}" BorderThickness="2,2,0,2"
+                                    CornerRadius="5,0,0,5">
+                                <Label Content="{TemplateBinding Value}" FontWeight="Bold" Foreground="{StaticResource TextTheme}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                            <Border Grid.Column="1" Margin="0" x:Name="Border" CornerRadius="0,5,5,0" 
                                     Background="{TemplateBinding Background}" 
                                     BorderBrush="{TemplateBinding BorderBrush}" 
                                     BorderThickness="{TemplateBinding BorderThickness}"/>
-                        <TickBar Visibility="Collapsed" Grid.Row="2" x:Name="BottomTick"
-                                 SnapsToDevicePixels="True" Placement="Bottom" Fill="{TemplateBinding Foreground}"/>
-                        <!-- The Track lays out the repeat buttons and thumb -->
-                        <Track Grid.Row="1" x:Name="PART_Track" Margin="0">
-                            <Track.IncreaseRepeatButton>
-                                <RepeatButton Style="{StaticResource GeneralSliderRepeatButton}" Command="Slider.IncreaseLarge"/>
-                            </Track.IncreaseRepeatButton>
-                            <Track.Thumb>
-                                <Thumb Style="{StaticResource GeneralSliderThumb}" Margin="1"/>
-                            </Track.Thumb>
-                            <Track.DecreaseRepeatButton>
-                                <RepeatButton Style="{StaticResource GeneralSliderRepeatButton}" Command="Slider.DecreaseLarge"/>
-                            </Track.DecreaseRepeatButton>
-                        </Track>
+                            <!-- The Track lays out the repeat buttons and thumb -->
+                            <Track Grid.Column="1" x:Name="PART_Track" Margin="0">
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource GeneralSliderRepeatButton}" Command="Slider.IncreaseLarge"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource GeneralSliderThumb}"/>
+                                </Track.Thumb>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource GeneralSliderRepeatButton}" Command="Slider.DecreaseLarge"/>
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
 
                     </Grid>
                     <ControlTemplate.Triggers>

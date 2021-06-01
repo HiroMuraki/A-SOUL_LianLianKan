@@ -141,16 +141,8 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Width="30" Foreground="{StaticResource TextTheme}" FontSize="14" Content="{Binding GameSetter.RowSize}"/>
                     <Slider Grid.Row="0" Grid.Column="1" ToolTip="行数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.RowSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
-                    <Label Grid.Row="1" Grid.Column="0" Width="30" Foreground="{StaticResource TextTheme}" FontSize="14" Content="{Binding GameSetter.ColumnSize}"/>
                     <Slider Grid.Row="1" Grid.Column="1" ToolTip="列数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.ColumnSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
-                    <Label Grid.Row="2" Grid.Column="0" Width="30" Foreground="{StaticResource TextTheme}" FontSize="14" Content="{Binding GameSetter.TokenAmount}"/>
                     <Slider Grid.Row="2" Grid.Column="1" ToolTip="最多不同草莓数" Minimum="{Binding GameSetter.MinTokenAmount}" Maximum="{Binding GameSetter.MaxTokenAmount}" Value="{Binding GameSetter.TokenAmount}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
                 </Grid>
                 <Button Grid.Row="2" Content="S T A R T" Width="200" Height="40" Style="{StaticResource StartButtonStyle}" Click="StartGame_Click"/>
