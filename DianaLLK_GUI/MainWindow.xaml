@@ -92,7 +92,7 @@
                     <View:SButton Grid.Column="1" Skill="BellaPower" ToolTip="击穿月球! [2]" SClick="ActiveSkill_Click"/>
                     <View:SButton Grid.Column="2" Skill="CarolPower" ToolTip="R I S E [1]" SClick="ActiveSkill_Click"/>
                     <View:SButton Grid.Column="3" Skill="DianaPower" ToolTip="多态小草莓 [1]" SClick="ActiveSkill_Click"/>
-                    <View:SButton Grid.Column="4" Skill="EileenPower" ToolTip="团队粘合 [4]" SClick="ActiveSkill_Click"/>
+                    <View:SButton Grid.Column="4" Skill="EileenPower" ToolTip="团队粘合 [2]" SClick="ActiveSkill_Click"/>
                 </Grid>
                 <Button Grid.Column="3" Content="&#x2501;" Click="Window_Minimum" Style="{StaticResource TitleButtonStyle}"/>
                 <Button Grid.Column="4" Content="&#x2610;" Click="Window_Maximum" Style="{StaticResource TitleButtonStyle}"/>
