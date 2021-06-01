@@ -70,9 +70,7 @@ namespace DianaLLK_GUI {
 
         private void LLKToken_Click(object sender, RoutedEventArgs e) {
             LLKToken token = (LLKToken)(sender as FrameworkElement).Tag;
-            //await Task.Run(() => {
-            _game.SelectToken(token);
-            //});
+            _game.SelectTokenAsync(token);
         }
         private void ActiveSkill_Click(object sender, SClickEventArgs e) {
             _game.ActiveSkill(e.SKill);
@@ -80,15 +78,15 @@ namespace DianaLLK_GUI {
         private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
             _gameTimer.Stop();
             // 模糊背景
-            BlurEffect effect = new BlurEffect();
-            DoubleAnimation effectAnimation = new DoubleAnimation() {
-                To = 15,
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
-            GameArea.Effect = effect;
-            effect.BeginAnimation(BlurEffect.RadiusProperty, effectAnimation);
+            //BlurEffect effect = new BlurEffect();
+            //DoubleAnimation effectAnimation = new DoubleAnimation() {
+            //    To = 15,
+            //    AccelerationRatio = 0.2,
+            //    DecelerationRatio = 0.8,
+            //    Duration = TimeSpan.FromMilliseconds(150)
+            //};
+            //GameArea.Effect = effect;
+            //effect.BeginAnimation(BlurEffect.RadiusProperty, effectAnimation);
             // 弹出统计窗口
             var gameUsingTime = _gameUsingTime / 1000.0;
             var totalScores = e.TotalScores;
@@ -96,8 +94,8 @@ namespace DianaLLK_GUI {
             gcw.Owner = this;
             gcw.ShowDialog();
             // 取消模糊背景
-            GameArea.Effect = null;
-            ExpandGameSetterPanel();
+            //GameArea.Effect = null;
+            //ExpandGameSetterPanel();
         }
         private void GameTimer_Tick(object sender, EventArgs e) {
             _gameUsingTime += 50;
