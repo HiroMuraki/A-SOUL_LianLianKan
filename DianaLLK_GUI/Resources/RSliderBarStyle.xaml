@@ -78,7 +78,7 @@
                                     BorderBrush="{TemplateBinding BorderBrush}" 
                                     BorderThickness="{TemplateBinding BorderThickness}"/>
                             <!-- The Track lays out the repeat buttons and thumb -->
-                            <Track Grid.Column="1" x:Name="PART_Track" Margin="2,0">
+                            <Track Grid.Column="1" x:Name="PART_Track" Margin="2,0,6,0">
                                 <Track.IncreaseRepeatButton>
                                     <RepeatButton Style="{StaticResource GeneralSliderRepeatButton}" Command="Slider.IncreaseLarge"/>
                                 </Track.IncreaseRepeatButton>
