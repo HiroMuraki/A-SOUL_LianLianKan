@@ -2,11 +2,9 @@
 using LianLianKan;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace DianaLLK_GUI {
@@ -63,54 +61,6 @@ namespace DianaLLK_GUI {
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
             await _game.ActiveSkillAsync(e.SKill);
         }
-        private async void Game_SkillActived(object sender, SkillActivedEventArgs e) {
-            if (e.ActiveResult == false) {
-                return;
-            }
-            switch (e.Skill) {
-                case LLKSkill.None:
-                    break;
-                case LLKSkill.AvaPower:
-                    SkillIcon.Content = "AVAVA!";
-                    break;
-                case LLKSkill.BellaPower:
-                    SkillIcon.Content = "击穿月球!";
-                    break;
-                case LLKSkill.CarolPower:
-                    SkillIcon.Content = "R I S E";
-                    break;
-                case LLKSkill.DianaPower:
-                    SkillIcon.Content = "多态小草莓";
-                    break;
-                case LLKSkill.EileenPower:
-                    SkillIcon.Content = "团队粘合";
-                    break;
-                default:
-                    break;
-            }
-
-            SkillIcon.Opacity = 1;
-            SkillBar.HorizontalAlignment = HorizontalAlignment.Left;
-            DoubleAnimation animation = new DoubleAnimation() {
-                To = ActualWidth,
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
-            SkillBar.BeginAnimation(WidthProperty, animation);
-
-            await Task.Delay(TimeSpan.FromMilliseconds(850)); // 技能信息停留0.85秒
-
-            SkillBar.HorizontalAlignment = HorizontalAlignment.Right;
-            DoubleAnimation animation2 = new DoubleAnimation() {
-                To = 0,
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
-            SkillBar.BeginAnimation(WidthProperty, animation2);
-            SkillIcon.Opacity = 0;
-        }
         private void StartGame_Click(object sender, RoutedEventArgs e) {
             try {
                 StartGame();
@@ -121,6 +71,34 @@ namespace DianaLLK_GUI {
             catch (Exception exp) {
                 MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+        private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
+            if (GameSetterPanel.Height != 0) {
+                FoldGameSetterPanel();
+            }
+            else {
+                ExpandGameSetterPanel();
+            }
+        }
+        private void ShowTokenStack_Click(object sender, RoutedEventArgs e) {
+            DoubleAnimation animation = new DoubleAnimation() {
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            if (TokenStack.Width == 0) {
+                animation.To = ActualWidth / 3;
+            }
+            else {
+                animation.To = 0;
+            }
+            TokenStack.BeginAnimation(WidthProperty, animation);
+        }
+        private void Game_SkillActived(object sender, SkillActivedEventArgs e) {
+            if (e.ActiveResult == false) {
+                return;
+            }
+            SkillDisplayer.DisplaySkill(e.Skill, 750, ActualWidth);
         }
         private void Game_TokenMatched(object sender, TokenMatchedEventArgs e) {
             if (e.Sucess) {
@@ -147,28 +125,6 @@ namespace DianaLLK_GUI {
                 }
                 TokensLayout.Children.Add(tokenRound);
             }
-        }
-        private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
-            if (GameSetterPanel.Height != 0) {
-                FoldGameSetterPanel();
-            }
-            else {
-                ExpandGameSetterPanel();
-            }
-        }
-        private void ShowTokenStack_Click(object sender, RoutedEventArgs e) {
-            DoubleAnimation animation = new DoubleAnimation() {
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
-            if (TokenStack.Width == 0) {
-                animation.To = ActualWidth / 3;
-            }
-            else {
-                animation.To = 0;
-            }
-            TokenStack.BeginAnimation(WidthProperty, animation);
         }
 
         private void Window_Minimum(object sender, RoutedEventArgs e) {
