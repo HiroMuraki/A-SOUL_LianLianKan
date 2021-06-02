@@ -181,6 +181,10 @@ namespace LianLianKan {
                 _heldToken = null;
                 return false;
             }
+            // 如果点选的位置和上次位置相同，跳过
+            if (_heldToken == token) {
+                return false;
+            }
             // 如果启用了贝拉Power
             if (_isBellaPowerOn) {
                 if (_heldToken.TokenType == token.TokenType) {
