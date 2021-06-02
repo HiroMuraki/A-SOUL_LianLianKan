@@ -57,6 +57,7 @@ namespace DianaLLK_GUI {
             // 初始化游戏
             _game = new LLKGame();
             _game.GameCompleted += Game_GameCompleted;
+            _game.LayoutReseted += Game_LayoutReseted;
             InitializeComponent();
             GridRoot.MaxHeight = SystemParameters.WorkArea.Height;
             GridRoot.MaxWidth = SystemParameters.WorkArea.Width;
@@ -102,6 +103,17 @@ namespace DianaLLK_GUI {
             // 取消模糊背景
             //GameArea.Effect = null;
             ExpandGameSetterPanel();
+        }
+        private void Game_LayoutReseted(object sender, LayoutResetedEventArgs e) {
+            TokensLayout.Children.Clear();
+            foreach (var token in _game.LLKTokenArray) {
+                var tokenRound = new View.LLKTokenRound(token);
+                tokenRound.TClick += LLKToken_Click;
+                if (token.TokenType == LLKTokenType.None) {
+                    tokenRound.Opacity = 0;
+                }
+                TokensLayout.Children.Add(tokenRound);
+            }
         }
         private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
             if (GameSetterPanel.Height != 0) {

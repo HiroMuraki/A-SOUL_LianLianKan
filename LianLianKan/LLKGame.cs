@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
+    public class LayoutResetedEventArgs : EventArgs {
+
+    }
     public class LLKGame : INotifyPropertyChanged {
         private LLKToken[,] _gameLayout;
         private LLKToken _heldToken;
@@ -24,6 +27,7 @@ namespace LianLianKan {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<GameCompletedEventArgs> GameCompleted;
         public event EventHandler<SkillActivedEventArgs> SkillActived;
+        public event EventHandler<LayoutResetedEventArgs> LayoutReseted;
         #endregion
 
         #region 公开属性
@@ -97,8 +101,8 @@ namespace LianLianKan {
             ResetCoordinateStatus();
             OnPropertyChanged(nameof(RowSize));
             OnPropertyChanged(nameof(ColumnSize));
-            OnPropertyChanged(nameof(LLKTokenArray));
             OnPropertyChanged(nameof(SkillPoint));
+            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
         }
         public async Task SelectTokenAsync(LLKToken token) {
             var a = _heldToken;
@@ -131,15 +135,25 @@ namespace LianLianKan {
             }
         }
         public async Task ActiveSkillAsync(LLKSkill skill) {
-            await Task.Run(() => {
+            bool actived = await Task.Run(() => {
                 lock (_skillLocker) {
-                    ActiveSkill(skill);
+                    return ActiveSkillCore(skill);
                 }
             });
+            if (actived) {
+                if (skill == LLKSkill.AvaPower) {
+                    LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
+                }
+            }
             SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
         }
         public void ActiveSkill(LLKSkill skill) {
-            ActiveSkillCore(skill);
+            bool actived = ActiveSkillCore(skill);
+            if (actived) {
+                if (skill == LLKSkill.AvaPower) {
+                    LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
+                }
+            }
             SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
         }
         public override string ToString() {
@@ -221,33 +235,36 @@ namespace LianLianKan {
                 return false;
             }
         }
-        private void ActiveSkillCore(LLKSkill skill) {
+        private bool ActiveSkillCore(LLKSkill skill) {
             if (_skillPoint <= 0) {
-                SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
-                return;
+                return false;
             }
+            bool activeResult = false;
             switch (skill) {
                 case LLKSkill.None:
+                    activeResult = true;
                     break;
                 case LLKSkill.AvaPower:
-                    AvaPower();
+                    activeResult = AvaPower();
                     break;
                 case LLKSkill.BellaPower:
-                    BellaPower();
+                    activeResult = BellaPower();
                     break;
                 case LLKSkill.CarolPower:
-                    CarolPower();
+                    activeResult = CarolPower();
                     break;
                 case LLKSkill.DianaPower:
-                    DianaPower();
+                    activeResult = DianaPower();
                     break;
                 case LLKSkill.EileenPower:
-                    EileenPower();
+                    activeResult = EileenPower();
                     break;
                 default:
+                    activeResult = false;
                     break;
             }
             OnPropertyChanged(nameof(SkillPoint));
+            return activeResult;
         }
         private void MatchTokensHelper(LLKToken a, LLKToken b) {
             Coordinate aPos = a.Coordinate;
@@ -258,8 +275,8 @@ namespace LianLianKan {
             _gameLayout[bPos.Row, bPos.Column].IsSelected = false;
         }
         private int GetSkillPoint() {
-            int point = (CurrentTokenTypes.Count * 6) / (_rowSize * _rowSize);
-            if ((CurrentTokenTypes.Count * 6) % (_rowSize * _rowSize) != 0) {
+            int point = (CurrentTokenTypes.Count * 10) / (_rowSize * _rowSize);
+            if ((CurrentTokenTypes.Count * 10) % (_rowSize * _rowSize) != 0) {
                 point += 1;
             }
             return point;
@@ -444,9 +461,9 @@ namespace LianLianKan {
             }
             return true;
         }
-        private void AvaPower() {
+        private bool AvaPower() {
             if (_skillPoint < 3) {
-                return;
+                return false;
             }
             Random rnd = new Random();
             for (int row = 0; row < _rowSize; row++) {
@@ -460,18 +477,19 @@ namespace LianLianKan {
                 }
             }
             _skillPoint -= 3;
-            OnPropertyChanged(nameof(LLKTokenArray));
+            return true;
         }
-        private void BellaPower() {
+        private bool BellaPower() {
             if (_skillPoint < 2) {
-                return;
+                return false;
             }
             _isBellaPowerOn = true;
             _skillPoint -= 2;
+            return true;
         }
-        private void CarolPower() {
+        private bool CarolPower() {
             if (_skillPoint < 1) {
-                return;
+                return false;
             }
             bool canGetExtraPoint = new Random().Next(0, 2) == 0;
             if (canGetExtraPoint) {
@@ -480,10 +498,11 @@ namespace LianLianKan {
             else {
                 _skillPoint -= 1;
             }
+            return true;
         }
-        private void DianaPower() {
+        private bool DianaPower() {
             if (_skillPoint < 1) {
-                return;
+                return false;
             }
             Random rnd = new Random();
             List<LLKTokenType> strarwberries = new List<LLKTokenType>() {
@@ -511,13 +530,15 @@ namespace LianLianKan {
                 _gameLayout[b.Row, b.Column].TokenType = current;
             }
             _skillPoint -= 1;
+            return true;
         }
-        private void EileenPower() {
+        private bool EileenPower() {
             if (_skillPoint < 2) {
-                return;
+                return false;
             }
             _skillPoint -= 2;
             _isEileenPowerOn = true;
+            return true;
         }
         private void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
