@@ -156,6 +156,12 @@ namespace DianaLLK_GUI {
         /// </summary>
         private void StartGame() {
             _game.StartGame(_gameSetter.RowSize, _gameSetter.ColumnSize, _gameSetter.TokenAmount);
+            TokensLayout.Children.Clear();
+            foreach (var token in _game.LLKTokenArray) {
+                var tokenRound = new View.LLKTokenRound(token);
+                tokenRound.TClick += LLKToken_Click;
+                TokensLayout.Children.Add(tokenRound);
+            }
         }
         /// <summary>
         /// 展开游戏设置面板
