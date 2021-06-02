@@ -29,7 +29,7 @@
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Token.TokenType,RelativeSource={RelativeSource Self}}" Value="None" >
                             <Setter TargetName="Highlighter" Property="Opacity" Value="0" />
-                            <Setter TargetName="FakeShadow"  Property="Opacity" Value="0.02" />
+                            <Setter TargetName="FakeShadow"  Property="Opacity" Value="0.01" />
                             <Setter TargetName="FakeShadow"  Property="Fill" Value="White" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>

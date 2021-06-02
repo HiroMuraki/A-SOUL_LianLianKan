@@ -1,6 +1,5 @@
-﻿using System;
-using LianLianKan;
-using System.Windows;
+﻿using LianLianKan;
+using System;
 
 namespace DianaLLK_GUI {
     public class TClickEventArgs : EventArgs {
