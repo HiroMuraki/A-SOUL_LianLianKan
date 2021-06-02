@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
-    public class LayoutResetedEventArgs : EventArgs {
-
-    }
     public class LLKGame : INotifyPropertyChanged {
         private LLKToken[,] _gameLayout;
         private LLKToken _heldToken;

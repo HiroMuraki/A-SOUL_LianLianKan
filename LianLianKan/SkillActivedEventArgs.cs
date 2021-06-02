@@ -14,9 +14,6 @@ namespace LianLianKan {
             get {
                 return _activeResult;
             }
-            set {
-                _activeResult = value;
-            }
         }
 
         public SkillActivedEventArgs(LLKSkill skill, bool activeResult) {
