@@ -86,6 +86,11 @@ namespace DianaLLK_GUI.View {
             }
         }
         public void ResetStack() {
+            _aLsX = 10;
+            _bLsX = 10;
+            _cLsX = 10;
+            _dLsX = 10;
+            _eLsX = 10;
             ATokenStack.Children.Clear();
             BTokenStack.Children.Clear();
             CTokenStack.Children.Clear();
