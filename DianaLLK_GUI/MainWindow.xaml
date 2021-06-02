@@ -104,20 +104,9 @@
             <Viewbox Grid.Row="1" Grid.Column="1">
                 <Grid Margin="15">
                     <Border BorderBrush="{StaticResource TextTheme}" BorderThickness="1" CornerRadius="10"/>
-                    <ItemsControl ItemsSource="{Binding Game.LLKTokenArray}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <View:LLKTokenRound Token="{Binding}" TClick="LLKToken_Click"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}">
+                    <UniformGrid x:Name="TokensLayout" Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}">
 
-                                </UniformGrid>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
+                    </UniformGrid>
                 </Grid>
             </Viewbox>
         </Grid>
