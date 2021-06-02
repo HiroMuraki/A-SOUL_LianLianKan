@@ -16,7 +16,8 @@
                 <ControlTemplate TargetType="{x:Type View:LLKTokenRound}">
                     <Viewbox>
                         <Grid>
-                            <Border x:Name="Highlighter" Background="Transparent" Margin="5" Opacity="0.65" CornerRadius="15"/>
+                            <Border x:Name="HitArea" Background="Transparent"/>
+                            <Border x:Name="Highlighter" Background="{Binding Token.TokenType, RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" Margin="5" Opacity="0" CornerRadius="15"/>
                             <Ellipse x:Name="FakeShadow" Width="100" Height="100" Margin="2,3,0,0" Fill="Black" Opacity="0.60"/>
                             <Ellipse x:Name="Content" Margin="15" Width="100" Height="100" StrokeThickness="3" Stretch="Uniform"
                                      Stroke="{Binding Token.TokenType,RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" 
@@ -25,7 +26,7 @@
                     </Viewbox>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding Token.IsSelected,RelativeSource={RelativeSource Self}}" Value="True">
-                            <Setter TargetName="Highlighter" Property="Background" Value="White" />
+                            <Setter TargetName="Highlighter" Property="Opacity" Value="0.75" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Token.TokenType,RelativeSource={RelativeSource Self}}" Value="None" >
                             <Setter TargetName="Highlighter" Property="Opacity" Value="0" />

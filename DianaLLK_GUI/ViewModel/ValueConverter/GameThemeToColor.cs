@@ -9,7 +9,7 @@ namespace DianaLLK_GUI.ViewModel.ValueConverter {
             GameTheme theme = (GameTheme)value;
             switch (theme) {
                 case GameTheme.None:
-                    return Colors.White;
+                    return null;
                 case GameTheme.Ava:
                     return App.ColorDict["AvaTheme"] as SolidColorBrush;
                 case GameTheme.Bella:
@@ -21,7 +21,7 @@ namespace DianaLLK_GUI.ViewModel.ValueConverter {
                 case GameTheme.Eileen:
                     return App.ColorDict["EileenTheme"] as SolidColorBrush;
                 default:
-                    return Colors.White;
+                    return App.ColorDict["ASTheme"] as SolidColorBrush;
             }
         }
 

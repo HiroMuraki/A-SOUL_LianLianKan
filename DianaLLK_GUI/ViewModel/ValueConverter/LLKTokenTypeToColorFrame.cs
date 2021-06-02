@@ -12,9 +12,9 @@ namespace DianaLLK_GUI.ViewModel.ValueConverter {
             LLKTokenType tokenType = (LLKTokenType)value;
             switch (tokenType) {
                 case LLKTokenType.None:
-                    return Colors.White;
+                    return null;
                 case LLKTokenType.AS:
-                    return Colors.Gold;
+                    return App.ColorDict["ASTheme"] as SolidColorBrush;
                 case LLKTokenType.A1:
                 case LLKTokenType.A2:
                 case LLKTokenType.A3:
