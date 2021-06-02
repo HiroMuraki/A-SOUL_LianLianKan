@@ -111,10 +111,10 @@ namespace LianLianKan {
             if (matched) {
                 a.OnMatched();
                 b.OnMatched();
-            }
-            if (IsGameCompleted()) {
-                int scores = GetTotalScores();
-                GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                if (IsGameCompleted()) {
+                    int scores = GetTotalScores();
+                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                }
             }
         }
         public void SelectToken(LLKToken token) {
@@ -124,10 +124,10 @@ namespace LianLianKan {
             if (matched) {
                 a.OnMatched();
                 b.OnMatched();
-            }
-            if (IsGameCompleted()) {
-                int scores = GetTotalScores();
-                GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                if (IsGameCompleted()) {
+                    int scores = GetTotalScores();
+                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                }
             }
         }
         public async Task ActiveSkillAsync(LLKSkill skill) {
@@ -446,7 +446,6 @@ namespace LianLianKan {
         }
         private void AvaPower() {
             if (_skillPoint < 3) {
-                SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
             }
             Random rnd = new Random();
@@ -465,7 +464,6 @@ namespace LianLianKan {
         }
         private void BellaPower() {
             if (_skillPoint < 2) {
-                SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
             }
             _isBellaPowerOn = true;
@@ -473,7 +471,6 @@ namespace LianLianKan {
         }
         private void CarolPower() {
             if (_skillPoint < 1) {
-                SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
             }
             bool canGetExtraPoint = new Random().Next(0, 2) == 0;
@@ -486,7 +483,6 @@ namespace LianLianKan {
         }
         private void DianaPower() {
             if (_skillPoint < 1) {
-                SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
             }
             Random rnd = new Random();
@@ -518,7 +514,6 @@ namespace LianLianKan {
         }
         private void EileenPower() {
             if (_skillPoint < 2) {
-                SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
             }
             _skillPoint -= 2;
