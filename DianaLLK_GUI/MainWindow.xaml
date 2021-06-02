@@ -107,10 +107,7 @@
                     <ItemsControl ItemsSource="{Binding Game.LLKTokenArray}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <View:LLKTokenRound TokenType="{Binding TokenType}" Tag="{Binding}"
-                                                    FontSize="20" Click="LLKToken_Click" 
-                                                    IsSelected="{Binding IsSelected,Mode=OneWay}">
-                                </View:LLKTokenRound>
+                                <View:LLKTokenRound Token="{Binding}" TClick="LLKToken_Click"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>

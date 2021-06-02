@@ -1,28 +1,20 @@
 ﻿using LianLianKan;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace DianaLLK_GUI.View {
     public class LLKTokenRound : Button {
-        public static readonly DependencyProperty TokenTypeProperty =
-            DependencyProperty.Register(nameof(TokenType), typeof(LLKTokenType), typeof(LLKTokenRound), new PropertyMetadata(LLKTokenType.None));
-        public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register(nameof(IsSelected), typeof(bool), typeof(LLKTokenRound), new PropertyMetadata(false));
+        public static readonly DependencyProperty TokenProperty =
+            DependencyProperty.Register(nameof(Token), typeof(LLKToken), typeof(LLKTokenRound), new PropertyMetadata(null));
 
-        public LLKTokenType TokenType {
+        public event EventHandler<TClickEventArgs> TClick;
+        public LLKToken Token {
             get {
-                return (LLKTokenType)GetValue(TokenTypeProperty);
+                return (LLKToken)GetValue(TokenProperty);
             }
             set {
-                SetValue(TokenTypeProperty, value);
-            }
-        }
-        public bool IsSelected {
-            get {
-                return (bool)GetValue(IsSelectedProperty);
-            }
-            set {
-                SetValue(IsSelectedProperty, value);
+                SetValue(TokenProperty, value);
             }
         }
 
@@ -31,6 +23,11 @@ namespace DianaLLK_GUI.View {
         }
         public LLKTokenRound() {
 
+        }
+
+        protected override void OnClick() {
+            base.OnClick();
+            TClick?.Invoke(this, new TClickEventArgs(Token));
         }
     }
 }

@@ -16,21 +16,22 @@
                 <ControlTemplate TargetType="{x:Type View:LLKTokenRound}">
                     <Viewbox>
                         <Grid>
-                            <Border x:Name="Highlighter" Margin="5" Opacity="0.65" Background="{TemplateBinding Background}" CornerRadius="15"/>
+                            <Border x:Name="Highlighter" Background="Transparent" Margin="5" Opacity="0.65" CornerRadius="15"/>
                             <Ellipse x:Name="FakeShadow" Width="100" Height="100" Margin="2,3,0,0" Fill="Black" Opacity="0.60"/>
                             <Ellipse x:Name="Content" Margin="15" Width="100" Height="100" StrokeThickness="3" Stretch="Uniform"
-                                     Stroke="{TemplateBinding TokenType,Converter={StaticResource LLKTokenTypeToColorFrame}}" 
-                                     Fill="{TemplateBinding TokenType,Converter={StaticResource LLKTokenTypeToImage}}" />
+                                     Stroke="{Binding Token.TokenType,RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" 
+                                     Fill="{Binding Token.TokenType,RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToImage}}" />
                         </Grid>
                     </Viewbox>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="White" />
-                        </Trigger>
-                        <Trigger Property="TokenType" Value="None" >
+                        <DataTrigger Binding="{Binding Token.IsSelected,RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter TargetName="Highlighter" Property="Background" Value="White" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Token.TokenType,RelativeSource={RelativeSource Self}}" Value="None" >
                             <Setter TargetName="Highlighter" Property="Opacity" Value="0" />
-                            <Setter TargetName="FakeShadow"  Property="Opacity" Value="0" />
-                        </Trigger>
+                            <Setter TargetName="FakeShadow"  Property="Opacity" Value="0.02" />
+                            <Setter TargetName="FakeShadow"  Property="Fill" Value="White" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
