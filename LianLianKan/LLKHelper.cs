@@ -13,6 +13,7 @@ namespace LianLianKan {
         static LLKHelper() {
             _allTokenTypes = Enum.GetValues(typeof(LLKTokenType));
         }
+
         public static LLKTokenType GetRandomTokenType() {
             return (LLKTokenType)_allTokenTypes.GetValue(new Random().Next(1, _allTokenTypes.Length));
         }

@@ -12,6 +12,26 @@
         <WindowChrome UseAeroCaptionButtons="False" CaptionHeight="0" ResizeBorderThickness="2"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
+        <Style x:Key="ExpandTokenStackButton"  TargetType="Button">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource TextTheme}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="10,0,0,10">
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.65" />
+                                <Setter Property="Foreground" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="TitleButtonStyle" TargetType="Button">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="FontSize" Value="22" />
@@ -99,43 +119,48 @@
             <Button Grid.Column="5" Content="&#x2573;" Click="Window_Close" Style="{StaticResource TitleButtonStyle}"/>
         </Grid>
         <Border Grid.Row="1" Background="{StaticResource TextTheme}"/>
-        <Grid Grid.Row="2" x:Name="GameArea">
-            <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Viewbox Grid.Row="1" Grid.Column="1">
-                <Grid Margin="15">
-                    <Border BorderBrush="{StaticResource TextTheme}" BorderThickness="1" CornerRadius="10"/>
-                    <UniformGrid x:Name="TokensLayout" Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}">
-
-                    </UniformGrid>
-                </Grid>
-            </Viewbox>
-        </Grid>
         <Grid Grid.Row="2">
-            <Border IsHitTestVisible="False" Grid.Row="2" x:Name="SkillBar" Background="Black" Opacity="0.65" Height="150" Width="0"/>
-            <Label IsHitTestVisible="False" x:Name="SkillIcon" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100"/>
-        </Grid>
-        <Grid Grid.Row="2" x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top"
-              Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}">
-            <Grid Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <Ellipse Width="200" Height="200" StrokeThickness="5" Stretch="Uniform"
-                         Stroke="{StaticResource TextTheme}" Fill="{Binding GameSetter.CurrentAvatar,Converter={StaticResource LLKTokenTypeToImage}}">
-                </Ellipse>
-                <Grid Grid.Row="1" Margin="0,30,0,20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Slider Grid.Row="0" Grid.Column="1" ToolTip="行数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.RowSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
-                    <Slider Grid.Row="1" Grid.Column="1" ToolTip="列数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.ColumnSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
-                    <Slider Grid.Row="2" Grid.Column="1" ToolTip="最多不同草莓数" Minimum="{Binding GameSetter.MinTokenAmount}" Maximum="{Binding GameSetter.MaxTokenAmount}" Value="{Binding GameSetter.TokenAmount}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Viewbox Grid.Row="1" Grid.Column="1">
+                        <Grid Margin="15">
+                            <Border BorderBrush="{StaticResource TextTheme}" BorderThickness="1" CornerRadius="10"/>
+                            <UniformGrid x:Name="TokensLayout" Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}"/>
+                        </Grid>
+                    </Viewbox>
+                    <Button VerticalAlignment="Center" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" HorizontalAlignment="Right" Height="200" Width="30" Content="=" Click="ShowTokenStack_Click" Style="{StaticResource ExpandTokenStackButton}"/>
                 </Grid>
-                <Button Grid.Row="2" Content="S T A R T" Width="200" Height="40" Style="{StaticResource StartButtonStyle}" Click="StartGame_Click"/>
+                <Grid Grid.Column="0">
+                    <Border IsHitTestVisible="False" Grid.Row="2" x:Name="SkillBar" Background="Black" Opacity="0.65" Height="150" Width="0"/>
+                    <Label IsHitTestVisible="False" x:Name="SkillIcon" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100"/>
+                </Grid>
+                <View:TokenStack x:Name="TokenStack" Grid.Column="1" Width="0"/>
+            </Grid>
+            <Grid x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}">
+                <Grid Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Ellipse Width="200" Height="200" StrokeThickness="5" Stretch="Uniform" Stroke="{StaticResource TextTheme}" Fill="{Binding GameSetter.CurrentAvatar,Converter={StaticResource LLKTokenTypeToImage}}"/>
+                    <Grid Grid.Row="1" Margin="0,30,0,20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Slider Grid.Row="0" Grid.Column="1" ToolTip="行数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.RowSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+                        <Slider Grid.Row="1" Grid.Column="1" ToolTip="列数" Minimum="{Binding GameSetter.MinSize}" Maximum="{Binding GameSetter.MaxSize}" Value="{Binding GameSetter.ColumnSize}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+                        <Slider Grid.Row="2" Grid.Column="1" ToolTip="最多不同草莓数" Minimum="{Binding GameSetter.MinTokenAmount}" Maximum="{Binding GameSetter.MaxTokenAmount}" Value="{Binding GameSetter.TokenAmount}" VerticalAlignment="Center" Style="{StaticResource RSliderBarStyle}"/>
+                    </Grid>
+                    <Button Grid.Row="2" Content="S T A R T" Width="200" Height="40" Style="{StaticResource StartButtonStyle}" Click="StartGame_Click"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

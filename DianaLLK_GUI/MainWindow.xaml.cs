@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace DianaLLK_GUI {
@@ -39,20 +40,8 @@ namespace DianaLLK_GUI {
                 return _gameSetter;
             }
         }
+
         public MainWindow() {
-            // 初始化计时器
-            //_gameTimer = new DispatcherTimer() {
-            //    Interval = TimeSpan.FromMilliseconds(50)
-            //};
-            //_gameTimer.Tick += GameTimer_Tick;
-            //// 初始化方向线
-            //_directionLine = new Line {
-            //    StrokeThickness = 5,
-            //    StrokeEndLineCap = PenLineCap.Triangle,
-            //    StrokeDashCap = PenLineCap.Round,
-            //    StrokeStartLineCap = PenLineCap.Round,
-            //    Visibility = Visibility.Hidden
-            //};
             // 初始化游戏设置器
             _gameSetter = GameSetter.GetInstance();
             // 初始化游戏
@@ -60,51 +49,19 @@ namespace DianaLLK_GUI {
             _game.GameCompleted += Game_GameCompleted;
             _game.LayoutReseted += Game_LayoutReseted;
             _game.SkillActived += Game_SkillActived;
+            _game.TokenMatched += Game_TokenMatched;
             InitializeComponent();
             GridRoot.MaxHeight = SystemParameters.WorkArea.Height;
             GridRoot.MaxWidth = SystemParameters.WorkArea.Width;
             GameTheme = GameSetter.GetRandomGameTheme();
             ExpandGameSetterPanel();
-            // GamePlayAreaCanvas.Children.Add(_directionLine);
         }
 
-        private async void LLKToken_Click(object sender, TClickEventArgs e) {
+        private async void SelectToken_Click(object sender, TClickEventArgs e) {
             await _game.SelectTokenAsync(e.Token);
         }
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
             await _game.ActiveSkillAsync(e.SKill);
-        }
-        private void StartGame_Click(object sender, RoutedEventArgs e) {
-            try {
-                StartGame();
-                GetGameTheme();
-                FoldGameSetterPanel();
-                _startTime = DateTime.Now;
-            }
-            catch (Exception exp) {
-                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-        private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
-            // 模糊背景
-            //BlurEffect effect = new BlurEffect();
-            //DoubleAnimation effectAnimation = new DoubleAnimation() {
-            //    To = 15,
-            //    AccelerationRatio = 0.2,
-            //    DecelerationRatio = 0.8,
-            //    Duration = TimeSpan.FromMilliseconds(150)
-            //};
-            //GameArea.Effect = effect;
-            //effect.BeginAnimation(BlurEffect.RadiusProperty, effectAnimation);
-            // 弹出统计窗口
-            var gameUsingTime = (DateTime.Now - _startTime).TotalMilliseconds / 1000.0;
-            var totalScores = (int)(e.TotalScores / Math.Log(gameUsingTime));
-            View.GameCompletedWindow gcw = new View.GameCompletedWindow(e, gameUsingTime, 0, totalScores);
-            gcw.Owner = this;
-            gcw.ShowDialog();
-            // 取消模糊背景
-            //GameArea.Effect = null;
-            ExpandGameSetterPanel();
         }
         private async void Game_SkillActived(object sender, SkillActivedEventArgs e) {
             if (e.ActiveResult == false) {
@@ -154,11 +111,37 @@ namespace DianaLLK_GUI {
             SkillBar.BeginAnimation(WidthProperty, animation2);
             SkillIcon.Opacity = 0;
         }
+        private void StartGame_Click(object sender, RoutedEventArgs e) {
+            try {
+                StartGame();
+                GetGameTheme();
+                FoldGameSetterPanel();
+                _startTime = DateTime.Now;
+            }
+            catch (Exception exp) {
+                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        private void Game_TokenMatched(object sender, TokenMatchedEventArgs e) {
+            if (e.Sucess) {
+                TokenStack.AddToStack(e.TokenType);
+            }
+        }
+        private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
+            // 弹出统计窗口
+            var gameUsingTime = (DateTime.Now - _startTime).TotalMilliseconds / 1000.0;
+            var totalScores = (int)(e.TotalScores / Math.Log(gameUsingTime));
+            View.GameCompletedWindow gcw = new View.GameCompletedWindow(e, gameUsingTime, 0, totalScores);
+            gcw.Owner = this;
+            gcw.ShowDialog();
+            // 展开设置窗口
+            ExpandGameSetterPanel();
+        }
         private void Game_LayoutReseted(object sender, LayoutResetedEventArgs e) {
             TokensLayout.Children.Clear();
             foreach (var token in _game.LLKTokenArray) {
                 var tokenRound = new View.LLKTokenRound(token);
-                tokenRound.TClick += LLKToken_Click;
+                tokenRound.TClick += SelectToken_Click;
                 if (token.TokenType == LLKTokenType.None) {
                     tokenRound.Opacity = 0;
                 }
@@ -173,21 +156,20 @@ namespace DianaLLK_GUI {
                 ExpandGameSetterPanel();
             }
         }
-
-        //private void GameGesture_MouseUp(object sender, MouseButtonEventArgs e) {
-        //    ClearDirectionLine();
-        //}
-        //private void GameGesture_MouseDown(object sender, MouseButtonEventArgs e) {
-        //    _hitPos = e.GetPosition(GamePlayAreaCanvas);
-        //}
-        //private void GameGesture_MouseMove(object sender, MouseEventArgs e) {
-        //    if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) {
-        //        return;
-        //    }
-        //    Point currentPos = e.GetPosition(GamePlayAreaCanvas);
-        //    // 绘制方向线
-        //    DrawDirectionLine(_hitPos, currentPos);
-        //}
+        private void ShowTokenStack_Click(object sender, RoutedEventArgs e) {
+            DoubleAnimation animation = new DoubleAnimation() {
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            if (TokenStack.Width == 0) {
+                animation.To = ActualWidth / 3;
+            }
+            else {
+                animation.To = 0;
+            }
+            TokenStack.BeginAnimation(WidthProperty, animation);
+        }
 
         private void Window_Minimum(object sender, RoutedEventArgs e) {
             WindowState = WindowState.Minimized;
@@ -221,9 +203,10 @@ namespace DianaLLK_GUI {
             TokensLayout.Children.Clear();
             foreach (var token in _game.LLKTokenArray) {
                 var tokenRound = new View.LLKTokenRound(token);
-                tokenRound.TClick += LLKToken_Click;
+                tokenRound.TClick += SelectToken_Click;
                 TokensLayout.Children.Add(tokenRound);
             }
+            TokenStack.ResetStack();
         }
         /// <summary>
         /// 展开游戏设置面板
@@ -329,8 +312,6 @@ namespace DianaLLK_GUI {
 
             GameTheme = targetTheme;
         }
-
-
         ///// <summary>
         ///// 计算两点距离
         ///// </summary>
@@ -369,6 +350,20 @@ namespace DianaLLK_GUI {
         //    _directionLine.Y1 = 0;
         //    _directionLine.X2 = 0;
         //    _directionLine.Y2 = 0;
+        //}
+        //private void GameGesture_MouseUp(object sender, MouseButtonEventArgs e) {
+        //    ClearDirectionLine();
+        //}
+        //private void GameGesture_MouseDown(object sender, MouseButtonEventArgs e) {
+        //    _hitPos = e.GetPosition(GamePlayAreaCanvas);
+        //}
+        //private void GameGesture_MouseMove(object sender, MouseEventArgs e) {
+        //    if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) {
+        //        return;
+        //    }
+        //    Point currentPos = e.GetPosition(GamePlayAreaCanvas);
+        //    // 绘制方向线
+        //    DrawDirectionLine(_hitPos, currentPos);
         //}
     }
 }

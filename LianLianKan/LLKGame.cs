@@ -25,6 +25,7 @@ namespace LianLianKan {
         public event EventHandler<GameCompletedEventArgs> GameCompleted;
         public event EventHandler<SkillActivedEventArgs> SkillActived;
         public event EventHandler<LayoutResetedEventArgs> LayoutReseted;
+        public event EventHandler<TokenMatchedEventArgs> TokenMatched;
         #endregion
 
         #region 公开属性
@@ -102,6 +103,7 @@ namespace LianLianKan {
             LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
         }
         public async Task SelectTokenAsync(LLKToken token) {
+            var matchedTokenType = _heldToken?.TokenType;
             var a = _heldToken;
             var b = token;
             bool matched = await Task.Run(() => {
@@ -116,9 +118,11 @@ namespace LianLianKan {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
                 }
+                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
             }
         }
         public void SelectToken(LLKToken token) {
+            var matchedTokenType = _heldToken?.TokenType;
             var a = _heldToken;
             var b = token;
             bool matched = SelectTokenCore(token);
@@ -129,6 +133,7 @@ namespace LianLianKan {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
                 }
+                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
             }
         }
         public async Task ActiveSkillAsync(LLKSkill skill) {
