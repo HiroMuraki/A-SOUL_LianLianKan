@@ -3,7 +3,6 @@ using System.ComponentModel;
 
 namespace LianLianKan {
     public class LLKToken : INotifyPropertyChanged {
-        private bool _isChecked;
         private LLKTokenType _tokenType;
         private Coordinate _coordinate;
         private bool _isSelected;
@@ -14,15 +13,6 @@ namespace LianLianKan {
         #endregion
 
         #region 公开属性
-        public bool IsChecked {
-            get {
-                return _isChecked;
-            }
-            set {
-                _isChecked = value;
-                OnPropertyChanged(nameof(IsChecked));
-            }
-        }
         public LLKTokenType TokenType {
             get {
                 return _tokenType;
@@ -52,10 +42,10 @@ namespace LianLianKan {
         #endregion
 
         #region 构造方法
-        public LLKToken(LLKTokenType content) {
+        public LLKToken(LLKTokenType content, Coordinate coordinate) {
             _tokenType = content;
-            _isChecked = false;
             _isSelected = false;
+            _coordinate = coordinate;
         }
         #endregion
 

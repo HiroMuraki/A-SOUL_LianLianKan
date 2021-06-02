@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
     public class LLKGame : INotifyPropertyChanged {
-        private List<LLKTokenType> _currentTokenTypes;
         private LLKToken[,] _gameLayout;
         private LLKToken _heldToken;
+        private readonly List<LLKTokenType> _currentTokenTypes;
+        private readonly Dictionary<Coordinate, bool> _coordinateChecked;
         private int _rowSize;
         private int _columnSize;
         private int _skillPoint;
         private object _processLocker;
         private object _skillLocker;
-        private bool _bellaPowerOn;
-        private bool _eileenPowerOn;
+        private bool _isBellaPowerOn;
+        private bool _isEileenPowerOn;
 
         #region 公开事件
         public event PropertyChangedEventHandler PropertyChanged;
@@ -62,11 +63,13 @@ namespace LianLianKan {
             _rowSize = 0;
             _columnSize = 0;
             _gameLayout = new LLKToken[0, 0];
+            _coordinateChecked = new Dictionary<Coordinate, bool>();
+            _currentTokenTypes = new List<LLKTokenType>();
             _heldToken = null;
             _processLocker = new object();
             _skillLocker = new object();
         }
-        public LLKGame(string testLayoutString) {
+        public LLKGame(string testLayoutString) : this() {
             _gameLayout = new LLKToken[_rowSize, _columnSize];
             testLayoutString = Regex.Replace(testLayoutString, @"[\s]+", " ");
             var numberArray = testLayoutString.Split(' ');
@@ -74,8 +77,7 @@ namespace LianLianKan {
             for (int row = 0; row < _rowSize; row++) {
                 for (int col = 0; col < _columnSize; col++) {
                     int value = Convert.ToInt32(numberArray[row * _columnSize + col]);
-                    _gameLayout[row, col] = new LLKToken((LLKTokenType)value);
-                    _gameLayout[row, col].Coordinate = new Coordinate(row, col);
+                    _gameLayout[row, col] = new LLKToken((LLKTokenType)value, new Coordinate(row, col));
                 }
             }
         }
@@ -84,11 +86,15 @@ namespace LianLianKan {
         #region 公开方法
         public void StartGame(int rowSize, int columnSize, int tokenAmount) {
             // 重置状态
-            _bellaPowerOn = false;
-            _eileenPowerOn = false;
+            _isBellaPowerOn = false;
+            _isEileenPowerOn = false;
             _heldToken = null;
+            // 生成布局
             GenerateGameLayout(rowSize, columnSize, tokenAmount);
             _skillPoint = GetSkillPoint();
+            // 更新坐标检测
+            _coordinateChecked.Clear();
+            ResetCoordinateStatus();
             OnPropertyChanged(nameof(RowSize));
             OnPropertyChanged(nameof(ColumnSize));
             OnPropertyChanged(nameof(LLKTokenArray));
@@ -150,16 +156,16 @@ namespace LianLianKan {
             }
             else {
                 // 如果启用了贝拉Power
-                if (_bellaPowerOn) {
+                if (_isBellaPowerOn) {
                     if (_heldToken.TokenType == token.TokenType) {
                         MatchTokensHelper(_heldToken, token);
-                        _bellaPowerOn = false;
+                        _isBellaPowerOn = false;
                     }
                 }
                 // 常规比较
                 else {
                     // 如果启用了乃琳Power
-                    if (_eileenPowerOn) {
+                    if (_isEileenPowerOn) {
                         if (IsConnectable(_heldToken.Coordinate, token.Coordinate)) {
                             LLKTokenType fixTypeA = _heldToken.TokenType;
                             LLKTokenType fixTypeB = token.TokenType;
@@ -180,7 +186,7 @@ namespace LianLianKan {
                             LLKTokenType tType = LLKHelper.GetRandomTokenType();
                             typeAList[rnd.Next(0, typeAList.Count)].TokenType = tType;
                             typeBList[rnd.Next(0, typeBList.Count)].TokenType = tType;
-                            _eileenPowerOn = false;
+                            _isEileenPowerOn = false;
                         }
                     }
                     else if (IsMatchable(_heldToken.Coordinate, token.Coordinate)) {
@@ -267,7 +273,7 @@ namespace LianLianKan {
                 allTokens.Add(tokenType);
             }
             // 挑选token
-            _currentTokenTypes = new List<LLKTokenType>();
+            _currentTokenTypes.Clear();
             while (_currentTokenTypes.Count < tokenAmount) {
                 if (allTokens.Count == 0) {
                     break;
@@ -305,8 +311,14 @@ namespace LianLianKan {
             _gameLayout = new LLKToken[_rowSize, _columnSize];
             for (int row = 0; row < _rowSize; row++) {
                 for (int col = 0; col < _columnSize; col++) {
-                    _gameLayout[row, col] = new LLKToken(tokenTypes[row * _columnSize + col]);
-                    _gameLayout[row, col].Coordinate = new Coordinate(row, col);
+                    _gameLayout[row, col] = new LLKToken(tokenTypes[row * _columnSize + col], new Coordinate(row, col));
+                }
+            }
+        }
+        private void ResetCoordinateStatus() {
+            for (int row = 0; row < _rowSize; row++) {
+                for (int col = 0; col < _columnSize; col++) {
+                    _coordinateChecked[_gameLayout[row, col].Coordinate] = false;
                 }
             }
         }
@@ -315,9 +327,7 @@ namespace LianLianKan {
         }
         private bool IsMatchable(Coordinate startCoordinate, Coordinate targetCoordinate) {
             var result = IsConnectable(startCoordinate, targetCoordinate);
-            foreach (var item in _gameLayout) {
-                item.IsChecked = false;
-            }
+            ResetCoordinateStatus();
             // 如果不连通，直接返回false
             if (result == false) {
                 return false;
@@ -337,7 +347,7 @@ namespace LianLianKan {
         }
         private bool IsConnectable(Coordinate startCoordinate, Coordinate targetCoordinate) {
             // 先将自己标记为已检查
-            _gameLayout[startCoordinate.Row, startCoordinate.Column].IsChecked = true;
+            _coordinateChecked[startCoordinate] = true;
             // 设置待检查列表
             List<Coordinate> checkList = new List<Coordinate>();
             for (int i = -1; i < 2; i++) {
@@ -363,7 +373,7 @@ namespace LianLianKan {
                         continue;
                     }
                     // 跳过已检查
-                    if (_gameLayout[nRow, nCol].IsChecked) {
+                    if (_coordinateChecked[nCoordinate] == true) {
                         continue;
                     }
                     checkList.Add(nCoordinate);
@@ -373,7 +383,7 @@ namespace LianLianKan {
             foreach (var coordinate in checkList) {
                 // 检查该位置是否为目标位置，是立即返回True
                 if (coordinate == targetCoordinate) {
-                    _gameLayout[coordinate.Row, coordinate.Column].IsChecked = true;
+                    _coordinateChecked[coordinate] = true;
                     return true;
                 }
                 // 否则如果该位置是空的话，则递归检查
@@ -385,8 +395,8 @@ namespace LianLianKan {
                     }
                     // 否则如果待查列表中还存在未检查坐标，则跳过
                     bool allChecked = true;
-                    foreach (var item in checkList) {
-                        if (_gameLayout[item.Row, item.Column].IsChecked == false) {
+                    foreach (var pos in checkList) {
+                        if (_coordinateChecked[pos] == false) {
                             allChecked = false;
                             break;
                         }
@@ -436,7 +446,7 @@ namespace LianLianKan {
                 SkillActived?.Invoke(this, new SkillActivedEventArgs(LLKSkill.None));
                 return;
             }
-            _bellaPowerOn = true;
+            _isBellaPowerOn = true;
             _skillPoint -= 2;
         }
         private void CarolPower() {
@@ -490,7 +500,7 @@ namespace LianLianKan {
                 return;
             }
             _skillPoint -= 2;
-            _eileenPowerOn = true;
+            _isEileenPowerOn = true;
         }
     }
 }
