@@ -145,7 +145,7 @@ namespace LianLianKan {
                     LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
                 }
             }
-            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
+            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill, actived));
         }
         public void ActiveSkill(LLKSkill skill) {
             bool actived = ActiveSkillCore(skill);
@@ -154,7 +154,7 @@ namespace LianLianKan {
                     LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
                 }
             }
-            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill));
+            SkillActived?.Invoke(this, new SkillActivedEventArgs(skill, actived));
         }
         public override string ToString() {
             StringBuilder sb = new StringBuilder();

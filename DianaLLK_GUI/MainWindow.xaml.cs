@@ -2,6 +2,7 @@
 using LianLianKan;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -58,6 +59,7 @@ namespace DianaLLK_GUI {
             _game = new LLKGame();
             _game.GameCompleted += Game_GameCompleted;
             _game.LayoutReseted += Game_LayoutReseted;
+            _game.SkillActived += Game_SkillActived;
             InitializeComponent();
             GridRoot.MaxHeight = SystemParameters.WorkArea.Height;
             GridRoot.MaxWidth = SystemParameters.WorkArea.Width;
@@ -103,6 +105,54 @@ namespace DianaLLK_GUI {
             // 取消模糊背景
             //GameArea.Effect = null;
             ExpandGameSetterPanel();
+        }
+        private async void Game_SkillActived(object sender, SkillActivedEventArgs e) {
+            if (e.ActiveResult == false) {
+                return;
+            }
+            switch (e.Skill) {
+                case LLKSkill.None:
+                    break;
+                case LLKSkill.AvaPower:
+                    SkillIcon.Content = "AVAVA!";
+                    break;
+                case LLKSkill.BellaPower:
+                    SkillIcon.Content = "击穿月球!";
+                    break;
+                case LLKSkill.CarolPower:
+                    SkillIcon.Content = "R I S E";
+                    break;
+                case LLKSkill.DianaPower:
+                    SkillIcon.Content = "多态小草莓";
+                    break;
+                case LLKSkill.EileenPower:
+                    SkillIcon.Content = "团队粘合";
+                    break;
+                default:
+                    break;
+            }
+
+            SkillIcon.Opacity = 1;
+            SkillBar.HorizontalAlignment = HorizontalAlignment.Left;
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = ActualWidth,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            SkillBar.BeginAnimation(WidthProperty, animation);
+
+            await Task.Delay(TimeSpan.FromMilliseconds(850)); // 技能信息停留0.85秒
+
+            SkillBar.HorizontalAlignment = HorizontalAlignment.Right;
+            DoubleAnimation animation2 = new DoubleAnimation() {
+                To = 0,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            SkillBar.BeginAnimation(WidthProperty, animation2);
+            SkillIcon.Opacity = 0;
         }
         private void Game_LayoutReseted(object sender, LayoutResetedEventArgs e) {
             TokensLayout.Children.Clear();
@@ -279,6 +329,7 @@ namespace DianaLLK_GUI {
 
             GameTheme = targetTheme;
         }
+
 
         ///// <summary>
         ///// 计算两点距离

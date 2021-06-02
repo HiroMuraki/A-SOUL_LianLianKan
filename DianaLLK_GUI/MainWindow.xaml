@@ -110,6 +110,10 @@
                 </Grid>
             </Viewbox>
         </Grid>
+        <Grid Grid.Row="2">
+            <Border IsHitTestVisible="False" Grid.Row="2" x:Name="SkillBar" Background="Black" Opacity="0.65" Height="150" Width="0"/>
+            <Label IsHitTestVisible="False" x:Name="SkillIcon" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="100"/>
+        </Grid>
         <Grid Grid.Row="2" x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top"
               Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}">
             <Grid Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
