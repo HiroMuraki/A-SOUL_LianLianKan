@@ -9,7 +9,7 @@
         mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
     <WindowChrome.WindowChrome>
-        <WindowChrome UseAeroCaptionButtons="False" CaptionHeight="0" ResizeBorderThickness="2"/>
+        <WindowChrome UseAeroCaptionButtons="False" CaptionHeight="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
         <Style x:Key="ExpandTokenStackButton"  TargetType="Button">
