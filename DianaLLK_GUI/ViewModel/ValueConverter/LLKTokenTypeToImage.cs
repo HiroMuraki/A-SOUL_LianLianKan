@@ -14,7 +14,7 @@ namespace DianaLLK_GUI.ViewModel.ValueConverter {
                 if (tokenType == LLKTokenType.None) {
                     return null;
                 }
-                return App.ImageDict[tokenType.ToString()] as ImageBrush;
+                return App.ImageDict[LLKHelper.TokenResources[tokenType]] as ImageBrush;
             }
             catch (Exception) {
                 return null;

@@ -34,6 +34,9 @@
                             <Setter TargetName="FakeShadow"  Property="Opacity" Value="0.01" />
                             <Setter TargetName="FakeShadow"  Property="Fill" Value="White" />
                         </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Highlighter" Property="Opacity" Value="0.20" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
