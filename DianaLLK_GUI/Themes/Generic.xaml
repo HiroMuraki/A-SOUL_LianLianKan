@@ -35,7 +35,20 @@
                             <Setter TargetName="FakeShadow"  Property="Fill" Value="White" />
                         </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Highlighter" Property="Opacity" Value="0.20" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard Storyboard.TargetName="Highlighter" Storyboard.TargetProperty="Opacity">
+                                        <DoubleAnimation By="0.3" AccelerationRatio="0.2" DecelerationRatio="0.8" Duration="0:0:0.005"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard Storyboard.TargetName="Highlighter" Storyboard.TargetProperty="Opacity">
+                                        <DoubleAnimation AccelerationRatio="0.2" DecelerationRatio="0.8" Duration="0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

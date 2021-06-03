@@ -6,19 +6,11 @@ namespace LianLianKan {
         private static Array _allTokenTypes;
         private static Array _allTokenCategory;
         private static Random _rnd;
-        public readonly static Dictionary<LLKTokenType, string> TokenResources;
-        public readonly static Dictionary<TokenCategory, string> TokenCategoryThemes;
 
-        public static int NumTokenTypes {
-            get {
-                return _allTokenTypes.Length - 1;
-            }
-        }
-        public static int NumTokenCategory {
-            get {
-                return _allTokenCategory.Length - 1;
-            }
-        }
+        public static readonly Dictionary<LLKTokenType, string> TokenResources;
+        public static readonly Dictionary<TokenCategory, string> TokenCategoryThemes;
+        public static readonly int NumTokenTypes;
+        public static readonly int NumTokenCategory;
 
         static LLKHelper() {
             _rnd = new Random();
@@ -68,6 +60,8 @@ namespace LianLianKan {
                 [TokenCategory.Diana] = "DianaTheme",
                 [TokenCategory.Eileen] = "EileenTheme"
             };
+            NumTokenTypes = _allTokenTypes.Length - 1;
+            NumTokenCategory = _allTokenCategory.Length - 1;
         }
 
         public static LLKTokenType GetRandomTokenType() {
