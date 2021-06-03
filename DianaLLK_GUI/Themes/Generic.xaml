@@ -16,6 +16,7 @@
                 <ControlTemplate TargetType="{x:Type View:LLKTokenRound}">
                     <Viewbox>
                         <Grid>
+                            <Ellipse x:Name="FakeShadow" Width="100" Height="100" Margin="2,3,0,0" Fill="Black" Opacity="0.60"/>
                             <Border Margin="5" Background="{TemplateBinding Background}" CornerRadius="15"/>
                             <Ellipse x:Name="Content" Margin="15" Width="100" Height="100" StrokeThickness="3" Stretch="Uniform"
                                      Stroke="{TemplateBinding TokenType,Converter={StaticResource LLKTokenTypeToColorFrame}}" 
@@ -25,6 +26,9 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="White" />
+                        </Trigger>
+                        <Trigger Property="TokenType" Value="None">
+                            <Setter TargetName="FakeShadow" Property="Opacity" Value="0" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
