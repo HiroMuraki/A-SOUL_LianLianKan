@@ -19,10 +19,10 @@ namespace DianaLLK_GUI {
         // private Line _directionLine;
 
         public static readonly DependencyProperty GameThemeProperty =
-            DependencyProperty.Register(nameof(GameTheme), typeof(GameTheme), typeof(MainWindow), new PropertyMetadata(GameTheme.None));
-        public GameTheme GameTheme {
+            DependencyProperty.Register(nameof(GameTheme), typeof(TokenCategory), typeof(MainWindow), new PropertyMetadata(TokenCategory.None));
+        public TokenCategory GameTheme {
             get {
-                return (GameTheme)GetValue(GameThemeProperty);
+                return (TokenCategory)GetValue(GameThemeProperty);
             }
             set {
                 SetValue(GameThemeProperty, value);
@@ -229,13 +229,13 @@ namespace DianaLLK_GUI {
         /// 设置游戏主题色
         /// </summary>
         private void GetGameTheme() {
-            Dictionary<GameTheme, int> numTokens = new Dictionary<GameTheme, int>() {
-                [GameTheme.None] = 0,
-                [GameTheme.Ava] = 0,
-                [GameTheme.Bella] = 0,
-                [GameTheme.Carol] = 0,
-                [GameTheme.Diana] = 0,
-                [GameTheme.Eileen] = 0
+            Dictionary<TokenCategory, int> numTokens = new Dictionary<TokenCategory, int>() {
+                [TokenCategory.None] = 0,
+                [TokenCategory.Ava] = 0,
+                [TokenCategory.Bella] = 0,
+                [TokenCategory.Carol] = 0,
+                [TokenCategory.Diana] = 0,
+                [TokenCategory.Eileen] = 0
             };
             foreach (var item in _game.LLKTokenArray) {
                 switch (item.TokenType) {
@@ -248,40 +248,40 @@ namespace DianaLLK_GUI {
                     case LLKTokenType.A3:
                     case LLKTokenType.A4:
                     case LLKTokenType.A5:
-                        numTokens[GameTheme.Ava]++;
+                        numTokens[TokenCategory.Ava]++;
                         break;
                     case LLKTokenType.B1:
                     case LLKTokenType.B2:
                     case LLKTokenType.B3:
                     case LLKTokenType.B4:
                     case LLKTokenType.B5:
-                        numTokens[GameTheme.Bella]++;
+                        numTokens[TokenCategory.Bella]++;
                         break;
                     case LLKTokenType.C1:
                     case LLKTokenType.C2:
                     case LLKTokenType.C3:
                     case LLKTokenType.C4:
                     case LLKTokenType.C5:
-                        numTokens[GameTheme.Carol]++;
+                        numTokens[TokenCategory.Carol]++;
                         break;
                     case LLKTokenType.D1:
                     case LLKTokenType.D2:
                     case LLKTokenType.D3:
                     case LLKTokenType.D4:
                     case LLKTokenType.D5:
-                        numTokens[GameTheme.Diana]++;
+                        numTokens[TokenCategory.Diana]++;
                         break;
                     case LLKTokenType.E1:
                     case LLKTokenType.E2:
                     case LLKTokenType.E3:
                     case LLKTokenType.E4:
                     case LLKTokenType.E5:
-                        numTokens[GameTheme.Eileen]++;
+                        numTokens[TokenCategory.Eileen]++;
                         break;
                 }
             }
 
-            var targetTheme = GameTheme.None;
+            var targetTheme = TokenCategory.None;
             foreach (var item in numTokens) {
                 if (numTokens[targetTheme] < item.Value) {
                     targetTheme = item.Key;

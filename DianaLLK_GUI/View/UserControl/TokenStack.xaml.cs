@@ -34,36 +34,32 @@ namespace DianaLLK_GUI.View {
                 BorderThickness = new Thickness(2),
             };
             var tokenCategory = LLKHelper.GetTokenCategoryFromTokenType(tokenType);
+            img.BorderBrush = App.ColorDict[LLKHelper.TokenCategoryThemes[tokenCategory]] as SolidColorBrush;
             switch (tokenCategory) {
                 case TokenCategory.None:
                 case TokenCategory.AS:
                     break;
                 case TokenCategory.Ava:
-                    img.BorderBrush = App.ColorDict["AvaTheme"] as SolidColorBrush;
                     img.SetValue(Canvas.LeftProperty, _aLsX);
                     _aLsX += 5;
                     ATokenStack.Children.Add(img);
                     break;
                 case TokenCategory.Bella:
-                    img.BorderBrush = App.ColorDict["BellaTheme"] as SolidColorBrush;
                     img.SetValue(Canvas.LeftProperty, _bLsX);
                     _bLsX += 5;
                     BTokenStack.Children.Add(img);
                     break;
                 case TokenCategory.Carol:
-                    img.BorderBrush = App.ColorDict["CarolTheme"] as SolidColorBrush;
                     img.SetValue(Canvas.LeftProperty, _cLsX);
                     _cLsX += 5;
                     CTokenStack.Children.Add(img);
                     break;
                 case TokenCategory.Diana:
-                    img.BorderBrush = App.ColorDict["DianaTheme"] as SolidColorBrush;
                     img.SetValue(Canvas.LeftProperty, _dLsX);
                     _dLsX += 5;
                     DTokenStack.Children.Add(img);
                     break;
                 case TokenCategory.Eileen:
-                    img.BorderBrush = App.ColorDict["EileenTheme"] as SolidColorBrush;
                     img.SetValue(Canvas.LeftProperty, _eLsX);
                     _eLsX += 5;
                     ETokenStack.Children.Add(img);

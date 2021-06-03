@@ -1,6 +1,7 @@
 ﻿using DianaLLK_GUI.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
+using LianLianKan;
 
 namespace DianaLLK_GUI.View {
     /// <summary>
@@ -12,7 +13,7 @@ namespace DianaLLK_GUI.View {
         public static readonly RoutedEvent StartEvent =
             EventManager.RegisterRoutedEvent(nameof(Start), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameSetterControlPanel));
         public static readonly DependencyProperty GameThemeProperty =
-            DependencyProperty.Register(nameof(GameTheme), typeof(GameTheme), typeof(GameSetterControlPanel), new PropertyMetadata(GameTheme.None));
+            DependencyProperty.Register(nameof(GameTheme), typeof(TokenCategory), typeof(GameSetterControlPanel), new PropertyMetadata(TokenCategory.None));
 
         public event RoutedEventHandler Start {
             add {
@@ -28,9 +29,9 @@ namespace DianaLLK_GUI.View {
                 return _gameSetter;
             }
         }
-        public GameTheme GameTheme {
+        public TokenCategory GameTheme {
             get {
-                return (GameTheme)GetValue(GameThemeProperty);
+                return (TokenCategory)GetValue(GameThemeProperty);
             }
             set {
                 SetValue(GameThemeProperty, value);

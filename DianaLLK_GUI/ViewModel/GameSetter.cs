@@ -5,7 +5,6 @@ using System.ComponentModel;
 namespace DianaLLK_GUI.ViewModel {
     public class GameSetter : INotifyPropertyChanged {
         private static GameSetter _singletonObject;
-        private static readonly Array _gameThemeList;
         private static readonly int _minSize;
         private static readonly int _maxSize;
         private static readonly int _minTokenAmount;
@@ -78,7 +77,6 @@ namespace DianaLLK_GUI.ViewModel {
         }
 
         static GameSetter() {
-            _gameThemeList = Enum.GetValues(typeof(GameTheme));
             _singletonObject = new GameSetter();
             _minSize = 6;
             _maxSize = 18;
@@ -97,8 +95,8 @@ namespace DianaLLK_GUI.ViewModel {
         public static LLKTokenType GetRandomTokenType() {
             return LLKHelper.GetRandomTokenType();
         }
-        public static GameTheme GetRandomGameTheme() {
-            return (GameTheme)(_gameThemeList.GetValue(new Random().Next(1, _gameThemeList.Length)));
+        public static TokenCategory GetRandomGameTheme() {
+            return LLKHelper.GetRandomTokenCategory();
         }
         public void OnCurrentAvatarChanged() {
             OnPropertyChanged(nameof(CurrentAvatar));

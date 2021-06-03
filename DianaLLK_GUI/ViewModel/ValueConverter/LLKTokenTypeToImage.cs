@@ -11,9 +11,6 @@ namespace DianaLLK_GUI.ViewModel.ValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             try {
                 LLKTokenType tokenType = (LLKTokenType)value;
-                if (tokenType == LLKTokenType.None) {
-                    return null;
-                }
                 return App.ImageDict[LLKHelper.TokenResources[tokenType]] as ImageBrush;
             }
             catch (Exception) {

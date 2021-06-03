@@ -4,15 +4,26 @@ using System.Collections.Generic;
 namespace LianLianKan {
     public static class LLKHelper {
         private static Array _allTokenTypes;
+        private static Array _allTokenCategory;
+        private static Random _rnd;
         public readonly static Dictionary<LLKTokenType, string> TokenResources;
+        public readonly static Dictionary<TokenCategory, string> TokenCategoryThemes;
+
         public static int NumTokenTypes {
             get {
                 return _allTokenTypes.Length - 1;
             }
         }
+        public static int NumTokenCategory {
+            get {
+                return _allTokenCategory.Length - 1;
+            }
+        }
 
         static LLKHelper() {
+            _rnd = new Random();
             _allTokenTypes = Enum.GetValues(typeof(LLKTokenType));
+            _allTokenCategory = Enum.GetValues(typeof(TokenCategory));
             TokenResources = new Dictionary<LLKTokenType, string>() {
                 [LLKTokenType.None] = null,
 
@@ -48,10 +59,22 @@ namespace LianLianKan {
                 [LLKTokenType.E4] = "E4",
                 [LLKTokenType.E5] = "E5"
             };
+            TokenCategoryThemes = new Dictionary<TokenCategory, string>() {
+                [TokenCategory.None] = "",
+                [TokenCategory.AS] = "ASTheme",
+                [TokenCategory.Ava] = "AvaTheme",
+                [TokenCategory.Bella] = "BellaTheme",
+                [TokenCategory.Carol] = "CarolTheme",
+                [TokenCategory.Diana] = "DianaTheme",
+                [TokenCategory.Eileen] = "EileenTheme"
+            };
         }
 
         public static LLKTokenType GetRandomTokenType() {
-            return (LLKTokenType)_allTokenTypes.GetValue(new Random().Next(1, _allTokenTypes.Length));
+            return (LLKTokenType)_allTokenTypes.GetValue(_rnd.Next(1, _allTokenTypes.Length));
+        }
+        public static TokenCategory GetRandomTokenCategory() {
+            return (TokenCategory)_allTokenCategory.GetValue(_rnd.Next(1, _allTokenCategory.Length));
         }
         public static TokenCategory GetTokenCategoryFromTokenType(LLKTokenType tokenType) {
             switch (tokenType) {

@@ -2,26 +2,19 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using LianLianKan;
 
 namespace DianaLLK_GUI.ViewModel.ValueConverter {
+    [ValueConversion(typeof(TokenCategory), typeof(Brush))]
     public class GameThemeToColor : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            GameTheme theme = (GameTheme)value;
-            switch (theme) {
-                case GameTheme.None:
-                    return null;
-                case GameTheme.Ava:
-                    return App.ColorDict["AvaTheme"] as SolidColorBrush;
-                case GameTheme.Bella:
-                    return App.ColorDict["BellaTheme"] as SolidColorBrush;
-                case GameTheme.Carol:
-                    return App.ColorDict["CarolTheme"] as SolidColorBrush;
-                case GameTheme.Diana:
-                    return App.ColorDict["DianaTheme"] as SolidColorBrush;
-                case GameTheme.Eileen:
-                    return App.ColorDict["EileenTheme"] as SolidColorBrush;
-                default:
-                    return App.ColorDict["ASTheme"] as SolidColorBrush;
+            try {
+                TokenCategory tokenCategory = (TokenCategory)value;
+                return App.ColorDict[LLKHelper.TokenCategoryThemes[tokenCategory]] as Brush;
+
+            }
+            catch (Exception) {
+                return null;
             }
         }
 
