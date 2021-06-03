@@ -66,6 +66,8 @@ namespace DianaLLK_GUI {
                 StartGame();
                 GetGameTheme();
                 FoldGameSetterPanel();
+                FoldTokenStack();
+                GameStatistics.Hide();
                 _startTime = DateTime.Now;
             }
             catch (Exception exp) {
@@ -80,19 +82,16 @@ namespace DianaLLK_GUI {
                 ExpandGameSetterPanel();
             }
         }
-        private void ShowTokenStack_Click(object sender, RoutedEventArgs e) {
-            DoubleAnimation animation = new DoubleAnimation() {
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
+        private void ExpandTokenStack_Click(object sender, RoutedEventArgs e) {
             if (TokenStack.Width == 0) {
-                animation.To = ActualWidth / 3;
+                ExpandTokenStack(ActualWidth / 3);
             }
             else {
-                animation.To = 0;
+                FoldTokenStack();
             }
-            TokenStack.BeginAnimation(WidthProperty, animation);
+        }
+        private void GameStatistics_Confirmed(object sender, RoutedEventArgs e) {
+            ExpandGameSetterPanel();
         }
         private void Game_SkillActived(object sender, SkillActivedEventArgs e) {
             if (e.ActiveResult == false) {
@@ -109,11 +108,10 @@ namespace DianaLLK_GUI {
             // 弹出统计窗口
             var gameUsingTime = (DateTime.Now - _startTime).TotalMilliseconds / 1000.0;
             var totalScores = (int)(e.TotalScores / Math.Log(gameUsingTime));
-            View.GameCompletedWindow gcw = new View.GameCompletedWindow(e, gameUsingTime, 0, totalScores);
-            gcw.Owner = this;
-            gcw.ShowDialog();
+            GameStatistics.Display(e, gameUsingTime, 0, totalScores, ActualWidth / 4);
+            ExpandTokenStack(ActualWidth / 4 * 3);
             // 展开设置窗口
-            ExpandGameSetterPanel();
+            //ExpandGameSetterPanel();
         }
         private void Game_LayoutReseted(object sender, LayoutResetedEventArgs e) {
             TokensLayout.Children.Clear();
@@ -202,6 +200,30 @@ namespace DianaLLK_GUI {
             };
             GameSetterPanel.BeginAnimation(HeightProperty, heightAnimation);
             GameSetterPanel.BeginAnimation(OpacityProperty, opacityAnimation);
+        }
+        /// <summary>
+        /// 展开收藏区
+        /// </summary>
+        private void ExpandTokenStack(double width) {
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = width,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            TokenStack.BeginAnimation(WidthProperty, animation);
+        }
+        /// <summary>
+        /// 收起收藏去
+        /// </summary>
+        private void FoldTokenStack() {
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = 0,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            TokenStack.BeginAnimation(WidthProperty, animation);
         }
         /// <summary>
         /// 设置游戏主题色

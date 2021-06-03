@@ -62,6 +62,7 @@
             <RowDefinition Height="1"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Image Grid.RowSpan="3" Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Grid Grid.Row="0" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" MouseDown="Window_Move">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -96,10 +97,12 @@
         <Grid Grid.Row="2">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
+                <View:GameStatisticsControl Grid.Column="0" x:Name="GameStatistics" Width="0" Confirmed="GameStatistics_Confirmed"/>
+                <Grid Grid.Column="1">
                     <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Viewbox Grid.Row="1" Grid.Column="1">
                         <Grid Margin="15">
@@ -107,10 +110,10 @@
                             <UniformGrid x:Name="TokensLayout" Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}"/>
                         </Grid>
                     </Viewbox>
-                    <Button VerticalAlignment="Center" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" HorizontalAlignment="Right" Height="200" Width="30" Content="=" Click="ShowTokenStack_Click" Style="{StaticResource ExpandTokenStackButton}"/>
+                    <Button VerticalAlignment="Center" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" HorizontalAlignment="Right" Height="200" Width="30" Content="=" Click="ExpandTokenStack_Click" Style="{StaticResource ExpandTokenStackButton}"/>
                 </Grid>
-                <View:SkillDisplayer x:Name="SkillDisplayer" Width="0"/>
-                <View:TokenStack x:Name="TokenStack" Grid.Column="1" Width="0"/>
+                <View:SkillDisplayer Grid.Column="1" x:Name="SkillDisplayer" Width="0"/>
+                <View:TokenStack Grid.Column="2" x:Name="TokenStack" Width="0"/>
             </Grid>
             <View:GameSetterControlPanel x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top" GameTheme="{Binding GameTheme}" Start="StartGame_Click"/>
         </Grid>

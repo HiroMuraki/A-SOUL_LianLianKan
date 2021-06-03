@@ -1,0 +1,119 @@
+﻿using LianLianKan;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
+
+namespace DianaLLK_GUI.View {
+    /// <summary>
+    /// GameStatisticsControl.xaml 的交互逻辑
+    /// </summary>
+    public partial class GameStatisticsControl : UserControl {
+        public static readonly RoutedEvent ConfirmedEvent =
+            EventManager.RegisterRoutedEvent(nameof(Confirmed), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameStatisticsControl));
+        public static readonly DependencyProperty GameUsingTimeProperty =
+            DependencyProperty.Register(nameof(GameUsingTime), typeof(double), typeof(GameStatisticsControl), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty TokenAmountProperty =
+            DependencyProperty.Register(nameof(TokenAmount), typeof(int), typeof(GameStatisticsControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty GameSizeProperty =
+            DependencyProperty.Register(nameof(GameSize), typeof(string), typeof(GameStatisticsControl), new PropertyMetadata(""));
+        public static readonly DependencyProperty SkillActivedTimesProperty =
+            DependencyProperty.Register(nameof(SkillActivedTimes), typeof(int), typeof(GameStatisticsControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty TotalScoresProperty =
+            DependencyProperty.Register(nameof(TotalScores), typeof(int), typeof(GameStatisticsControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty TokenTypeProperty =
+            DependencyProperty.Register(nameof(TokenType), typeof(LLKTokenType), typeof(GameStatisticsControl), new PropertyMetadata(LLKTokenType.None));
+
+        public event RoutedEventHandler Confirmed {
+            add {
+                AddHandler(ConfirmedEvent, value);
+            }
+            remove {
+                RemoveHandler(ConfirmedEvent, value);
+            }
+        }
+        public LLKTokenType TokenType {
+            get {
+                return (LLKTokenType)GetValue(TokenTypeProperty);
+            }
+            set {
+                SetValue(TokenTypeProperty, value);
+            }
+        }
+        public double GameUsingTime {
+            get {
+                return (double)GetValue(GameUsingTimeProperty);
+            }
+            set {
+                SetValue(GameUsingTimeProperty, value);
+            }
+        }
+        public int TokenAmount {
+            get {
+                return (int)GetValue(TokenAmountProperty);
+            }
+            set {
+                SetValue(TokenAmountProperty, value);
+            }
+        }
+
+        public string GameSize {
+            get {
+                return (string)GetValue(GameSizeProperty);
+            }
+            set {
+                SetValue(GameSizeProperty, value);
+            }
+        }
+        public int SkillActivedTimes {
+            get {
+                return (int)GetValue(SkillActivedTimesProperty);
+            }
+            set {
+                SetValue(SkillActivedTimesProperty, value);
+            }
+        }
+        public int TotalScores {
+            get {
+                return (int)GetValue(TotalScoresProperty);
+            }
+            set {
+                SetValue(TotalScoresProperty, value);
+            }
+        }
+
+        public GameStatisticsControl() {
+            InitializeComponent();
+        }
+
+        public void Display(GameCompletedEventArgs e, double gameUsingTime, int skillActivedTimes, int totalScore, double displayWidth) {
+            TokenAmount = e.TokenAmount;
+            GameUsingTime = gameUsingTime;
+            SkillActivedTimes = skillActivedTimes;
+            TotalScores = totalScore;
+            GameSize = $"{e.RowSize} x {e.ColumnSize}";
+            TokenType = ViewModel.GameSetter.GetRandomTokenType();
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = displayWidth,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            BeginAnimation(WidthProperty, animation);
+        }
+        public void Hide() {
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = 0,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            BeginAnimation(WidthProperty, animation);
+        }
+
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e) {
+            RoutedEventArgs arg = new RoutedEventArgs(ConfirmedEvent, this);
+            RaiseEvent(arg);
+        }
+    }
+}

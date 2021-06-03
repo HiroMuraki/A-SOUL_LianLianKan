@@ -8,13 +8,19 @@ namespace DianaLLK_GUI.View {
     /// TokenStack.xaml 的交互逻辑
     /// </summary>
     public partial class TokenStack : UserControl {
-        private double _aLsX = 10;
-        private double _bLsX = 10;
-        private double _cLsX = 10;
-        private double _dLsX = 10;
-        private double _eLsX = 10;
+        private const int _identifierWidth = 10;
+        private double _aLsX;
+        private double _bLsX;
+        private double _cLsX;
+        private double _dLsX;
+        private double _eLsX;
 
         public TokenStack() {
+            _aLsX = _identifierWidth;
+            _bLsX = _identifierWidth;
+            _cLsX = _identifierWidth;
+            _dLsX = _identifierWidth;
+            _eLsX = _identifierWidth;
             InitializeComponent();
         }
 
@@ -86,11 +92,11 @@ namespace DianaLLK_GUI.View {
             }
         }
         public void ResetStack() {
-            _aLsX = 10;
-            _bLsX = 10;
-            _cLsX = 10;
-            _dLsX = 10;
-            _eLsX = 10;
+            _aLsX = _identifierWidth;
+            _bLsX = _identifierWidth;
+            _cLsX = _identifierWidth;
+            _dLsX = _identifierWidth;
+            _eLsX = _identifierWidth;
             ATokenStack.Children.Clear();
             BTokenStack.Children.Clear();
             CTokenStack.Children.Clear();

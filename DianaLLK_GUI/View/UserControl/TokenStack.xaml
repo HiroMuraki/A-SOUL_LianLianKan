@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:DianaLLK_GUI.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid x:Name="TokenStackArea" Background="Black" Opacity="0.85">
+    <Grid x:Name="TokenStackArea">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -14,20 +14,21 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Border Grid.RowSpan="5" Background="Black" Opacity="0.60"/>
         <Viewbox Grid.Row="0" HorizontalAlignment="Left">
-            <Canvas Height="100" Width="10" Background="{StaticResource AvaTheme}" x:Name="ATokenStack"/>
+            <Canvas Height="100" Width="5" Background="{StaticResource AvaTheme}" x:Name="ATokenStack"/>
         </Viewbox>
         <Viewbox Grid.Row="1" HorizontalAlignment="Left">
-            <Canvas Height="100" Width="10" Background="{StaticResource BellaTheme}" x:Name="BTokenStack"/>
+            <Canvas Height="100" Width="5" Background="{StaticResource BellaTheme}" x:Name="BTokenStack"/>
         </Viewbox>
         <Viewbox Grid.Row="2" HorizontalAlignment="Left">
-            <Canvas Height="100" Width="10" Background="{StaticResource CarolTheme}" x:Name="CTokenStack"/>
+            <Canvas Height="100" Width="5" Background="{StaticResource CarolTheme}" x:Name="CTokenStack"/>
         </Viewbox>
         <Viewbox Grid.Row="3" HorizontalAlignment="Left">
-            <Canvas Height="100" Width="10" Background="{StaticResource DianaTheme}" x:Name="DTokenStack"/>
+            <Canvas Height="100" Width="5" Background="{StaticResource DianaTheme}" x:Name="DTokenStack"/>
         </Viewbox>
         <Viewbox Grid.Row="4" HorizontalAlignment="Left">
-            <Canvas Height="100" Width="10" Background="{StaticResource CarolTheme}" x:Name="ETokenStack"/>
+            <Canvas Height="100" Width="5" Background="{StaticResource CarolTheme}" x:Name="ETokenStack"/>
         </Viewbox>
     </Grid>
 </UserControl>
