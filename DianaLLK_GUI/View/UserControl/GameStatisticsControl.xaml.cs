@@ -86,31 +86,14 @@ namespace DianaLLK_GUI.View {
             InitializeComponent();
         }
 
-        public void Display(GameCompletedEventArgs e, double gameUsingTime, int skillActivedTimes, int totalScore, double displayWidth) {
+        public void UpdateStatistic(GameCompletedEventArgs e, double gameUsingTime, int skillActivedTimes, int totalScore) {
             TokenAmount = e.TokenAmount;
             GameUsingTime = gameUsingTime;
             SkillActivedTimes = skillActivedTimes;
             TotalScores = totalScore;
             GameSize = $"{e.RowSize} x {e.ColumnSize}";
             TokenType = ViewModel.GameSetter.GetRandomTokenType();
-            DoubleAnimation animation = new DoubleAnimation() {
-                To = displayWidth,
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
-            BeginAnimation(WidthProperty, animation);
         }
-        public void Hide() {
-            DoubleAnimation animation = new DoubleAnimation() {
-                To = 0,
-                AccelerationRatio = 0.2,
-                DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
-            };
-            BeginAnimation(WidthProperty, animation);
-        }
-
         private void ConfirmButton_Click(object sender, RoutedEventArgs e) {
             RoutedEventArgs arg = new RoutedEventArgs(ConfirmedEvent, this);
             RaiseEvent(arg);

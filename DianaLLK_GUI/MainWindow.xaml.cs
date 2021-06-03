@@ -67,7 +67,7 @@ namespace DianaLLK_GUI {
                 GetGameTheme();
                 FoldGameSetterPanel();
                 FoldTokenStack();
-                GameStatistics.Hide();
+                FoldGameStatistic();
                 _startTime = DateTime.Now;
             }
             catch (Exception exp) {
@@ -108,8 +108,9 @@ namespace DianaLLK_GUI {
             // 弹出统计窗口
             var gameUsingTime = (DateTime.Now - _startTime).TotalMilliseconds / 1000.0;
             var totalScores = (int)(e.TotalScores / Math.Log(gameUsingTime));
-            GameStatistics.Display(e, gameUsingTime, 0, totalScores, ActualWidth / 4);
+            GameStatistics.UpdateStatistic(e, gameUsingTime, 0, totalScores);
             ExpandTokenStack(ActualWidth / 4 * 3);
+            ExpandGameStatistic(ActualWidth / 4);
             // 展开设置窗口
             //ExpandGameSetterPanel();
         }
@@ -202,19 +203,19 @@ namespace DianaLLK_GUI {
             GameSetterPanel.BeginAnimation(OpacityProperty, opacityAnimation);
         }
         /// <summary>
-        /// 展开收藏区
+        /// 展开收藏
         /// </summary>
         private void ExpandTokenStack(double width) {
             DoubleAnimation animation = new DoubleAnimation() {
                 To = width,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
+                Duration = TimeSpan.FromMilliseconds(200)
             };
             TokenStack.BeginAnimation(WidthProperty, animation);
         }
         /// <summary>
-        /// 收起收藏去
+        /// 收起收藏
         /// </summary>
         private void FoldTokenStack() {
             DoubleAnimation animation = new DoubleAnimation() {
@@ -224,6 +225,31 @@ namespace DianaLLK_GUI {
                 Duration = TimeSpan.FromMilliseconds(150)
             };
             TokenStack.BeginAnimation(WidthProperty, animation);
+        }
+        /// <summary>
+        /// 展开游戏统计信息
+        /// </summary>
+        /// <param name="width">展开宽度</param>
+        private void ExpandGameStatistic(double width) {
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = width,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            GameStatistics.BeginAnimation(WidthProperty, animation);
+        }
+        /// <summary>
+        /// 收起游戏统计信息
+        /// </summary>
+        private void FoldGameStatistic() {
+            DoubleAnimation animation = new DoubleAnimation() {
+                To = 0,
+                AccelerationRatio = 0.2,
+                DecelerationRatio = 0.8,
+                Duration = TimeSpan.FromMilliseconds(150)
+            };
+            GameStatistics.BeginAnimation(WidthProperty, animation);
         }
         /// <summary>
         /// 设置游戏主题色
