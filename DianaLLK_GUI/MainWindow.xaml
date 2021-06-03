@@ -85,7 +85,8 @@
                 <Button Grid.Column="4" Content="&#x2573;" Click="Window_Close" Style="{StaticResource TitleButtonStyle}"/>
             </Grid>
         </Grid>
-        <Grid x:Name="GameArea" Grid.Row="1" Background="{StaticResource DianaTheme}">
+        <Grid x:Name="GameArea" Grid.Row="1">
+            <Image Source="Resources/Images/BACKGROUND.png" Stretch="UniformToFill"/>
             <Viewbox Grid.Row="1" Grid.Column="1">
                 <Grid Margin="15">
                     <ItemsControl ItemsSource="{Binding Game.LLKTokenArray}" BorderBrush="White" BorderThickness="1">
