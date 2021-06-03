@@ -1,8 +1,6 @@
 ﻿using LianLianKan;
-using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 
 namespace DianaLLK_GUI.View {
     /// <summary>

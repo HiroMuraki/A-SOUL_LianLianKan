@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LianLianKan;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using LianLianKan;
 
 namespace DianaLLK_GUI.ViewModel.ValueConverter {
     [ValueConversion(typeof(TokenCategory), typeof(Brush))]

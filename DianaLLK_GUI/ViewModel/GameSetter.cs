@@ -1,5 +1,4 @@
 ﻿using LianLianKan;
-using System;
 using System.ComponentModel;
 
 namespace DianaLLK_GUI.ViewModel {

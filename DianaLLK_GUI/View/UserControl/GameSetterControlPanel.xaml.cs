@@ -1,7 +1,7 @@
 ﻿using DianaLLK_GUI.ViewModel;
+using LianLianKan;
 using System.Windows;
 using System.Windows.Controls;
-using LianLianKan;
 
 namespace DianaLLK_GUI.View {
     /// <summary>
