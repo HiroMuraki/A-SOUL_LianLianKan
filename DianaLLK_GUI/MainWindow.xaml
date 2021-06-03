@@ -62,7 +62,6 @@
             <RowDefinition Height="1"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Image Grid.RowSpan="3" Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Grid Grid.Row="0" Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" MouseDown="Window_Move">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -95,6 +94,7 @@
         </Grid>
         <Border Grid.Row="1" Background="{StaticResource TextTheme}"/>
         <Grid Grid.Row="2">
+            <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
