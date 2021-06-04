@@ -59,6 +59,7 @@ namespace DianaLLK_GUI {
 
         private async void SelectToken_Click(object sender, TClickEventArgs e) {
             await _game.SelectTokenAsync(e.Token);
+            // 播放点击效果音
             _gameSound.PlayClickFXSond();
         }
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
@@ -101,11 +102,13 @@ namespace DianaLLK_GUI {
                 return;
             }
             SkillDisplayer.DisplaySkill(e.Skill, 750, ActualWidth);
+            // 播放技能效果音
             _gameSound.PlaySkillActivedSound(e.Skill);
         }
         private void Game_TokenMatched(object sender, TokenMatchedEventArgs e) {
             if (e.Sucess) {
                 TokenStack.AddToStack(e.TokenType);
+                // 播放连接成功效果音
                 _gameSound.PlayMatchedFXSound();
             }
         }
@@ -117,6 +120,7 @@ namespace DianaLLK_GUI {
             // 展开统计窗口
             ExpandGameStatistic(ActualWidth / 4);
             ExpandTokenStack(ActualWidth / 4 * 3);
+            // 播放游戏结算音
             _gameSound.PlayGameCompletedSound();
         }
         private void Game_LayoutReseted(object sender, LayoutResetedEventArgs e) {
@@ -132,6 +136,7 @@ namespace DianaLLK_GUI {
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e) {
+            // 播放背景音乐
             _gameSound.PlayMusic();
         }
         private void Window_Minimum(object sender, RoutedEventArgs e) {
