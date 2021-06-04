@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace LianLianKan {
     public static class LLKHelper {
-        private static Array _allTokenTypes;
-        private static Array _allTokenCategory;
-        private static Random _rnd;
+        private static readonly Array _allTokenTypes;
+        private static readonly Array _allTokenCategory;
+        private static readonly Random _rnd;
 
         public static readonly Dictionary<LLKTokenType, string> TokenResources;
         public static readonly Dictionary<TokenCategory, string> TokenCategoryThemes;

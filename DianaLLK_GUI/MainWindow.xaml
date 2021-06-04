@@ -7,7 +7,8 @@
         xmlns:ViewModel="clr-namespace:DianaLLK_GUI.ViewModel"
         xmlns:View="clr-namespace:DianaLLK_GUI.View"
         mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="720" Width="1280" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <WindowChrome.WindowChrome>
         <WindowChrome UseAeroCaptionButtons="False" CaptionHeight="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
