@@ -73,7 +73,7 @@
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="=" Click="ExpandGameSetter_Click" ToolTip="设置" Style="{StaticResource TitleButtonStyle}"/>
-            <Button Grid.Column="1" Content="{Binding Game.SkillPoint}" ToolTip="当前技能点&#13;点击保存以游戏&#13;" Click="GameSave_Click" Style="{StaticResource TitleButtonStyle}"/>
+            <Button Grid.Column="1" Content="{Binding Game.SkillPoint}" ToolTip="当前技能点&#13;点击保存以游戏" Click="GameSave_Click" Style="{StaticResource TitleButtonStyle}"/>
             <View:SkillGroupControl Grid.Column="2" HorizontalAlignment="Center" SkillActived="ActiveSkill_Click"/>
             <Button Grid.Column="3" Content="&#x2501;" Click="Window_Minimum" Style="{StaticResource TitleButtonStyle}"/>
             <Button Grid.Column="4" Content="&#x2610;" Click="Window_Maximum" Style="{StaticResource TitleButtonStyle}"/>
