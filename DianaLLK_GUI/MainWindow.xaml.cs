@@ -1,7 +1,10 @@
 ﻿using DianaLLK_GUI.ViewModel;
 using LianLianKan;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -134,6 +137,35 @@ namespace DianaLLK_GUI {
                 TokensLayout.Children.Add(tokenRound);
             }
         }
+        private void GameSave_Click(object sender, RoutedEventArgs e) {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "文本文件|*.txt";
+            sfd.FileName = "LLKLayout.txt";
+            sfd.Title = "保存游戏布局";
+            if (sfd.ShowDialog() == true) {
+                string fileName = sfd.FileName;
+                try {
+                    string outputString = LLKHelper.ConvertLayoutFrom(_game.TokenTypeArray, _game.RowSize, _game.ColumnSize, _game.SkillPoint);
+                    if (outputString == null) {
+                        throw new Exception();
+                    }
+                    using (FileStream writer = new FileStream(fileName, FileMode.Create, FileAccess.Write)) {
+                        writer.Write(Encoding.UTF8.GetBytes(outputString));
+                    }
+                }
+                catch (Exception exp) {
+                    MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+        private void GameSave_FileDraged(object sender, DragEventArgs e) {
+            var fileList = e.Data.GetData(DataFormats.FileDrop) as string[];
+            using (StreamReader file = new StreamReader(fileList[0])) {
+                var layoutString = file.ReadToEnd();
+                var result = LLKHelper.GenerateLayoutFrom(layoutString);
+                _game.RestoreGame(result.Item1, result.Item2);
+            }
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e) {
             // 播放背景音乐
@@ -158,10 +190,20 @@ namespace DianaLLK_GUI {
                 Window_Maximum(null, null);
             }
             else {
-                DragMove();
+                if (Mouse.LeftButton == MouseButtonState.Pressed) {
+                    DragMove();
+                }
             }
         }
-
+        private void Window_DragEnter(object sender, DragEventArgs e) {
+            FileDropArea.IsHitTestVisible = true;
+        }
+        private void Window_DragLeave(object sender, DragEventArgs e) {
+            FileDropArea.IsHitTestVisible = false;
+        }
+        private void Window_Drop(object sender, DragEventArgs e) {
+            FileDropArea.IsHitTestVisible = false;
+        }
 
         /// <summary>
         /// 开始游戏

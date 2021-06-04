@@ -43,6 +43,15 @@ namespace LianLianKan {
                 }
             }
         }
+        public IEnumerable<LLKTokenType> TokenTypeArray {
+            get {
+                for (int row = 0; row < _rowSize; row++) {
+                    for (int col = 0; col < _columnSize; col++) {
+                        yield return _gameLayout[row, col].TokenType;
+                    }
+                }
+            }
+        }
         public int RowSize {
             get {
                 return _rowSize;
@@ -87,20 +96,15 @@ namespace LianLianKan {
 
         #region 公开方法
         public void StartGame(int rowSize, int columnSize, int tokenAmount) {
-            // 重置状态
-            _isBellaPowerOn = false;
-            _isEileenPowerOn = false;
-            _heldToken = null;
-            // 生成布局
-            GenerateGameLayout(rowSize, columnSize, tokenAmount);
-            _skillPoint = GetSkillPoint();
-            // 更新坐标检测
-            _coordinateChecked.Clear();
-            ResetCoordinateStatus();
-            OnPropertyChanged(nameof(RowSize));
-            OnPropertyChanged(nameof(ColumnSize));
-            OnPropertyChanged(nameof(SkillPoint));
-            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
+            StartGameCore(() => {
+                GenerateGameLayout(rowSize, columnSize, tokenAmount);
+                _skillPoint = GetSkillPoint();
+            });
+        }
+        public void RestoreGame(LLKTokenType[,] tokenTypes, int skillPoint) {
+            StartGameCore(() => {
+                RestoreGameLayout(tokenTypes, skillPoint);
+            });
         }
         public void SelectToken(LLKToken token) {
             var matchedTokenType = _heldToken?.TokenType;
@@ -369,6 +373,35 @@ namespace LianLianKan {
                 }
             }
         }
+        private void RestoreGameLayout(LLKTokenType[,] tokenTypes, int skillPoint) {
+            _rowSize = tokenTypes.GetLength(0);
+            _columnSize = tokenTypes.GetLength(1);
+            _gameLayout = new LLKToken[_rowSize, _columnSize];
+            for (int row = 0; row < _rowSize; row++) {
+                for (int col = 0; col < _columnSize; col++) {
+                    _gameLayout[row, col] = new LLKToken(tokenTypes[row, col], new Coordinate(row, col));
+                }
+            }
+            _skillPoint = skillPoint;
+        }
+        private void StartGameCore(Action gameLayoutGenerateCallBack) {
+            if (gameLayoutGenerateCallBack == null) {
+                return;
+            }
+            // 重置状态
+            _isBellaPowerOn = false;
+            _isEileenPowerOn = false;
+            _heldToken = null;
+            // 生成布局
+            gameLayoutGenerateCallBack?.Invoke();
+            // 更新坐标检测
+            _coordinateChecked.Clear();
+            ResetCoordinateStatus();
+            OnPropertyChanged(nameof(RowSize));
+            OnPropertyChanged(nameof(ColumnSize));
+            OnPropertyChanged(nameof(SkillPoint));
+            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
+        }
         private void ResetCoordinateStatus() {
             for (int row = 0; row < _rowSize; row++) {
                 for (int col = 0; col < _columnSize; col++) {
@@ -475,6 +508,7 @@ namespace LianLianKan {
             }
             return true;
         }
+        // 技能组
         private bool AvaPower() {
             if (_skillPoint < 3) {
                 return false;

@@ -78,7 +78,7 @@ namespace DianaLLK_GUI.ViewModel {
         static GameSetter() {
             _singletonObject = new GameSetter();
             _minSize = 6;
-            _maxSize = 18;
+            _maxSize = 20;
             _minTokenAmount = 6;
         }
         private GameSetter() {

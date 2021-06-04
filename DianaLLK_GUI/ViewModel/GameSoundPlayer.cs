@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
 
-namespace DianaLLK_GUI {
+namespace DianaLLK_GUI.ViewModel {
     public class GameSoundPlayer {
         private static GameSoundPlayer _singletonObject;
         private static object _singletonLocker = new object();
