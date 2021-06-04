@@ -70,7 +70,8 @@ namespace DianaLLK_GUI {
         }
         private void StartGame_Click(object sender, RoutedEventArgs e) {
             try {
-                StartGame();
+                _game.StartGame(_gameSetter.RowSize, _gameSetter.ColumnSize, _gameSetter.TokenAmount);
+                TokenStack.ResetStack();
                 GetGameTheme();
                 FoldGameSetterPanel();
                 FoldTokenStack();
@@ -159,11 +160,21 @@ namespace DianaLLK_GUI {
             }
         }
         private void GameSave_FileDraged(object sender, DragEventArgs e) {
-            var fileList = e.Data.GetData(DataFormats.FileDrop) as string[];
-            using (StreamReader file = new StreamReader(fileList[0])) {
-                var layoutString = file.ReadToEnd();
-                var result = LLKHelper.GenerateLayoutFrom(layoutString);
-                _game.RestoreGame(result.Item1, result.Item2);
+            try {
+                var fileList = e.Data.GetData(DataFormats.FileDrop) as string[];
+                using (StreamReader file = new StreamReader(fileList[0])) {
+                    var layoutString = file.ReadToEnd();
+                    var result = LLKHelper.GenerateLayoutFrom(layoutString);
+                    _game.RestoreGame(result.Item1, result.Item2);
+                }
+                TokenStack.ResetStack();
+                FoldGameSetterPanel();
+                FoldTokenStack();
+                FoldGameStatistic();
+                _startTime = DateTime.Now;
+            }
+            catch (Exception exp) {
+                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -205,19 +216,6 @@ namespace DianaLLK_GUI {
             FileDropArea.IsHitTestVisible = false;
         }
 
-        /// <summary>
-        /// 开始游戏
-        /// </summary>
-        private void StartGame() {
-            _game.StartGame(_gameSetter.RowSize, _gameSetter.ColumnSize, _gameSetter.TokenAmount);
-            TokensLayout.Children.Clear();
-            foreach (var token in _game.LLKTokenArray) {
-                var tokenRound = new View.LLKTokenRound(token);
-                tokenRound.TClick += SelectToken_Click;
-                TokensLayout.Children.Add(tokenRound);
-            }
-            TokenStack.ResetStack();
-        }
         /// <summary>
         /// 展开游戏设置面板
         /// </summary>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
+    using LLKTokenTypes = IEnumerable<LLKTokenType>;
     public sealed class LLKGame : INotifyPropertyChanged {
         private LLKToken[,] _gameLayout;
         private LLKToken _heldToken;
@@ -43,7 +44,7 @@ namespace LianLianKan {
                 }
             }
         }
-        public IEnumerable<LLKTokenType> TokenTypeArray {
+        public LLKTokenTypes TokenTypeArray {
             get {
                 for (int row = 0; row < _rowSize; row++) {
                     for (int col = 0; col < _columnSize; col++) {
@@ -392,7 +393,7 @@ namespace LianLianKan {
             _isBellaPowerOn = false;
             _isEileenPowerOn = false;
             _heldToken = null;
-            // 生成布局
+            // 通过回调方法生成布局
             gameLayoutGenerateCallBack?.Invoke();
             // 更新坐标检测
             _coordinateChecked.Clear();
