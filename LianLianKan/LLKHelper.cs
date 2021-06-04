@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace LianLianKan {
     public static class LLKHelper {
@@ -64,6 +67,57 @@ namespace LianLianKan {
             NumTokenCategory = _allTokenCategory.Length - 1;
         }
 
+        public static Tuple<LLKTokenType[,], int> GenerateLayoutFrom(object obj) {
+            // 当前只支持string
+            if (!(obj is string)) {
+                return null;
+            }
+            string str = (string)obj;
+
+            var lines = str.Split('\n');
+            var metaData = lines[0].Split();
+            // 从第一行获取行列，技能点
+            int rowSize = Convert.ToInt32(metaData[0]);
+            int columnSize = Convert.ToInt32(metaData[1]);
+            int skillPoint = Convert.ToInt32(metaData[2]);
+
+            LLKTokenType[,] tokenTypes = new LLKTokenType[rowSize, columnSize];
+            // 从第二行开始读取每行的元素
+            for (int row = 1; row < rowSize; row++) {
+                var elements = lines[row].Split();
+                // 若有一行元素数不符，返回null
+                if (elements.Count() != columnSize) {
+                    return null;
+                }
+                for (int col = 0; col < columnSize; col++) {
+                    tokenTypes[row, col] = (LLKTokenType)Convert.ToInt32(elements[col]);
+                }
+            }
+
+            return Tuple.Create(tokenTypes, skillPoint);
+        }
+        public static string ConverterLayoutFrom(LLKTokenType[,] tokenTypes, int skillPoint) {
+            int rowSize = tokenTypes.GetLength(0);
+            int columnSize = tokenTypes.GetLength(1);
+
+            StringBuilder sb = new StringBuilder();
+            // 写入行、列与技能点信息
+            sb.Append($"{rowSize} {columnSize} {skillPoint}\n");
+            for (int row = 0; row < rowSize; row++) {
+                for (int col = 0; col < columnSize; col++) {
+                    // 将TokenType枚举转化为数值写入
+                    sb.Append($"{(int)tokenTypes[row, col]}");
+                    if (col != columnSize - 1) {
+                        sb.Append(' ');
+                    }
+                }
+                if (row != rowSize - 1) {
+                    sb.Append('\n');
+                }
+            }
+
+            return sb.ToString();
+        }
         public static LLKTokenType GetRandomTokenType() {
             return (LLKTokenType)_allTokenTypes.GetValue(_rnd.Next(1, _allTokenTypes.Length));
         }
