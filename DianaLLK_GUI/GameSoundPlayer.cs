@@ -95,7 +95,7 @@ namespace DianaLLK_GUI {
             return _singletonObject;
         }
 
-        public void PlayClickFXSond() {
+        public void PlayClickFXSound() {
             RandomPlay(_clickSoundPlayer, _clickFXSounds);
         }
         public void PlayMatchedFXSound() {

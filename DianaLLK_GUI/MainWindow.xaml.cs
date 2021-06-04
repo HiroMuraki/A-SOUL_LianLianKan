@@ -60,7 +60,7 @@ namespace DianaLLK_GUI {
         private async void SelectToken_Click(object sender, TClickEventArgs e) {
             await _game.SelectTokenAsync(e.Token);
             // 播放点击效果音
-            _gameSound.PlayClickFXSond();
+            _gameSound.PlayClickFXSound();
         }
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
             await _game.ActiveSkillAsync(e.SKill);
