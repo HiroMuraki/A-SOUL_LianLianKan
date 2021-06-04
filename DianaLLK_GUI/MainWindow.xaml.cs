@@ -14,6 +14,7 @@ namespace DianaLLK_GUI {
     public partial class MainWindow : Window {
         private readonly LLKGame _game;
         private readonly GameSetter _gameSetter;
+        private readonly GameSoundPlayer _gameSound;
         private DateTime _startTime;
         // private Point _hitPos;
         // private Line _directionLine;
@@ -48,6 +49,7 @@ namespace DianaLLK_GUI {
             _game.LayoutReseted += Game_LayoutReseted;
             _game.SkillActived += Game_SkillActived;
             _game.TokenMatched += Game_TokenMatched;
+            _gameSound = GameSoundPlayer.GetInstance();
             InitializeComponent();
             GridRoot.MaxHeight = SystemParameters.WorkArea.Height;
             GridRoot.MaxWidth = SystemParameters.WorkArea.Width;
@@ -57,6 +59,7 @@ namespace DianaLLK_GUI {
 
         private async void SelectToken_Click(object sender, TClickEventArgs e) {
             await _game.SelectTokenAsync(e.Token);
+            _gameSound.PlayClickFXSond();
         }
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
             await _game.ActiveSkillAsync(e.SKill);
@@ -98,10 +101,12 @@ namespace DianaLLK_GUI {
                 return;
             }
             SkillDisplayer.DisplaySkill(e.Skill, 750, ActualWidth);
+            _gameSound.PlaySkillActivedSound(e.Skill);
         }
         private void Game_TokenMatched(object sender, TokenMatchedEventArgs e) {
             if (e.Sucess) {
                 TokenStack.AddToStack(e.TokenType);
+                _gameSound.PlayMatchedFXSound();
             }
         }
         private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
@@ -109,10 +114,10 @@ namespace DianaLLK_GUI {
             var gameUsingTime = (DateTime.Now - _startTime).TotalMilliseconds / 1000.0;
             var totalScores = (int)(e.TotalScores / Math.Log(gameUsingTime));
             GameStatistics.UpdateStatistic(e, gameUsingTime, 0, totalScores);
-            ExpandTokenStack(ActualWidth / 4 * 3);
+            // 展开统计窗口
             ExpandGameStatistic(ActualWidth / 4);
-            // 展开设置窗口
-            //ExpandGameSetterPanel();
+            ExpandTokenStack(ActualWidth / 4 * 3);
+            _gameSound.PlayGameCompletedSound();
         }
         private void Game_LayoutReseted(object sender, LayoutResetedEventArgs e) {
             TokensLayout.Children.Clear();
@@ -126,6 +131,9 @@ namespace DianaLLK_GUI {
             }
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e) {
+            _gameSound.PlayMusic();
+        }
         private void Window_Minimum(object sender, RoutedEventArgs e) {
             WindowState = WindowState.Minimized;
         }
