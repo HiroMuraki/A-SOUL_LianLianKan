@@ -21,6 +21,7 @@ namespace DianaLLK_GUI {
         }
         private void ResolveLaunchArguments(string[] args) {
             GameSetter setter = GameSetter.GetInstance();
+            GameSoundPlayer gameSound = GameSoundPlayer.GetInstance();
             setter.RowSize = 6;
             setter.ColumnSize = 10;
             setter.TokenAmount = 15;
@@ -39,7 +40,11 @@ namespace DianaLLK_GUI {
                         setter.TokenAmount = Convert.ToInt32(args[i + 1]);
                         i += 1;
                     }
+                    else if (currentArg == "-SOUND" || currentArg == "SOUNDPACK") {
+                        gameSound.GameSoundDirectory = args[i + 1];
+                    }
                 }
+                gameSound.LoadSounds();
             }
             catch {
                 setter.RowSize = 6;

@@ -73,22 +73,8 @@
                 <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="=" Click="ExpandGameSetter_Click" ToolTip="设置" Style="{StaticResource TitleButtonStyle}"/>
-            <Label Grid.Column="1" Content="{Binding Game.SkillPoint}" FontSize="18" Foreground="{StaticResource TextTheme}" 
-                       VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Grid Grid.Column="2" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <View:SButton Grid.Column="0" Skill="AvaPower" ToolTip="AVAVA! [3]" SClick="ActiveSkill_Click"/>
-                <View:SButton Grid.Column="1" Skill="BellaPower" ToolTip="击穿月球! [2]" SClick="ActiveSkill_Click"/>
-                <View:SButton Grid.Column="2" Skill="CarolPower" ToolTip="R I S E [1]" SClick="ActiveSkill_Click"/>
-                <View:SButton Grid.Column="3" Skill="DianaPower" ToolTip="多态小草莓 [1]" SClick="ActiveSkill_Click"/>
-                <View:SButton Grid.Column="4" Skill="EileenPower" ToolTip="团队粘合 [2]" SClick="ActiveSkill_Click"/>
-            </Grid>
+            <Label Grid.Column="1" Content="{Binding Game.SkillPoint}" ToolTip="当前技能点" FontSize="18" Foreground="{StaticResource TextTheme}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <View:SkillGroupControl Grid.Column="2" HorizontalAlignment="Center" SkillActived="ActiveSkill_Click"/>
             <Button Grid.Column="3" Content="&#x2501;" Click="Window_Minimum" Style="{StaticResource TitleButtonStyle}"/>
             <Button Grid.Column="4" Content="&#x2610;" Click="Window_Maximum" Style="{StaticResource TitleButtonStyle}"/>
             <Button Grid.Column="5" Content="&#x2573;" Click="Window_Close" Style="{StaticResource TitleButtonStyle}"/>

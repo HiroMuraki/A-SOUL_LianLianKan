@@ -6,9 +6,9 @@ using System.Windows.Media;
 
 namespace DianaLLK_GUI {
     public class GameSoundPlayer {
-        private static readonly string _gameSoundDirectory = "ASSounds";
         private static GameSoundPlayer _singletonObject;
         private static object _singletonLocker = new object();
+        private string _gameSoundDirectory;
         private readonly Random _rnd;
         private readonly List<Uri> _clickFXSounds; // 点击音效
         private readonly List<Uri> _matchedFXSounds; // 连接成功音效
@@ -25,8 +25,17 @@ namespace DianaLLK_GUI {
         private readonly MediaPlayer _gameCompletedSoundPlayer; // 结算音播放器
         private readonly MediaPlayer _skillActivedSoundPlayer; // 技能启动音播放器
 
+        public string GameSoundDirectory {
+            get {
+                return _gameSoundDirectory;
+            }
+            set {
+                _gameSoundDirectory = value;
+            }
+        }
         private GameSoundPlayer() {
             _rnd = new Random();
+            _gameSoundDirectory = "ASSounds";
 
             _clickSoundPlayer = new MediaPlayer();
             _matchedSoundPlayer = new MediaPlayer();
@@ -43,7 +52,19 @@ namespace DianaLLK_GUI {
             _dianaSkillSounds = new List<Uri>();
             _eileenSkillSounds = new List<Uri>();
             _gameMusic = new List<Uri>();
+        }
+        public static GameSoundPlayer GetInstance() {
+            if (_singletonObject == null) {
+                lock (_singletonLocker) {
+                    if (_singletonObject == null) {
+                        _singletonObject = new GameSoundPlayer();
+                    }
+                }
+            }
+            return _singletonObject;
+        }
 
+        public void LoadSounds() {
             if (!Directory.Exists(_gameSoundDirectory)) {
                 return;
             }
@@ -84,17 +105,6 @@ namespace DianaLLK_GUI {
                 }
             }
         }
-        public static GameSoundPlayer GetInstance() {
-            if (_singletonObject == null) {
-                lock (_singletonLocker) {
-                    if (_singletonObject == null) {
-                        _singletonObject = new GameSoundPlayer();
-                    }
-                }
-            }
-            return _singletonObject;
-        }
-
         public void PlayClickFXSound() {
             RandomPlay(_clickSoundPlayer, _clickFXSounds);
         }

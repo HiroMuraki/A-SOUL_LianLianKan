@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
-    public class LLKGame : INotifyPropertyChanged {
+    public sealed class LLKGame : INotifyPropertyChanged {
         private LLKToken[,] _gameLayout;
         private LLKToken _heldToken;
         private readonly List<LLKTokenType> _currentTokenTypes;
@@ -102,6 +102,25 @@ namespace LianLianKan {
             OnPropertyChanged(nameof(SkillPoint));
             LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
         }
+        public void SelectToken(LLKToken token) {
+            var matchedTokenType = _heldToken?.TokenType;
+            var a = _heldToken;
+            var b = token;
+            bool matched = SelectTokenCore(token);
+            if (matched) {
+                a.OnMatched();
+                b.OnMatched();
+                if (matchedTokenType.Value == LLKTokenType.AS) {
+                    _skillPoint += 1;
+                    OnPropertyChanged(nameof(SkillPoint));
+                }
+                if (IsGameCompleted()) {
+                    int scores = GetTotalScores();
+                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                }
+                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
+            }
+        }
         public async Task SelectTokenAsync(LLKToken token) {
             var matchedTokenType = _heldToken?.TokenType;
             var a = _heldToken;
@@ -114,6 +133,10 @@ namespace LianLianKan {
             if (matched) {
                 a.OnMatched();
                 b.OnMatched();
+                if (matchedTokenType.Value == LLKTokenType.AS) {
+                    _skillPoint += 1;
+                    OnPropertyChanged(nameof(SkillPoint));
+                }
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
@@ -121,27 +144,8 @@ namespace LianLianKan {
                 TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
             }
         }
-        public void SelectToken(LLKToken token) {
-            var matchedTokenType = _heldToken?.TokenType;
-            var a = _heldToken;
-            var b = token;
-            bool matched = SelectTokenCore(token);
-            if (matched) {
-                a.OnMatched();
-                b.OnMatched();
-                if (IsGameCompleted()) {
-                    int scores = GetTotalScores();
-                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
-                }
-                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
-            }
-        }
-        public async Task ActiveSkillAsync(LLKSkill skill) {
-            bool actived = await Task.Run(() => {
-                lock (_skillLocker) {
-                    return ActiveSkillCore(skill);
-                }
-            });
+        public void ActiveSkill(LLKSkill skill) {
+            bool actived = ActiveSkillCore(skill);
             if (actived) {
                 if (skill == LLKSkill.AvaPower) {
                     LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
@@ -149,8 +153,12 @@ namespace LianLianKan {
             }
             SkillActived?.Invoke(this, new SkillActivedEventArgs(skill, actived));
         }
-        public void ActiveSkill(LLKSkill skill) {
-            bool actived = ActiveSkillCore(skill);
+        public async Task ActiveSkillAsync(LLKSkill skill) {
+            bool actived = await Task.Run(() => {
+                lock (_skillLocker) {
+                    return ActiveSkillCore(skill);
+                }
+            });
             if (actived) {
                 if (skill == LLKSkill.AvaPower) {
                     LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
