@@ -20,7 +20,7 @@ namespace DianaLLK_GUI {
         private readonly List<Uri> _dianaSkillSounds; // 嘉然技能音效
         private readonly List<Uri> _eileenSkillSounds; // 乃琳技能音效
         private readonly MediaPlayer _clickSoundPlayer; // 点击技能音播放器
-        private readonly MediaPlayer _matchedkSoundPlayer; // 点击技能音播放器
+        private readonly MediaPlayer _matchedSoundPlayer; // 点击技能音播放器
         private readonly MediaPlayer _musicSoundPlayer; // 背景音乐播放器
         private readonly MediaPlayer _gameCompletedSoundPlayer; // 结算音播放器
         private readonly MediaPlayer _skillActivedSoundPlayer; // 技能启动音播放器
@@ -29,7 +29,7 @@ namespace DianaLLK_GUI {
             _rnd = new Random();
 
             _clickSoundPlayer = new MediaPlayer();
-            _matchedkSoundPlayer = new MediaPlayer();
+            _matchedSoundPlayer = new MediaPlayer();
             _musicSoundPlayer = new MediaPlayer();
             _gameCompletedSoundPlayer = new MediaPlayer();
             _skillActivedSoundPlayer = new MediaPlayer();
@@ -99,7 +99,7 @@ namespace DianaLLK_GUI {
             RandomPlay(_clickSoundPlayer, _clickFXSounds);
         }
         public void PlayMatchedFXSound() {
-            RandomPlay(_matchedkSoundPlayer, _matchedFXSounds);
+            RandomPlay(_matchedSoundPlayer, _matchedFXSounds);
         }
         public void PlayMusic() {
             RandomPlay(_musicSoundPlayer, _gameMusic);
@@ -131,11 +131,11 @@ namespace DianaLLK_GUI {
             }
             _skillActivedSoundPlayer.Play();
         }
-        private void RandomPlay(MediaPlayer player, ICollection<Uri> resources) {
+        private void RandomPlay(MediaPlayer player, List<Uri> resources) {
             if (resources.Count <= 0) {
                 return;
             }
-            player.Open(_gameCompletedSounds[_rnd.Next(0, resources.Count)]);
+            player.Open(resources[_rnd.Next(0, resources.Count)]);
             player.Play();
         }
     }
