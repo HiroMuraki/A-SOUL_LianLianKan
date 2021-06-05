@@ -17,8 +17,8 @@ namespace LianLianKan {
         private int _columnSize;
         private int _skillPoint;
         private GameType _gameType;
-        private object _processLocker;
-        private object _skillLocker;
+        private readonly object _processLocker;
+        private readonly object _skillLocker;
         private bool _isBellaPowerOn;
         private bool _isEileenPowerOn;
 
@@ -109,9 +109,10 @@ namespace LianLianKan {
             });
             _gameType = GameType.New;
         }
-        public void RestoreGame(LLKTokenType[,] tokenTypes, int skillPoint) {
+        public void RestoreGame(GameRestorePack restorePack) {
             StartGameCore(() => {
-                RestoreGameLayout(tokenTypes, skillPoint);
+                RestoreGameLayout(restorePack);
+                _skillPoint = GetSkillPoint();
             });
             _gameType = GameType.Restored;
         }
@@ -384,16 +385,23 @@ namespace LianLianKan {
                 }
             }
         }
-        private void RestoreGameLayout(LLKTokenType[,] tokenTypes, int skillPoint) {
-            _rowSize = tokenTypes.GetLength(0);
-            _columnSize = tokenTypes.GetLength(1);
+        private void RestoreGameLayout(GameRestorePack restorePack) {
+            // 恢复布局信息
+            _rowSize = restorePack.RowSize;
+            _columnSize = restorePack.ColumnSize;
             _gameLayout = new LLKToken[_rowSize, _columnSize];
             for (int row = 0; row < _rowSize; row++) {
                 for (int col = 0; col < _columnSize; col++) {
-                    _gameLayout[row, col] = new LLKToken(tokenTypes[row, col], new Coordinate(row, col));
+                    _gameLayout[row, col] = new LLKToken(restorePack.TokenTypes[row, col], new Coordinate(row, col));
                 }
             }
-            _skillPoint = skillPoint;
+            // 恢复技能点
+            _skillPoint = restorePack.SkillPoint;
+            // 恢复成员类数信息
+            _currentTokenTypes.Clear();
+            for (int i = 0; i < restorePack.NumTokenTypes; i++) {
+                _currentTokenTypes.Add(LLKTokenType.AS);
+            }
         }
         private void StartGameCore(Action gameLayoutGenerateCallBack) {
             if (gameLayoutGenerateCallBack == null) {

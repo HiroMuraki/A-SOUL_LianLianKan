@@ -147,7 +147,7 @@ namespace DianaLLK_GUI {
             if (sfd.ShowDialog() == true) {
                 string fileName = sfd.FileName;
                 try {
-                    string outputString = LLKHelper.ConvertLayoutFrom(_game.TokenTypeArray, _game.RowSize, _game.ColumnSize, _game.SkillPoint);
+                    string outputString = LLKHelper.ConvertLayoutFrom(_game.TokenTypeArray, _game.RowSize, _game.ColumnSize, _game.SkillPoint, _game.CurrentTokenTypes.Count);
                     if (outputString == null) {
                         throw new Exception();
                     }
@@ -166,7 +166,7 @@ namespace DianaLLK_GUI {
                 using (StreamReader file = new StreamReader(fileList[0])) {
                     var layoutString = file.ReadToEnd();
                     var result = LLKHelper.GenerateLayoutFrom(layoutString);
-                    _game.RestoreGame(result.Item1, result.Item2);
+                    _game.RestoreGame(result);
                 }
                 TokenStack.ResetStack();
                 FoldGameSetterPanel();
