@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LianLianKan {
+﻿namespace LianLianKan {
     public enum GameType {
         New,
         Restored

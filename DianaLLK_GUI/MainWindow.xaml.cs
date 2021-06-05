@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -147,7 +146,7 @@ namespace DianaLLK_GUI {
             if (sfd.ShowDialog() == true) {
                 string fileName = sfd.FileName;
                 try {
-                    string outputString = LLKHelper.ConvertLayoutFrom(_game.TokenTypeArray, _game.RowSize, _game.ColumnSize, _game.SkillPoint, _game.CurrentTokenTypes.Count);
+                    string outputString = LLKHelper.ConvertLayoutFrom(_game.TokenTypeArray, _game.RowSize, _game.ColumnSize, _game.CurrentTokenTypes.Count, _game.SkillPoint);
                     if (outputString == null) {
                         throw new Exception();
                     }
@@ -172,11 +171,11 @@ namespace DianaLLK_GUI {
                 FoldGameSetterPanel();
                 FoldTokenStack();
                 FoldGameStatistic();
-                TipBar.DisplayTip("已加载存档", TimeSpan.FromMilliseconds(500));
+                TipBar.DisplayTip("已加载存档", TimeSpan.FromMilliseconds(1000));
                 _startTime = DateTime.Now;
             }
             catch (Exception) {
-                TipBar.DisplayTip("! 存档文件读取错误", TimeSpan.FromMilliseconds(1500));
+                TipBar.DisplayTip("! 存档文件读取错误", TimeSpan.FromMilliseconds(2000));
             }
         }
 
