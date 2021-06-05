@@ -162,21 +162,21 @@ namespace DianaLLK_GUI {
         }
         private void GameSave_FileDraged(object sender, DragEventArgs e) {
             try {
-                var fileList = e.Data.GetData(DataFormats.FileDrop) as string[];
+                string[] fileList = e.Data.GetData(DataFormats.FileDrop) as string[];
                 using (StreamReader file = new StreamReader(fileList[0])) {
-                    var layoutString = file.ReadToEnd();
-                    var result = LLKHelper.GenerateLayoutFrom(layoutString);
+                    string layoutString = file.ReadToEnd();
+                    GameRestorePack result = LLKHelper.GenerateLayoutFrom(layoutString);
                     _game.RestoreGame(result);
                 }
                 TokenStack.ResetStack();
                 FoldGameSetterPanel();
                 FoldTokenStack();
                 FoldGameStatistic();
-                TipBar.DisplayTip("已加载存档", TimeSpan.FromMilliseconds(1000));
+                TipBar.DisplayTip("已加载存档", TimeSpan.FromSeconds(1));
                 _startTime = DateTime.Now;
             }
             catch (Exception) {
-                TipBar.DisplayTip("! 存档文件读取错误", TimeSpan.FromMilliseconds(2000));
+                TipBar.DisplayTip("! 存档文件读取错误", TimeSpan.FromSeconds(2));
             }
         }
 

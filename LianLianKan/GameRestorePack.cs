@@ -53,7 +53,7 @@ namespace LianLianKan {
             }
             string str = (string)obj;
 
-            var lines = str.Split(Environment.NewLine);
+            var lines = Regex.Split(str, @"\n");
             var metaData = Regex.Split(lines[0], @"[\s]+");
             // 从第一行获取行列，成员类数和技能点信息
             int rowSize = Convert.ToInt32(metaData[0]);
@@ -74,7 +74,7 @@ namespace LianLianKan {
                 }
             }
 
-            return new GameRestorePack(tokenTypes, skillPoint, numTokenTypes);
+            return new GameRestorePack(tokenTypes, numTokenTypes, skillPoint);
         }
         public static string ConvertLayoutFrom(LLKTokenType[,] tokenTypes, int numTokenTypes, int skillPoint) {
             int rowSize = tokenTypes.GetLength(0);
