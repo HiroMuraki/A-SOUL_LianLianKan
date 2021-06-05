@@ -6,6 +6,7 @@ namespace LianLianKan {
         private int _tokenAmount;
         private int _rowSize;
         private int _columnSize;
+        private GameType _gameType;
 
         public int TotalScores {
             get {
@@ -27,12 +28,18 @@ namespace LianLianKan {
                 return _rowSize;
             }
         }
+        public GameType GameType {
+            get {
+                return _gameType;
+            }
+        }
 
-        public GameCompletedEventArgs(int totalScores, int tokenAmount, int rowSize, int columnSize) {
+        public GameCompletedEventArgs(int totalScores, int tokenAmount, int rowSize, int columnSize, GameType gameType) {
             _totalScores = totalScores;
             _tokenAmount = tokenAmount;
             _rowSize = rowSize;
             _columnSize = columnSize;
+            _gameType = gameType;
         }
 
     }

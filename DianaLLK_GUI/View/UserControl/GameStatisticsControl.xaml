@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DianaLLK_GUI.View"
              mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-             d:DesignHeight="500" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="300">
     <UserControl.Resources>
         <Style x:Key="InfTitleLabelStyle" TargetType="Label">
             <Setter Property="HorizontalContentAlignment" Value="Right" />
@@ -50,21 +50,25 @@
     <Grid Background="{Binding TokenType,Converter={StaticResource LLKTokenTypeToColorFrame}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="200"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Background="{Binding TokenType,Converter={StaticResource LLKTokenTypeToColorFrame}}">
-            <Viewbox Grid.Row="0" Margin="50">
+            <Viewbox Grid.Row="0" Margin="60,20">
                 <Ellipse Width="256" Height="256" 
                          StrokeThickness="5" Stretch="Uniform"
                          Stroke="{StaticResource TextTheme}" Fill="{Binding TokenType,Converter={StaticResource LLKTokenTypeToImage}}" />
             </Viewbox>
         </Grid>
-        <Grid Grid.Row="1" >
+        <Grid Grid.Row="1" Height="60" Margin="0,10">
+            <TextBlock Text="{Binding TotalScores}" FontSize="40" ToolTip="本局游戏得分" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource InfTextStyle}"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,20">
             <Grid Margin="20,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -81,10 +85,10 @@
                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding GameSize}" Style="{StaticResource InfTextStyle}"/>
                 <Label Grid.Row="3" Grid.Column="0" Content="技能使用(次)：" Style="{StaticResource InfTitleLabelStyle}"/>
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SkillActivedTimes}" Style="{StaticResource InfTextStyle}"/>
-                <Label Grid.Row="4" Grid.Column="0" Content="总分：" Style="{StaticResource InfTitleLabelStyle}"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding TotalScores}" Style="{StaticResource InfTextStyle}"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="游戏类型：" Style="{StaticResource InfTitleLabelStyle}"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding GameType,Converter={StaticResource GameTypeToText}}" Style="{StaticResource InfTextStyle}"/>
             </Grid>
         </Grid>
-        <Button Grid.Row="2" Content="确定" Style="{StaticResource ConfirmButtonStyle}" Click="ConfirmButton_Click"/>
+        <Button Grid.Row="3" Content="确定" Style="{StaticResource ConfirmButtonStyle}" Click="ConfirmButton_Click"/>
     </Grid>
 </UserControl>

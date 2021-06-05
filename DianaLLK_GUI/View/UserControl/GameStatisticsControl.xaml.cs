@@ -21,6 +21,8 @@ namespace DianaLLK_GUI.View {
             DependencyProperty.Register(nameof(TotalScores), typeof(int), typeof(GameStatisticsControl), new PropertyMetadata(0));
         public static readonly DependencyProperty TokenTypeProperty =
             DependencyProperty.Register(nameof(TokenType), typeof(LLKTokenType), typeof(GameStatisticsControl), new PropertyMetadata(LLKTokenType.None));
+        public static readonly DependencyProperty GameTypeProperty =
+            DependencyProperty.Register(nameof(GameType), typeof(GameType), typeof(GameStatisticsControl), new PropertyMetadata(GameType.New));
 
         public event RoutedEventHandler Confirmed {
             add {
@@ -54,7 +56,14 @@ namespace DianaLLK_GUI.View {
                 SetValue(TokenAmountProperty, value);
             }
         }
-
+        public GameType GameType {
+            get {
+                return (GameType)GetValue(GameTypeProperty);
+            }
+            set {
+                SetValue(GameTypeProperty, value);
+            }
+        }
         public string GameSize {
             get {
                 return (string)GetValue(GameSizeProperty);
@@ -91,6 +100,7 @@ namespace DianaLLK_GUI.View {
             TotalScores = totalScore;
             GameSize = $"{e.RowSize} x {e.ColumnSize}";
             TokenType = ViewModel.GameSetter.GetRandomTokenType();
+            GameType = e.GameType;
         }
         private void ConfirmButton_Click(object sender, RoutedEventArgs e) {
             RoutedEventArgs arg = new RoutedEventArgs(ConfirmedEvent, this);

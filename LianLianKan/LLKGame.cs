@@ -16,6 +16,7 @@ namespace LianLianKan {
         private int _rowSize;
         private int _columnSize;
         private int _skillPoint;
+        private GameType _gameType;
         private object _processLocker;
         private object _skillLocker;
         private bool _isBellaPowerOn;
@@ -68,6 +69,11 @@ namespace LianLianKan {
                 return _skillPoint;
             }
         }
+        public GameType GameType {
+            get {
+                return _gameType;
+            }
+        }
         #endregion
 
         #region 构造方法
@@ -101,11 +107,13 @@ namespace LianLianKan {
                 GenerateGameLayout(rowSize, columnSize, tokenAmount);
                 _skillPoint = GetSkillPoint();
             });
+            _gameType = GameType.New;
         }
         public void RestoreGame(LLKTokenType[,] tokenTypes, int skillPoint) {
             StartGameCore(() => {
                 RestoreGameLayout(tokenTypes, skillPoint);
             });
+            _gameType = GameType.Restored;
         }
         public void SelectToken(LLKToken token) {
             var matchedTokenType = _heldToken?.TokenType;
@@ -115,15 +123,16 @@ namespace LianLianKan {
             if (matched) {
                 a.OnMatched();
                 b.OnMatched();
+                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
                 if (matchedTokenType.Value == LLKTokenType.AS) {
                     _skillPoint += 1;
                     OnPropertyChanged(nameof(SkillPoint));
                 }
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
-                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
+                    _gameType = GameType.New;
                 }
-                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
             }
         }
         public async Task SelectTokenAsync(LLKToken token) {
@@ -138,15 +147,16 @@ namespace LianLianKan {
             if (matched) {
                 a.OnMatched();
                 b.OnMatched();
+                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
                 if (matchedTokenType.Value == LLKTokenType.AS) {
                     _skillPoint += 1;
                     OnPropertyChanged(nameof(SkillPoint));
                 }
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
-                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize));
+                    GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
+                    _gameType = GameType.New;
                 }
-                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, matched));
             }
         }
         public void ActiveSkill(LLKSkill skill) {
