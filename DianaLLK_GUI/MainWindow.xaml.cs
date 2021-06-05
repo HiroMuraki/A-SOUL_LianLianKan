@@ -153,9 +153,10 @@ namespace DianaLLK_GUI {
                     using (FileStream writer = new FileStream(fileName, FileMode.Create, FileAccess.Write)) {
                         writer.Write(Encoding.UTF8.GetBytes(outputString));
                     }
+                    TipBar.DisplayTip($"存档已保存至{fileName}", TimeSpan.FromSeconds(3));
                 }
                 catch (Exception exp) {
-                    TipBar.DisplayTip(exp.Message, TimeSpan.FromMilliseconds(3000));
+                    TipBar.DisplayTip(exp.Message, TimeSpan.FromSeconds(3));
                 }
             }
         }
