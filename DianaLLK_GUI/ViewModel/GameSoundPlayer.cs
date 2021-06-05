@@ -40,6 +40,7 @@ namespace DianaLLK_GUI.ViewModel {
             _clickSoundPlayer = new MediaPlayer();
             _matchedSoundPlayer = new MediaPlayer();
             _musicSoundPlayer = new MediaPlayer();
+            _musicSoundPlayer.MediaEnded += MusicSoundPlayer_MediaEnded; // 背景音乐重复播放
             _gameCompletedSoundPlayer = new MediaPlayer();
             _skillActivedSoundPlayer = new MediaPlayer();
 
@@ -141,12 +142,16 @@ namespace DianaLLK_GUI.ViewModel {
             }
             _skillActivedSoundPlayer.Play();
         }
+
         private void RandomPlay(MediaPlayer player, List<Uri> resources) {
             if (resources.Count <= 0) {
                 return;
             }
             player.Open(resources[_rnd.Next(0, resources.Count)]);
             player.Play();
+        }
+        private void MusicSoundPlayer_MediaEnded(object sender, EventArgs e) {
+            PlayMusic();
         }
     }
 }
