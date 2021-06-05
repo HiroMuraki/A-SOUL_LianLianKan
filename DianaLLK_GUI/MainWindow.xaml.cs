@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -171,10 +172,11 @@ namespace DianaLLK_GUI {
                 FoldGameSetterPanel();
                 FoldTokenStack();
                 FoldGameStatistic();
+                TipBar.DisplayTip("已加载存档", TimeSpan.FromMilliseconds(500));
                 _startTime = DateTime.Now;
             }
-            catch (Exception exp) {
-                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+            catch (Exception) {
+                TipBar.DisplayTip("! 存档文件读取错误", TimeSpan.FromMilliseconds(1500));
             }
         }
 

@@ -104,6 +104,7 @@
             </Grid>
             <View:GameSetterControlPanel x:Name="GameSetterPanel" Height="0" VerticalAlignment="Top" GameTheme="{Binding GameTheme}" Start="StartGame_Click"/>
             <View:FileDragControl x:Name="FileDropArea" IsHitTestVisible="False" FileDraged="GameSave_FileDraged"/>
+            <View:TipBar x:Name="TipBar" Height="0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Window>
