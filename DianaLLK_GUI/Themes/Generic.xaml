@@ -17,7 +17,8 @@
                     <Viewbox>
                         <Grid>
                             <Border x:Name="HitArea" Background="#ffffff" Margin="5" Opacity="0" CornerRadius="15"/>
-                            <Border x:Name="Highlighter" Background="{Binding Token.TokenType, RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" Margin="5" Opacity="0" CornerRadius="15"/>
+                            <Border x:Name="HoveredHightliter" Background="{Binding Token.TokenType, RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" Margin="5" Opacity="0" CornerRadius="15"/>
+                            <Border x:Name="SelectedHighlighter" Background="{Binding Token.TokenType, RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" Margin="5" Opacity="0" CornerRadius="15"/>
                             <Ellipse x:Name="FakeShadow" Width="100" Height="100" Margin="2,3,0,0" Fill="Black" Opacity="0.60"/>
                             <Ellipse x:Name="Content" Margin="15" Width="100" Height="100" StrokeThickness="3" Stretch="Uniform"
                                      Stroke="{Binding Token.TokenType,RelativeSource={RelativeSource TemplatedParent},Converter={StaticResource LLKTokenTypeToColorFrame}}" 
@@ -26,25 +27,26 @@
                     </Viewbox>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding Token.IsSelected,RelativeSource={RelativeSource Self}}" Value="True">
-                            <Setter TargetName="Highlighter" Property="Opacity" Value="0.65" />
+                            <Setter TargetName="SelectedHighlighter" Property="Opacity" Value="0.65" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Token.TokenType,RelativeSource={RelativeSource Self}}" Value="None">
                             <Setter TargetName="HitArea" Property="Opacity" Value="0.50" />
-                            <Setter TargetName="Highlighter" Property="Opacity" Value="0" />
+                            <Setter TargetName="HoveredHightliter" Property="Opacity" Value="0" />
+                            <Setter TargetName="SelectedHighlighter" Property="Opacity" Value="0" />
                             <Setter TargetName="FakeShadow"  Property="Opacity" Value="0.01" />
                             <Setter TargetName="FakeShadow"  Property="Fill" Value="White" />
                         </DataTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
-                                    <Storyboard Storyboard.TargetName="Highlighter" Storyboard.TargetProperty="Opacity">
+                                    <Storyboard Storyboard.TargetName="HoveredHightliter" Storyboard.TargetProperty="Opacity">
                                         <DoubleAnimation By="0.20" AccelerationRatio="0.2" DecelerationRatio="0.8" Duration="0:0:0.005"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
-                                    <Storyboard Storyboard.TargetName="Highlighter" Storyboard.TargetProperty="Opacity">
+                                    <Storyboard Storyboard.TargetName="HoveredHightliter" Storyboard.TargetProperty="Opacity">
                                         <DoubleAnimation AccelerationRatio="0.2" DecelerationRatio="0.8" Duration="0"/>
                                     </Storyboard>
                                 </BeginStoryboard>
