@@ -26,7 +26,7 @@
                     </Viewbox>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding Token.IsSelected,RelativeSource={RelativeSource Self}}" Value="True">
-                            <Setter TargetName="Highlighter" Property="Opacity" Value="0.60" />
+                            <Setter TargetName="Highlighter" Property="Opacity" Value="0.65" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Token.TokenType,RelativeSource={RelativeSource Self}}" Value="None">
                             <Setter TargetName="HitArea" Property="Opacity" Value="0.50" />
@@ -38,7 +38,7 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard Storyboard.TargetName="Highlighter" Storyboard.TargetProperty="Opacity">
-                                        <DoubleAnimation By="0.3" AccelerationRatio="0.2" DecelerationRatio="0.8" Duration="0:0:0.005"/>
+                                        <DoubleAnimation By="0.20" AccelerationRatio="0.2" DecelerationRatio="0.8" Duration="0:0:0.005"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>

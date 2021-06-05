@@ -80,7 +80,7 @@ namespace DianaLLK_GUI {
                 _startTime = DateTime.Now;
             }
             catch (Exception exp) {
-                MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                TipBar.DisplayTip(exp.Message, TimeSpan.FromMilliseconds(2000));
             }
         }
         private void ExpandGameSetter_Click(object sender, RoutedEventArgs e) {
@@ -156,7 +156,7 @@ namespace DianaLLK_GUI {
                     }
                 }
                 catch (Exception exp) {
-                    MessageBox.Show(exp.Message, "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    TipBar.DisplayTip(exp.Message, TimeSpan.FromMilliseconds(3000));
                 }
             }
         }
@@ -312,54 +312,15 @@ namespace DianaLLK_GUI {
         private void GetGameTheme() {
             Dictionary<TokenCategory, int> numTokens = new Dictionary<TokenCategory, int>() {
                 [TokenCategory.None] = 0,
+                [TokenCategory.AS] = 0,
                 [TokenCategory.Ava] = 0,
                 [TokenCategory.Bella] = 0,
                 [TokenCategory.Carol] = 0,
                 [TokenCategory.Diana] = 0,
                 [TokenCategory.Eileen] = 0
             };
-            foreach (var item in _game.LLKTokenArray) {
-                switch (item.TokenType) {
-                    case LLKTokenType.None:
-                        break;
-                    case LLKTokenType.AS:
-                        break;
-                    case LLKTokenType.A1:
-                    case LLKTokenType.A2:
-                    case LLKTokenType.A3:
-                    case LLKTokenType.A4:
-                    case LLKTokenType.A5:
-                        numTokens[TokenCategory.Ava]++;
-                        break;
-                    case LLKTokenType.B1:
-                    case LLKTokenType.B2:
-                    case LLKTokenType.B3:
-                    case LLKTokenType.B4:
-                    case LLKTokenType.B5:
-                        numTokens[TokenCategory.Bella]++;
-                        break;
-                    case LLKTokenType.C1:
-                    case LLKTokenType.C2:
-                    case LLKTokenType.C3:
-                    case LLKTokenType.C4:
-                    case LLKTokenType.C5:
-                        numTokens[TokenCategory.Carol]++;
-                        break;
-                    case LLKTokenType.D1:
-                    case LLKTokenType.D2:
-                    case LLKTokenType.D3:
-                    case LLKTokenType.D4:
-                    case LLKTokenType.D5:
-                        numTokens[TokenCategory.Diana]++;
-                        break;
-                    case LLKTokenType.E1:
-                    case LLKTokenType.E2:
-                    case LLKTokenType.E3:
-                    case LLKTokenType.E4:
-                    case LLKTokenType.E5:
-                        numTokens[TokenCategory.Eileen]++;
-                        break;
-                }
+            foreach (var tokenType in _game.TokenTypeArray) {
+                numTokens[LLKHelper.GetTokenCategoryFromTokenType(tokenType)] += 1;
             }
 
             var targetTheme = TokenCategory.None;
