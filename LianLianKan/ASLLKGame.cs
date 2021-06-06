@@ -2,13 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LianLianKan {
-    using LLKTokens = IEnumerable<LLKToken>;
-    using LLKTokenTypes = IEnumerable<LLKTokenType>;
-
     public sealed class ASLLKGame : LLKGameBase, INotifyPropertyChanged {
         private readonly object _skillLocker;
         private int _skillPoint;
@@ -210,7 +206,7 @@ namespace LianLianKan {
             if (_skillPoint < 1) {
                 return false;
             }
-            bool canGetExtraPoint = new Random().Next(0, 2) == 0;
+            bool canGetExtraPoint = new Random().Next(0, 3) == 0;
             if (canGetExtraPoint) {
                 _skillPoint += 1;
             }
