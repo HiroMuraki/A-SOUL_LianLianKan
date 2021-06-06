@@ -4,12 +4,14 @@ using System.ComponentModel;
 namespace LianLianKan {
     public class LLKToken : INotifyPropertyChanged {
         private LLKTokenType _tokenType;
-        private Coordinate _coordinate;
+        private readonly Coordinate _coordinate;
         private bool _isSelected;
 
         #region 公开事件
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Matched;
+        public event EventHandler Reseted;
+        public event EventHandler Selected;
         #endregion
 
         #region 公开属性
@@ -25,9 +27,6 @@ namespace LianLianKan {
         public Coordinate Coordinate {
             get {
                 return _coordinate;
-            }
-            set {
-                _coordinate = value;
             }
         }
         public bool IsSelected {
@@ -52,6 +51,12 @@ namespace LianLianKan {
         #region 公开方法
         public void OnMatched() {
             Matched?.Invoke(this, new EventArgs());
+        }
+        public void OnReseted() {
+            Reseted?.Invoke(this, new EventArgs());
+        }
+        public void OnSelected() {
+            Selected?.Invoke(this, new EventArgs());
         }
         public static bool IsSameType(LLKToken left, LLKToken right) {
             return left._tokenType == right._tokenType;

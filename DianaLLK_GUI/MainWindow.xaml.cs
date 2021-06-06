@@ -61,7 +61,10 @@ namespace DianaLLK_GUI {
         }
 
         private async void SelectToken_Click(object sender, TClickEventArgs e) {
-            await _game.SelectTokenAsync(e.Token);
+            var resutlt = await _game.SelectTokenAsync(e.Token);
+            if (resutlt == TokenSelectResult.Reset) {
+                ((View.LLKTokenRound)sender).Token.IsSelected = false;
+            }
             // 播放点击效果音
             _gameSound.PlayClickFXSound();
         }

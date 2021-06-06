@@ -117,6 +117,10 @@ namespace LianLianKan {
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
                 }
             }
+            else if (tokenSelectResult == TokenSelectResult.Reset) {
+                a.OnReseted();
+                b.OnReseted();
+            }
             return tokenSelectResult;
         }
         public virtual async Task<TokenSelectResult> SelectTokenAsync(LLKToken token) {
@@ -136,6 +140,10 @@ namespace LianLianKan {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
                 }
+            }
+            else if (tokenSelectResult == TokenSelectResult.Reset) {
+                a.OnReseted();
+                b.OnReseted();
             }
             return tokenSelectResult;
         }
@@ -179,8 +187,7 @@ namespace LianLianKan {
             }
             else {
                 _heldToken.IsSelected = false;
-                _heldToken = token;
-                _heldToken.IsSelected = true;
+                _heldToken = null;
                 return TokenSelectResult.Reset;
             }
         }
