@@ -60,19 +60,19 @@ namespace DianaLLK_GUI.View {
                 To = 0.2,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(50)
+                Duration = TimeSpan.FromMilliseconds(20)
             };
             _selectedAnimation = new DoubleAnimation() {
                 To = 0.75,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(100)
+                Duration = TimeSpan.FromMilliseconds(20)
             };
             _resetAnimation = new DoubleAnimation() {
                 To = 0,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(100)
+                Duration = TimeSpan.FromMilliseconds(20)
             };
         }
         public LLKTokenRound(LLKToken token) : this() {
@@ -82,17 +82,17 @@ namespace DianaLLK_GUI.View {
             Token.Reseted += Token_Reseted;
         }
 
-        private void Token_Selected(object sender, EventArgs e) {
+        private void Token_Selected(object sender, TokenSelectedEventArgs e) {
             base.OnClick();
             BeginAnimation(SelectedHighlighterOpacityProperty, _selectedAnimation);
             TClick?.Invoke(this, new TClickEventArgs(Token));
         }
-        private void Token_Reseted(object sender, EventArgs e) {
+        private void Token_Matched(object sender, TokenMatchedEventArgs e) {
+            BeginAnimation(OpacityProperty, _flickAnimation);
+        }
+        private void Token_Reseted(object sender, TokenResetedEventArgs e) {
             BeginAnimation(SelectedHighlighterOpacityProperty, _resetAnimation);
             BeginAnimation(HoveredHightliterOpacityProperty, _resetAnimation);
-        }
-        private void Token_Matched(object sender, EventArgs e) {
-            BeginAnimation(OpacityProperty, _flickAnimation);
         }
         protected override void OnClick() {
             base.OnClick();

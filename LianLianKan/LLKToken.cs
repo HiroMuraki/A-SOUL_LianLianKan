@@ -10,8 +10,8 @@ namespace LianLianKan {
         #region 公开事件
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<TokenMatchedEventArgs> Matched;
-        public event EventHandler Reseted;
-        public event EventHandler Selected;
+        public event EventHandler<TokenSelectedEventArgs> Selected;
+        public event EventHandler<TokenResetedEventArgs> Reseted;
         #endregion
 
         #region 公开属性
@@ -56,10 +56,10 @@ namespace LianLianKan {
             Matched?.Invoke(this, e);
         }
         public void OnReseted() {
-            Reseted?.Invoke(this, new EventArgs());
+            Reseted?.Invoke(this, new TokenResetedEventArgs());
         }
         public void OnSelected() {
-            Selected?.Invoke(this, new EventArgs());
+            Selected?.Invoke(this, new TokenSelectedEventArgs(_tokenType));
         }
         public static bool IsSameType(LLKToken left, LLKToken right) {
             return left._tokenType == right._tokenType;
