@@ -8,12 +8,6 @@ using System.Threading.Tasks;
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
     using LLKTokenTypes = IEnumerable<LLKTokenType>;
-    public enum TokenSelectResult {
-        None,
-        Reset,
-        Matched,
-        Wait
-    }
     public class LLKGameBase : INotifyPropertyChanged {
         protected LLKToken[,] _gameLayout;
         protected LLKToken _heldToken;
