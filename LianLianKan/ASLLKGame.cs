@@ -77,6 +77,8 @@ namespace LianLianKan {
         protected override TokenSelectResult SelectTokenHelper(LLKToken token) {
             var heldToken = _heldToken;
             var currentToken = token;
+            var heldTokenType = _heldToken?.TokenType;
+            var currentTokenType = token?.TokenType;
             var tokenSelectResult = base.SelectTokenHelper(token);
             if (tokenSelectResult == TokenSelectResult.Reset) {
                 // 如果启用了贝拉Power
@@ -122,7 +124,7 @@ namespace LianLianKan {
             }
             // 连接阿草后技能点+1
             if (tokenSelectResult == TokenSelectResult.Matched) {
-                if (heldToken.TokenType == LLKTokenType.AS && currentToken.TokenType == LLKTokenType.AS) {
+                if (currentTokenType == LLKTokenType.AS && currentTokenType == LLKTokenType.AS) {
                     _skillPoint++;
                     OnPropertyChanged(nameof(SkillPoint));
                 }
