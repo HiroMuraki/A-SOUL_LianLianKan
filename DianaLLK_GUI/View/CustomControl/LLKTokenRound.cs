@@ -7,7 +7,7 @@ using System.Windows.Media.Animation;
 
 namespace DianaLLK_GUI.View {
     public class LLKTokenRound : Button {
-        private readonly DoubleAnimation _animation;
+        private readonly DoubleAnimation _flickAnimation;
         private readonly DoubleAnimation _selectedAnimation;
         private readonly DoubleAnimation _hoveredAnimation;
         private readonly DoubleAnimation _resetAnimation;
@@ -49,7 +49,7 @@ namespace DianaLLK_GUI.View {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(LLKTokenRound), new FrameworkPropertyMetadata(typeof(LLKTokenRound)));
         }
         private LLKTokenRound() {
-            _animation = new DoubleAnimation() {
+            _flickAnimation = new DoubleAnimation() {
                 To = 0,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
@@ -60,19 +60,19 @@ namespace DianaLLK_GUI.View {
                 To = 0.3,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
+                Duration = TimeSpan.FromMilliseconds(50)
             };
             _selectedAnimation = new DoubleAnimation() {
                 To = 0.65,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
+                Duration = TimeSpan.FromMilliseconds(100)
             };
             _resetAnimation = new DoubleAnimation() {
                 To = 0,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(150)
+                Duration = TimeSpan.FromMilliseconds(100)
             };
         }
         public LLKTokenRound(LLKToken token) : this() {
@@ -86,7 +86,7 @@ namespace DianaLLK_GUI.View {
             BeginAnimation(HoveredHightliterOpacityProperty, _resetAnimation);
         }
         private void Token_Matched(object sender, EventArgs e) {
-            BeginAnimation(OpacityProperty, _animation);
+            BeginAnimation(OpacityProperty, _flickAnimation);
         }
         protected override void OnClick() {
             base.OnClick();
