@@ -54,16 +54,16 @@ namespace DianaLLK_GUI.View {
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
                 EasingFunction = new BounceEase(),
-                Duration = TimeSpan.FromMilliseconds(220)
+                Duration = TimeSpan.FromMilliseconds(200)
             };
             _hoveredAnimation = new DoubleAnimation() {
-                To = 0.3,
+                To = 0.2,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
                 Duration = TimeSpan.FromMilliseconds(50)
             };
             _selectedAnimation = new DoubleAnimation() {
-                To = 0.65,
+                To = 0.75,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
                 Duration = TimeSpan.FromMilliseconds(100)
