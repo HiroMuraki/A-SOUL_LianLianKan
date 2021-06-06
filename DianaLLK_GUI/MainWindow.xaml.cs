@@ -15,7 +15,7 @@ namespace DianaLLK_GUI {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private readonly LLKGame _game;
+        private readonly ASLLKGame _game;
         private readonly GameSetter _gameSetter;
         private readonly GameSoundPlayer _gameSound;
         private DateTime _startTime;
@@ -32,7 +32,7 @@ namespace DianaLLK_GUI {
                 SetValue(GameThemeProperty, value);
             }
         }
-        public LLKGame Game {
+        public ASLLKGame Game {
             get {
                 return _game;
             }
@@ -47,7 +47,7 @@ namespace DianaLLK_GUI {
             // 初始化游戏设置器
             _gameSetter = GameSetter.GetInstance();
             // 初始化游戏
-            _game = new LLKGame();
+            _game = new ASLLKGame();
             _game.GameCompleted += Game_GameCompleted;
             _game.LayoutReseted += Game_LayoutReseted;
             _game.SkillActived += Game_SkillActived;

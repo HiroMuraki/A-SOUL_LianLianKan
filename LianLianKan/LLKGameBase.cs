@@ -109,41 +109,41 @@ namespace LianLianKan {
             });
             _gameType = GameType.Restored;
         }
-        public virtual void SelectToken(LLKToken token) {
+        public virtual TokenSelectResult SelectToken(LLKToken token) {
             var matchedTokenType = _heldToken?.TokenType;
             var a = _heldToken;
             var b = token;
-            TokenSelectResult tokenSelectStatus = SelectTokenHelper(token);
-            if (tokenSelectStatus == TokenSelectResult.Matched) {
+            TokenSelectResult tokenSelectResult = SelectTokenHelper(token);
+            if (tokenSelectResult == TokenSelectResult.Matched) {
                 a.OnMatched();
                 b.OnMatched();
                 TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, true));
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
-                    _gameType = GameType.New;
                 }
             }
+            return tokenSelectResult;
         }
-        public virtual async Task SelectTokenAsync(LLKToken token) {
+        public virtual async Task<TokenSelectResult> SelectTokenAsync(LLKToken token) {
             var matchedTokenType = _heldToken?.TokenType;
             var a = _heldToken;
             var b = token;
-            TokenSelectResult tokenSelectStatus = await Task.Run(() => {
+            TokenSelectResult tokenSelectResult = await Task.Run(() => {
                 lock (_processLocker) {
                     return SelectTokenHelper(token);
                 }
             });
-            if (tokenSelectStatus == TokenSelectResult.Matched) {
+            if (tokenSelectResult == TokenSelectResult.Matched) {
                 a.OnMatched();
                 b.OnMatched();
                 TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, true));
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
-                    _gameType = GameType.New;
                 }
             }
+            return tokenSelectResult;
         }
         public override string ToString() {
             StringBuilder sb = new StringBuilder();

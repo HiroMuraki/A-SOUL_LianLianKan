@@ -9,7 +9,7 @@ namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
     using LLKTokenTypes = IEnumerable<LLKTokenType>;
 
-    public sealed class LLKGame : LLKGameBase, INotifyPropertyChanged {
+    public sealed class ASLLKGame : LLKGameBase, INotifyPropertyChanged {
         private readonly object _skillLocker;
         private int _skillPoint;
         private bool _isBellaPowerOn;
@@ -28,7 +28,7 @@ namespace LianLianKan {
         #endregion
 
         #region 构造方法
-        public LLKGame() : base() {
+        public ASLLKGame() : base() {
             _skillLocker = new object();
         }
         #endregion
@@ -125,6 +125,14 @@ namespace LianLianKan {
             }
             return TokenSelectResult.Reset;
         }
+        protected override int GetTotalScores() {
+            int result = base.GetTotalScores();
+            double skillPointMultiper = Math.Ceiling(Math.Log2(_skillPoint));
+            if (skillPointMultiper > 1) {
+                result = (int)(result * skillPointMultiper);
+            }
+            return result;
+        }
         private bool ActiveSkillHelper(LLKSkill skill) {
             if (_skillPoint <= 0) {
                 return false;
@@ -162,14 +170,6 @@ namespace LianLianKan {
                 point += 1;
             }
             return point;
-        }
-        protected override int GetTotalScores() {
-            int result = base.GetTotalScores();
-            double skillPointMultiper = Math.Ceiling(Math.Log2(_skillPoint));
-            if (skillPointMultiper > 1) {
-                result = (int)(result * skillPointMultiper);
-            }
-            return result;
         }
         // 技能组
         private bool AvaPower() {
