@@ -208,7 +208,13 @@ namespace LianLianKan {
             if (_skillPoint < 1) {
                 return false;
             }
-            bool canGetExtraPoint = new Random().Next(0, 3) == 0;
+            // 根据当前剩余技能点随机获取技能
+            // 最低10%，最高50%
+            // 将skillPoint乘以1.5获得矫正点
+            // skillPoint到这里不会为0，故余数为1-10，设余数为n
+            // 从[0,n)中抽取一个数字的概率即为1/n
+            int correctedPoint = (int)(_skillPoint * 1.5) % 11;
+            bool canGetExtraPoint = new Random().Next(0, correctedPoint) == 0;
             if (canGetExtraPoint) {
                 _skillPoint += 1;
             }
