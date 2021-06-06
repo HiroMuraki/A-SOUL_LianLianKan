@@ -275,8 +275,6 @@ namespace LianLianKan {
                     _gameLayout[row, col] = new LLKToken(restorePack.TokenTypes[row, col], new Coordinate(row, col));
                 }
             }
-            // 恢复技能点
-            // _skillPoint = restorePack.SkillPoint;
             // 恢复成员类数信息
             _currentTokenTypes.Clear();
             for (int i = 0; i < restorePack.NumTokenTypes; i++) {
@@ -296,13 +294,6 @@ namespace LianLianKan {
             OnPropertyChanged(nameof(RowSize));
             OnPropertyChanged(nameof(ColumnSize));
             LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
-        }
-        protected virtual void ResetCoordinateStatus() {
-            for (int row = 0; row < _rowSize; row++) {
-                for (int col = 0; col < _columnSize; col++) {
-                    _coordinateChecked[_gameLayout[row, col].Coordinate] = false;
-                }
-            }
         }
         protected virtual bool IsMatchable(Coordinate startCoordinate, Coordinate targetCoordinate) {
             var result = IsConnectable(startCoordinate, targetCoordinate);
@@ -403,7 +394,14 @@ namespace LianLianKan {
             }
             return true;
         }
-        protected virtual void OnPropertyChanged(string propertyName) {
+        protected void ResetCoordinateStatus() {
+            for (int row = 0; row < _rowSize; row++) {
+                for (int col = 0; col < _columnSize; col++) {
+                    _coordinateChecked[_gameLayout[row, col].Coordinate] = false;
+                }
+            }
+        }
+        protected void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         protected void OnGameCompleted(GameCompletedEventArgs e) {

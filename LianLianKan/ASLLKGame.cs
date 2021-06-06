@@ -82,48 +82,56 @@ namespace LianLianKan {
             var heldToken = _heldToken;
             var currentToken = token;
             var tokenSelectResult = base.SelectTokenHelper(token);
-            if (tokenSelectResult == TokenSelectResult.Matched ||
-                tokenSelectResult == TokenSelectResult.Wait ||
-                tokenSelectResult == TokenSelectResult.None) {
-                return tokenSelectResult;
-            }
-            // 如果启用了贝拉Power
-            if (_isBellaPowerOn) {
-                if (heldToken.TokenType == currentToken.TokenType) {
-                    MatchTokensHelper(heldToken, currentToken);
-                    _isBellaPowerOn = false;
-                    return TokenSelectResult.Matched;
+            if (tokenSelectResult == TokenSelectResult.Reset) {
+                // 如果启用了贝拉Power
+                if (_isBellaPowerOn) {
+                    if (heldToken.TokenType == currentToken.TokenType) {
+                        MatchTokensHelper(heldToken, currentToken);
+                        _isBellaPowerOn = false;
+                        tokenSelectResult = TokenSelectResult.Matched;
+                    }
+                    else {
+                        tokenSelectResult = TokenSelectResult.Reset;
+                    }
                 }
-                return TokenSelectResult.Reset;
-            }
-            // 如果启用了乃琳Power
-            if (_isEileenPowerOn) {
-                if (IsConnectable(heldToken.Coordinate, currentToken.Coordinate)) {
-                    LLKTokenType fixTypeA = heldToken.TokenType;
-                    LLKTokenType fixTypeB = currentToken.TokenType;
-                    List<LLKToken> typeAList = new List<LLKToken>();
-                    List<LLKToken> typeBList = new List<LLKToken>();
-                    Random rnd = new Random();
-                    MatchTokensHelper(heldToken, currentToken);
-                    for (int row = 0; row < _rowSize; row++) {
-                        for (int col = 0; col < _columnSize; col++) {
-                            if (_gameLayout[row, col].TokenType == fixTypeA) {
-                                typeAList.Add(_gameLayout[row, col]);
-                            }
-                            else if (_gameLayout[row, col].TokenType == fixTypeB) {
-                                typeBList.Add(_gameLayout[row, col]);
+                // 如果启用了乃琳Power
+                if (_isEileenPowerOn) {
+                    if (IsConnectable(heldToken.Coordinate, currentToken.Coordinate)) {
+                        LLKTokenType fixTypeA = heldToken.TokenType;
+                        LLKTokenType fixTypeB = currentToken.TokenType;
+                        List<LLKToken> typeAList = new List<LLKToken>();
+                        List<LLKToken> typeBList = new List<LLKToken>();
+                        Random rnd = new Random();
+                        MatchTokensHelper(heldToken, currentToken);
+                        for (int row = 0; row < _rowSize; row++) {
+                            for (int col = 0; col < _columnSize; col++) {
+                                if (_gameLayout[row, col].TokenType == fixTypeA) {
+                                    typeAList.Add(_gameLayout[row, col]);
+                                }
+                                else if (_gameLayout[row, col].TokenType == fixTypeB) {
+                                    typeBList.Add(_gameLayout[row, col]);
+                                }
                             }
                         }
+                        LLKTokenType tType = LLKHelper.GetRandomTokenType();
+                        typeAList[rnd.Next(0, typeAList.Count)].TokenType = tType;
+                        typeBList[rnd.Next(0, typeBList.Count)].TokenType = tType;
+                        _isEileenPowerOn = false;
+                        tokenSelectResult = TokenSelectResult.Matched;
                     }
-                    LLKTokenType tType = LLKHelper.GetRandomTokenType();
-                    typeAList[rnd.Next(0, typeAList.Count)].TokenType = tType;
-                    typeBList[rnd.Next(0, typeBList.Count)].TokenType = tType;
-                    _isEileenPowerOn = false;
-                    return TokenSelectResult.Matched;
+                    else {
+                        tokenSelectResult = TokenSelectResult.Reset;
+                    }
                 }
-                return TokenSelectResult.Reset;
             }
-            return TokenSelectResult.Reset;
+            // 连接阿草后技能点+1
+            if (tokenSelectResult == TokenSelectResult.Matched) {
+                if (heldToken.TokenType == LLKTokenType.AS && currentToken.TokenType == LLKTokenType.AS) {
+                    _skillPoint++;
+                    OnPropertyChanged(nameof(SkillPoint));
+                }
+            }
+            return tokenSelectResult;
         }
         protected override int GetTotalScores() {
             int result = base.GetTotalScores();
