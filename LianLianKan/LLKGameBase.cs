@@ -171,7 +171,7 @@ namespace LianLianKan {
             if (_heldToken == token) {
                 return TokenSelectResult.None;
             }
-            // 常规比较
+            // 常规比较，如果类型符合则连接，否则将目标token设置为heldToken
             if (IsMatchable(_heldToken.Coordinate, token.Coordinate)) {
                 MatchTokensHelper(_heldToken, token);
                 _heldToken = null;
@@ -179,7 +179,8 @@ namespace LianLianKan {
             }
             else {
                 _heldToken.IsSelected = false;
-                _heldToken = null;
+                _heldToken = token;
+                _heldToken.IsSelected = true;
                 return TokenSelectResult.Reset;
             }
         }
