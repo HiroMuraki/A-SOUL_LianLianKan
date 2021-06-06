@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 namespace LianLianKan {
     using LLKTokens = IEnumerable<LLKToken>;
     using LLKTokenTypes = IEnumerable<LLKTokenType>;
+    using CurrentTokenTypes = List<LLKTokenType>;
     public class LLKGameBase : INotifyPropertyChanged {
+        protected readonly CurrentTokenTypes _currentTokenTypes;
+        protected readonly Dictionary<Coordinate, bool> _coordinateChecked;
+        protected readonly object _processLocker;
         protected LLKToken[,] _gameLayout;
         protected LLKToken _heldToken;
-        protected readonly List<LLKTokenType> _currentTokenTypes;
-        protected readonly Dictionary<Coordinate, bool> _coordinateChecked;
         protected int _rowSize;
         protected int _columnSize;
         protected GameType _gameType;
-        protected readonly object _processLocker;
 
         #region 公开事件
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler<GameCompletedEventArgs> GameCompleted;
         public event EventHandler<LayoutResetedEventArgs> LayoutReseted;
-        public event EventHandler<TokenMatchedEventArgs> TokenMatched;
         #endregion
 
         #region 公开属性
-        public List<LLKTokenType> CurrentTokenTypes {
+        public CurrentTokenTypes CurrentTokenTypes {
             get {
                 return _currentTokenTypes;
             }
@@ -72,7 +72,7 @@ namespace LianLianKan {
             _columnSize = 0;
             _gameLayout = new LLKToken[0, 0];
             _coordinateChecked = new Dictionary<Coordinate, bool>();
-            _currentTokenTypes = new List<LLKTokenType>();
+            _currentTokenTypes = new CurrentTokenTypes();
             _heldToken = null;
             _processLocker = new object();
         }
@@ -111,7 +111,6 @@ namespace LianLianKan {
             if (tokenSelectResult == TokenSelectResult.Matched) {
                 a.OnMatched();
                 b.OnMatched();
-                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, true));
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
@@ -120,6 +119,9 @@ namespace LianLianKan {
             else if (tokenSelectResult == TokenSelectResult.Reset) {
                 a.OnReseted();
                 b.OnReseted();
+            }
+            else if (tokenSelectResult == TokenSelectResult.Wait) {
+                a.OnSelected();
             }
             return tokenSelectResult;
         }
@@ -133,9 +135,8 @@ namespace LianLianKan {
                 }
             });
             if (tokenSelectResult == TokenSelectResult.Matched) {
-                a.OnMatched();
-                b.OnMatched();
-                TokenMatched?.Invoke(this, new TokenMatchedEventArgs(matchedTokenType.Value, true));
+                a.OnMatched(new TokenMatchedEventArgs(matchedTokenType.Value, true));
+                b.OnMatched(new TokenMatchedEventArgs(matchedTokenType.Value, true));
                 if (IsGameCompleted()) {
                     int scores = GetTotalScores();
                     GameCompleted?.Invoke(this, new GameCompletedEventArgs(scores, _currentTokenTypes.Count, _rowSize, _columnSize, _gameType));
@@ -144,6 +145,9 @@ namespace LianLianKan {
             else if (tokenSelectResult == TokenSelectResult.Reset) {
                 a.OnReseted();
                 b.OnReseted();
+            }
+            else if (tokenSelectResult == TokenSelectResult.Wait) {
+                _heldToken.OnSelected();
             }
             return tokenSelectResult;
         }
@@ -216,7 +220,7 @@ namespace LianLianKan {
 
             Random rnd = new Random();
             // 获取可用的token类型
-            List<LLKTokenType> allTokens = new List<LLKTokenType>();
+            CurrentTokenTypes allTokens = new CurrentTokenTypes();
             foreach (var item in Enum.GetValues(typeof(LLKTokenType))) {
                 var tokenType = (LLKTokenType)item;
                 if (tokenType == LLKTokenType.None) {
@@ -235,7 +239,7 @@ namespace LianLianKan {
                 _currentTokenTypes.Add(tokenType);
             }
             // 随机添加token
-            List<LLKTokenType> tokenTypes = new List<LLKTokenType>(capacity);
+            CurrentTokenTypes tokenTypes = new CurrentTokenTypes(capacity);
             int cycleTimes = capacity / 2;
             for (int i = 0; i < cycleTimes; i++) {
                 LLKTokenType selectedType;
@@ -411,9 +415,6 @@ namespace LianLianKan {
         }
         protected void OnLayoutRested(LayoutResetedEventArgs e) {
             LayoutReseted?.Invoke(this, e);
-        }
-        protected void OnTokenMatched(TokenMatchedEventArgs e) {
-            TokenMatched?.Invoke(this, e);
         }
     }
 }

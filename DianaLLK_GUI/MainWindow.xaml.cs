@@ -51,7 +51,6 @@ namespace DianaLLK_GUI {
             _game.GameCompleted += Game_GameCompleted;
             _game.LayoutReseted += Game_LayoutReseted;
             _game.SkillActived += Game_SkillActived;
-            _game.TokenMatched += Game_TokenMatched;
             _gameSound = GameSoundPlayer.GetInstance();
             InitializeComponent();
             GridRoot.MaxHeight = SystemParameters.WorkArea.Height;
@@ -101,6 +100,13 @@ namespace DianaLLK_GUI {
         private void GameStatistics_Confirmed(object sender, RoutedEventArgs e) {
             ExpandGameSetterPanel();
         }
+        private void Token_Matched(object sender, TokenMatchedEventArgs e) {
+            if (e.Sucess) {
+                TokenStack.AddToStack(e.TokenType);
+                // 播放连接成功效果音
+                _gameSound.PlayMatchedFXSound();
+            }
+        }
         private void Game_SkillActived(object sender, SkillActivedEventArgs e) {
             if (e.ActiveResult == false) {
                 return;
@@ -108,13 +114,6 @@ namespace DianaLLK_GUI {
             SkillDisplayer.DisplaySkill(e.Skill, 750, ActualWidth);
             // 播放技能效果音
             _gameSound.PlaySkillActivedSound(e.Skill);
-        }
-        private void Game_TokenMatched(object sender, TokenMatchedEventArgs e) {
-            if (e.Sucess) {
-                TokenStack.AddToStack(e.TokenType);
-                // 播放连接成功效果音
-                _gameSound.PlayMatchedFXSound();
-            }
         }
         private void Game_GameCompleted(object sender, GameCompletedEventArgs e) {
             // 弹出统计窗口
@@ -132,6 +131,7 @@ namespace DianaLLK_GUI {
             foreach (var token in _game.LLKTokenArray) {
                 var tokenRound = new View.LLKTokenRound(token);
                 tokenRound.TClick += SelectToken_Click;
+                tokenRound.Token.Matched += Token_Matched;
                 if (token.TokenType == LLKTokenType.None) {
                     tokenRound.Opacity = 0;
                 }

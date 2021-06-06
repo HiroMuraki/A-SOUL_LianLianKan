@@ -77,10 +77,16 @@ namespace DianaLLK_GUI.View {
         }
         public LLKTokenRound(LLKToken token) : this() {
             Token = token;
+            Token.Selected += Token_Selected;
             Token.Matched += Token_Matched;
             Token.Reseted += Token_Reseted;
         }
 
+        private void Token_Selected(object sender, EventArgs e) {
+            base.OnClick();
+            BeginAnimation(SelectedHighlighterOpacityProperty, _selectedAnimation);
+            TClick?.Invoke(this, new TClickEventArgs(Token));
+        }
         private void Token_Reseted(object sender, EventArgs e) {
             BeginAnimation(SelectedHighlighterOpacityProperty, _resetAnimation);
             BeginAnimation(HoveredHightliterOpacityProperty, _resetAnimation);
@@ -90,7 +96,6 @@ namespace DianaLLK_GUI.View {
         }
         protected override void OnClick() {
             base.OnClick();
-            BeginAnimation(SelectedHighlighterOpacityProperty, _selectedAnimation);
             TClick?.Invoke(this, new TClickEventArgs(Token));
         }
         protected override void OnMouseEnter(MouseEventArgs e) {
