@@ -65,13 +65,13 @@ namespace LianLianKan {
         }
 
         public static GameRestorePack GenerateLayoutFrom(object obj) {
-            return GameRestorePack.GenerateLayoutFrom(obj);
+            return GameRestorePack.GenerateGameInfoFrom(obj);
         }
         public static string ConvertLayoutFrom(LLKTokenType[,] tokenTypes, int numTokenTypes, int skillPoint) {
-            return GameRestorePack.ConvertLayoutFrom(tokenTypes, numTokenTypes, skillPoint);
+            return GameRestorePack.GetGameInfoFrom(tokenTypes, numTokenTypes, skillPoint);
         }
         public static string ConvertLayoutFrom(IEnumerable<LLKTokenType> tokenTypes, int rowSize, int columnSize, int numTokenTypes, int skillPoint) {
-            return GameRestorePack.ConvertLayoutFrom(tokenTypes, rowSize, columnSize, numTokenTypes, skillPoint);
+            return GameRestorePack.GetGameInfoFrom(tokenTypes, rowSize, columnSize, numTokenTypes, skillPoint);
         }
         public static LLKTokenType GetRandomTokenType() {
             return (LLKTokenType)_allTokenTypes.GetValue(_rnd.Next(1, _allTokenTypes.Length));

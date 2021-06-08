@@ -8,7 +8,7 @@ namespace LianLianKan {
         private readonly int _rowSize;
         private readonly int _columnSize;
         private readonly int _skillPoint;
-        private readonly int _numTokenTypes;
+        private readonly int _tokenAmount;
         private readonly LLKTokenType[,] _tokenTypes;
 
         public LLKTokenType[,] TokenTypes {
@@ -31,21 +31,21 @@ namespace LianLianKan {
                 return _rowSize;
             }
         }
-        public int NumTokenTypes {
+        public int TokenAmount {
             get {
-                return _numTokenTypes;
+                return _tokenAmount;
             }
         }
 
-        public GameRestorePack(LLKTokenType[,] tokenTypes, int numTokenTypes, int skillPoint) {
+        public GameRestorePack(LLKTokenType[,] tokenTypes, int tokenAmount, int skillPoint) {
             _rowSize = tokenTypes.GetLength(0);
             _columnSize = tokenTypes.GetLength(1);
             _tokenTypes = tokenTypes;
-            _numTokenTypes = numTokenTypes;
+            _tokenAmount = tokenAmount;
             _skillPoint = skillPoint;
         }
 
-        public static GameRestorePack GenerateLayoutFrom(object obj) {
+        public static GameRestorePack GenerateGameInfoFrom(object obj) {
             // 当前只支持string
             if (!(obj is string)) {
                 return null;
@@ -75,31 +75,25 @@ namespace LianLianKan {
 
             return new GameRestorePack(tokenTypes, numTokenTypes, skillPoint);
         }
-        public static string ConvertLayoutFrom(LLKTokenType[,] tokenTypes, int numTokenTypes, int skillPoint) {
+        public static string GetGameInfoFrom(LLKTokenType[,] tokenTypes, int tokenAmount, int skillPoint) {
+            StringBuilder sb = new StringBuilder();
             int rowSize = tokenTypes.GetLength(0);
             int columnSize = tokenTypes.GetLength(1);
-
-            StringBuilder sb = new StringBuilder();
-            // 写入行、列与技能点信息
-            sb.Append($"{rowSize} {columnSize} {numTokenTypes} {skillPoint}\n");
-            for (int row = 0; row < rowSize; row++) {
-                for (int col = 0; col < columnSize; col++) {
-                    // 将TokenType枚举转化为数值写入
-                    sb.Append($"{(int)tokenTypes[row, col]}");
-                    if (col != columnSize - 1) {
-                        sb.Append(' ');
-                    }
-                }
-                if (row != rowSize - 1) {
-                    sb.Append('\n');
-                }
-            }
-
+            sb.Append(GenerateMetaDataString(rowSize, columnSize, tokenAmount, skillPoint));
+            sb.Append(GenerateLayoutString(tokenTypes));
             return sb.ToString();
         }
-        public static string ConvertLayoutFrom(IEnumerable<LLKTokenType> tokenTypes, int rowSize, int columnSize, int numTokenTypes, int skillPoint) {
+        public static string GetGameInfoFrom(IEnumerable<LLKTokenType> tokenTypes, int rowSize, int columnSize, int numTokenTypes, int skillPoint) {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"{rowSize} {columnSize} {numTokenTypes} {skillPoint}\n");
+            sb.Append(GenerateMetaDataString(rowSize, columnSize, numTokenTypes, skillPoint));
+            sb.Append(GenerateLayoutString(tokenTypes, rowSize, columnSize));
+            return sb.ToString();
+        }
+        private static string GenerateMetaDataString(int rowSize, int columnSize, int tokenAmount, int skillPoint) {
+            return $"{rowSize} {columnSize} {tokenAmount} {skillPoint}\n";
+        }
+        private static string GenerateLayoutString(IEnumerable<LLKTokenType> tokenTypes, int rowSize, int columnSize) {
+            StringBuilder sb = new StringBuilder(rowSize * columnSize * 2);
             int row = 0;
             int col = 0;
             foreach (var tokenType in tokenTypes) {
@@ -121,7 +115,24 @@ namespace LianLianKan {
                     break;
                 }
             }
-
+            return sb.ToString();
+        }
+        private static string GenerateLayoutString(LLKTokenType[,] tokenTypes) {
+            int rowSize = tokenTypes.GetLength(0);
+            int columnSize = tokenTypes.GetLength(1);
+            StringBuilder sb = new StringBuilder(rowSize * columnSize * 2);
+            for (int row = 0; row < rowSize; row++) {
+                for (int col = 0; col < columnSize; col++) {
+                    // 将TokenType枚举转化为数值写入
+                    sb.Append($"{(int)tokenTypes[row, col]}");
+                    if (col != columnSize - 1) {
+                        sb.Append(' ');
+                    }
+                }
+                if (row != rowSize - 1) {
+                    sb.Append('\n');
+                }
+            }
             return sb.ToString();
         }
     }

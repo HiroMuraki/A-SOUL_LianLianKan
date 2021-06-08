@@ -35,8 +35,8 @@ namespace LianLianKan {
             _skillPoint = GetSkillPoint();
             OnPropertyChanged(nameof(SkillPoint));
         }
-        public override void RestoreGame(GameRestorePack restorePack) {
-            base.RestoreGame(restorePack);
+        public void RestoreGame(GameRestorePack restorePack) {
+            base.RestoreGame(restorePack.TokenTypes, restorePack.TokenAmount);
             _skillPoint = restorePack.SkillPoint;
             OnPropertyChanged(nameof(SkillPoint));
         }

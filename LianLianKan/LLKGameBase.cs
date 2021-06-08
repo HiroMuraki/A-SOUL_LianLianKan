@@ -6,9 +6,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LianLianKan {
+    using CurrentTokenTypes = List<LLKTokenType>;
     using LLKTokens = IEnumerable<LLKToken>;
     using LLKTokenTypes = IEnumerable<LLKTokenType>;
-    using CurrentTokenTypes = List<LLKTokenType>;
     public class LLKGameBase : INotifyPropertyChanged {
         protected readonly CurrentTokenTypes _currentTokenTypes;
         protected readonly Dictionary<Coordinate, bool> _coordinateChecked;
@@ -97,9 +97,9 @@ namespace LianLianKan {
             });
             _gameType = GameType.New;
         }
-        public virtual void RestoreGame(GameRestorePack restorePack) {
+        public virtual void RestoreGame(LLKTokenType[,] tokenTypes, int tokenAmount) {
             StartGameHelper(() => {
-                RestoreGameLayout(restorePack);
+                RestoreGameLayout(tokenTypes, tokenAmount);
             });
             _gameType = GameType.Restored;
         }
@@ -271,19 +271,19 @@ namespace LianLianKan {
                 }
             }
         }
-        protected virtual void RestoreGameLayout(GameRestorePack restorePack) {
+        protected virtual void RestoreGameLayout(LLKTokenType[,] tokenTypes, int tokenAmount) {
             // 恢复布局信息
-            _rowSize = restorePack.RowSize;
-            _columnSize = restorePack.ColumnSize;
+            _rowSize = tokenTypes.GetLength(0);
+            _columnSize = tokenTypes.GetLength(1);
             _gameLayout = new LLKToken[_rowSize, _columnSize];
             for (int row = 0; row < _rowSize; row++) {
                 for (int col = 0; col < _columnSize; col++) {
-                    _gameLayout[row, col] = new LLKToken(restorePack.TokenTypes[row, col], new Coordinate(row, col));
+                    _gameLayout[row, col] = new LLKToken(tokenTypes[row, col], new Coordinate(row, col));
                 }
             }
             // 恢复成员类数信息
             _currentTokenTypes.Clear();
-            for (int i = 0; i < restorePack.NumTokenTypes; i++) {
+            for (int i = 0; i < tokenAmount; i++) {
                 _currentTokenTypes.Add(LLKTokenType.AS);
             }
         }
