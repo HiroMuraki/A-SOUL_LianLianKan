@@ -35,8 +35,18 @@ namespace LianLianKan {
             _skillPoint = GetSkillPoint();
             OnPropertyChanged(nameof(SkillPoint));
         }
+        public override async Task StartGameAsync(int rowSize, int columnSize, int tokenAmount) {
+            await base.StartGameAsync(rowSize, columnSize, tokenAmount);
+            _skillPoint = GetSkillPoint();
+            OnPropertyChanged(nameof(SkillPoint));
+        }
         public void RestoreGame(GameRestorePack restorePack) {
             base.RestoreGame(restorePack.TokenTypes, restorePack.TokenAmount);
+            _skillPoint = restorePack.SkillPoint;
+            OnPropertyChanged(nameof(SkillPoint));
+        }
+        public async Task RestoreGameAsync(GameRestorePack restorePack) {
+            await base.RestoreGameAsync(restorePack.TokenTypes, restorePack.TokenAmount);
             _skillPoint = restorePack.SkillPoint;
             OnPropertyChanged(nameof(SkillPoint));
         }

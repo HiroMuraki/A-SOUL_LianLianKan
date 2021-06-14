@@ -13,6 +13,7 @@ namespace LianLianKan {
         protected readonly CurrentTokenTypes _currentTokenTypes;
         protected readonly Dictionary<Coordinate, bool> _coordinateChecked;
         protected readonly object _processLocker;
+        protected readonly object _gameLayoutLocker;
         protected LLKToken[,] _gameLayout;
         protected LLKToken _heldToken;
         protected int _rowSize;
@@ -75,6 +76,7 @@ namespace LianLianKan {
             _currentTokenTypes = new CurrentTokenTypes();
             _heldToken = null;
             _processLocker = new object();
+            _gameLayoutLocker = new object();
         }
         public LLKGameBase(string testLayoutString) : this() {
             _gameLayout = new LLKToken[_rowSize, _columnSize];
@@ -96,12 +98,36 @@ namespace LianLianKan {
                 GenerateGameLayout(rowSize, columnSize, tokenAmount);
             });
             _gameType = GameType.New;
+            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
+        }
+        public virtual async Task StartGameAsync(int rowSize, int columnSize, int tokenAmount) {
+            await Task.Run(() => {
+                lock (_gameLayoutLocker) {
+                    StartGameHelper(() => {
+                        GenerateGameLayout(rowSize, columnSize, tokenAmount);
+                    });
+                    _gameType = GameType.New;
+                }
+            });
+            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
         }
         public virtual void RestoreGame(LLKTokenType[,] tokenTypes, int tokenAmount) {
             StartGameHelper(() => {
                 RestoreGameLayout(tokenTypes, tokenAmount);
             });
             _gameType = GameType.Restored;
+            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
+        }
+        public virtual async Task RestoreGameAsync(LLKTokenType[,] tokenTypes, int tokenAmount) {
+            await Task.Run(() => {
+                lock (_gameLayoutLocker) {
+                    StartGameHelper(() => {
+                        RestoreGameLayout(tokenTypes, tokenAmount);
+                    });
+                }
+            });
+            _gameType = GameType.Restored;
+            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
         }
         public virtual TokenSelectResult SelectToken(LLKToken token) {
             var matchedTokenType = _heldToken?.TokenType;
@@ -299,7 +325,6 @@ namespace LianLianKan {
             ResetCoordinateStatus();
             OnPropertyChanged(nameof(RowSize));
             OnPropertyChanged(nameof(ColumnSize));
-            LayoutReseted?.Invoke(this, new LayoutResetedEventArgs());
         }
         protected virtual bool IsMatchable(Coordinate startCoordinate, Coordinate targetCoordinate) {
             var result = IsConnectable(startCoordinate, targetCoordinate);

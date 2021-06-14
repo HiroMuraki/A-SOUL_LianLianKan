@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -67,14 +68,14 @@ namespace DianaLLK_GUI {
         private async void ActiveSkill_Click(object sender, SClickEventArgs e) {
             await _game.ActiveSkillAsync(e.SKill);
         }
-        private void StartGame_Click(object sender, RoutedEventArgs e) {
+        private async void StartGame_Click(object sender, RoutedEventArgs e) {
             try {
-                _game.StartGame(_gameSetter.RowSize, _gameSetter.ColumnSize, _gameSetter.TokenAmount);
-                TokenStack.ResetStack();
+                await _game.StartGameAsync(_gameSetter.RowSize, _gameSetter.ColumnSize, _gameSetter.TokenAmount);
                 GetGameTheme();
                 FoldGameSetterPanel();
                 FoldTokenStack();
                 FoldGameStatistic();
+                TokenStack.ResetStack();
                 _startTime = DateTime.Now;
             }
             catch (Exception exp) {
@@ -160,13 +161,13 @@ namespace DianaLLK_GUI {
                 }
             }
         }
-        private void GameSave_FileDraged(object sender, DragEventArgs e) {
+        private async void GameSave_FileDraged(object sender, DragEventArgs e) {
             try {
                 string[] fileList = e.Data.GetData(DataFormats.FileDrop) as string[];
                 using (StreamReader file = new StreamReader(fileList[0])) {
                     string layoutString = file.ReadToEnd();
                     GameRestorePack result = LLKHelper.GenerateLayoutFrom(layoutString);
-                    _game.RestoreGame(result);
+                    await _game.RestoreGameAsync(result);
                 }
                 TokenStack.ResetStack();
                 FoldGameSetterPanel();
@@ -233,7 +234,7 @@ namespace DianaLLK_GUI {
                 To = 1,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(200)
+                Duration = TimeSpan.FromMilliseconds(150)
             };
             GameSetterPanel.BeginAnimation(Grid.HeightProperty, heightAnimation);
             GameSetterPanel.BeginAnimation(Grid.OpacityProperty, opacityAnimation);
@@ -252,7 +253,7 @@ namespace DianaLLK_GUI {
                 To = 0,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(200)
+                Duration = TimeSpan.FromMilliseconds(150)
             };
             GameSetterPanel.BeginAnimation(HeightProperty, heightAnimation);
             GameSetterPanel.BeginAnimation(OpacityProperty, opacityAnimation);
@@ -265,7 +266,7 @@ namespace DianaLLK_GUI {
                 To = width,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(200)
+                Duration = TimeSpan.FromMilliseconds(150)
             };
             TokenStack.BeginAnimation(WidthProperty, animation);
         }
