@@ -16,7 +16,7 @@ namespace DianaLLK_GUI {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private readonly ASLLKGame _game;
+        private readonly IGame _game;
         private readonly GameSetter _gameSetter;
         private readonly GameSoundPlayer _gameSound;
         private DateTime _startTime;
@@ -25,6 +25,7 @@ namespace DianaLLK_GUI {
 
         public static readonly DependencyProperty GameThemeProperty =
             DependencyProperty.Register(nameof(GameTheme), typeof(TokenCategory), typeof(MainWindow), new PropertyMetadata(TokenCategory.None));
+        
         public TokenCategory GameTheme {
             get {
                 return (TokenCategory)GetValue(GameThemeProperty);
@@ -33,7 +34,7 @@ namespace DianaLLK_GUI {
                 SetValue(GameThemeProperty, value);
             }
         }
-        public ASLLKGame Game {
+        public IGame Game {
             get {
                 return _game;
             }
@@ -44,11 +45,11 @@ namespace DianaLLK_GUI {
             }
         }
 
-        public MainWindow() {
+        public MainWindow(IGame game) {
             // 初始化游戏设置器
             _gameSetter = GameSetter.GetInstance();
             // 初始化游戏
-            _game = new ASLLKGame();
+            _game = game;
             _game.GameCompleted += Game_GameCompleted;
             _game.LayoutReseted += Game_LayoutReseted;
             _game.SkillActived += Game_SkillActived;

@@ -15,7 +15,7 @@ namespace DianaLLK_GUI {
         };
 
         private void Application_Startup(object sender, StartupEventArgs e) {
-            MainWindow window = new MainWindow();
+            MainWindow window = new MainWindow(new LianLianKan.ASLLKGame());
             ResolveLaunchArguments(e.Args);
             window.Show();
         }

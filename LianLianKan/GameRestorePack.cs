@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LianLianKan {
-    public record GameRestorePack {
+    public record GameRestorePack : IGameRestore {
         private readonly int _rowSize;
         private readonly int _columnSize;
         private readonly int _skillPoint;

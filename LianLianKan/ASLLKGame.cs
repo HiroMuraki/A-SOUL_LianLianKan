@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LianLianKan {
-    public sealed class ASLLKGame : LLKGameBase, INotifyPropertyChanged {
+    public sealed class ASLLKGame : LLKGameBase, IGame, INotifyPropertyChanged {
         private readonly object _skillLocker;
         private int _skillPoint;
         private bool _isBellaPowerOn;
@@ -40,12 +40,12 @@ namespace LianLianKan {
             _skillPoint = GetSkillPoint();
             OnPropertyChanged(nameof(SkillPoint));
         }
-        public void RestoreGame(GameRestorePack restorePack) {
+        public void RestoreGame(IGameRestore restorePack) {
             base.RestoreGame(restorePack.TokenTypes, restorePack.TokenAmount);
             _skillPoint = restorePack.SkillPoint;
             OnPropertyChanged(nameof(SkillPoint));
         }
-        public async Task RestoreGameAsync(GameRestorePack restorePack) {
+        public async Task RestoreGameAsync(IGameRestore restorePack) {
             await base.RestoreGameAsync(restorePack.TokenTypes, restorePack.TokenAmount);
             _skillPoint = restorePack.SkillPoint;
             OnPropertyChanged(nameof(SkillPoint));
