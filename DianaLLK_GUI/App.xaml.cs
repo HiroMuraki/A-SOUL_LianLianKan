@@ -22,8 +22,8 @@ namespace DianaLLK_GUI {
         private void ResolveLaunchArguments(string[] args) {
             GameSetter setter = GameSetter.GetInstance();
             GameSoundPlayer gameSound = GameSoundPlayer.GetInstance();
-            setter.RowSize = 6;
-            setter.ColumnSize = 10;
+            setter.RowSize = 7;
+            setter.ColumnSize = 14;
             setter.TokenAmount = 15;
             try {
                 for (int i = 0; i < args.Length; i++) {
@@ -47,8 +47,8 @@ namespace DianaLLK_GUI {
                 gameSound.LoadSounds();
             }
             catch {
-                setter.RowSize = 6;
-                setter.ColumnSize = 10;
+                setter.RowSize = 7;
+                setter.ColumnSize = 14;
                 setter.TokenAmount = 15;
                 MessageBox.Show("启动参数解析错误，使用默认值");
             }

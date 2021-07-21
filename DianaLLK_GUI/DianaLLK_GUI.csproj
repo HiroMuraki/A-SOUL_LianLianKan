@@ -24,6 +24,12 @@
     <None Remove="Resources\Images\B4.png" />
     <None Remove="Resources\Images\B5.png" />
     <None Remove="Resources\Images\BACKGROUND.png" />
+    <None Remove="Resources\Images\Backgrounds\Background_ASTheme.jpg" />
+    <None Remove="Resources\Images\Backgrounds\Background_AvaTheme.jpg" />
+    <None Remove="Resources\Images\Backgrounds\Background_BellaTheme.jpg" />
+    <None Remove="Resources\Images\Backgrounds\Background_CarolTheme.jpg" />
+    <None Remove="Resources\Images\Backgrounds\Background_DianaTheme.jpg" />
+    <None Remove="Resources\Images\Backgrounds\Background_EileenTheme.jpg" />
     <None Remove="Resources\Images\BELLA_SKILL.png" />
     <None Remove="Resources\Images\C1.png" />
     <None Remove="Resources\Images\C2.png" />
@@ -46,7 +52,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Images\BACKGROUND.png" />
+    <Resource Include="Resources\Images\Backgrounds\Background_ASTheme.jpg" />
+    <Resource Include="Resources\Images\Backgrounds\Background_ASTheme.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +73,11 @@
     <Resource Include="Resources\Images\B3.png" />
     <Resource Include="Resources\Images\B4.png" />
     <Resource Include="Resources\Images\B5.png" />
+    <Resource Include="Resources\Images\Backgrounds\Background_AvaTheme.jpg" />
+    <Resource Include="Resources\Images\Backgrounds\Background_BellaTheme.jpg" />
+    <Resource Include="Resources\Images\Backgrounds\Background_CarolTheme.jpg" />
+    <Resource Include="Resources\Images\Backgrounds\Background_DianaTheme.jpg" />
+    <Resource Include="Resources\Images\Backgrounds\Background_EileenTheme.jpg" />
     <Resource Include="Resources\Images\BELLA_SKILL.png" />
     <Resource Include="Resources\Images\C1.png" />
     <Resource Include="Resources\Images\C2.png" />

@@ -4,5 +4,6 @@
     <ValueConverter:LLKTokenTypeToImage x:Key="LLKTokenTypeToImage"/>
     <ValueConverter:LLKTokenTypeToColorFrame x:Key="LLKTokenTypeToColorFrame"/>
     <ValueConverter:GameThemeToColor x:Key="GameThemeToColor"/>
+    <ValueConverter:GameThemeToBackground x:Key="GameThemeToBackground"/>
     <ValueConverter:GameTypeToText x:Key="GameTypeToText"/>
 </ResourceDictionary>

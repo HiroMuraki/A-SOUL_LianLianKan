@@ -1,8 +1,7 @@
 {
   "profiles": {
     "DianaLLK_GUI": {
-      "commandName": "Project",
-      "commandLineArgs": "-row 6 -column 15 -types 10"
+      "commandName": "Project"
     }
   }
 }

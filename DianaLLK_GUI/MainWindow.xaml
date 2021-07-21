@@ -81,7 +81,7 @@
         </Grid>
         <Border Grid.Row="1" Background="{StaticResource TextTheme}"/>
         <Grid Grid.Row="2">
-            <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image Source="{Binding GameTheme,Converter={StaticResource GameThemeToBackground}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -90,10 +90,9 @@
                 </Grid.ColumnDefinitions>
                 <View:GameStatisticsControl Grid.Column="0" x:Name="GameStatistics" Width="0" Confirmed="GameStatistics_Confirmed"/>
                 <Grid Grid.Column="1">
-                    <Image Source="/DianaLLK_GUI;component/Resources/Images/Background.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Viewbox Grid.Row="1" Grid.Column="1">
                         <Grid Margin="15">
-                            <Border BorderBrush="{StaticResource TextTheme}" BorderThickness="1" CornerRadius="10"/>
+                            <Border Background="{Binding GameTheme,Converter={StaticResource GameThemeToColor}}" Opacity="0.65" BorderBrush="{StaticResource TextTheme}" BorderThickness="1" CornerRadius="10"/>
                             <UniformGrid x:Name="TokensLayout" Rows="{Binding Game.RowSize}" Columns="{Binding Game.ColumnSize}"/>
                         </Grid>
                     </Viewbox>

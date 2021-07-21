@@ -57,22 +57,22 @@ namespace DianaLLK_GUI.View {
                 Duration = TimeSpan.FromMilliseconds(200)
             };
             _hoveredAnimation = new DoubleAnimation() {
-                To = 0.2,
+                To = 0.65,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(20)
+                Duration = TimeSpan.FromMilliseconds(15)
             };
             _selectedAnimation = new DoubleAnimation() {
-                To = 0.75,
+                To = 0.85,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(20)
+                Duration = TimeSpan.FromMilliseconds(15)
             };
             _resetAnimation = new DoubleAnimation() {
                 To = 0,
                 AccelerationRatio = 0.2,
                 DecelerationRatio = 0.8,
-                Duration = TimeSpan.FromMilliseconds(20)
+                Duration = TimeSpan.FromMilliseconds(15)
             };
         }
         public LLKTokenRound(LLKToken token) : this() {
